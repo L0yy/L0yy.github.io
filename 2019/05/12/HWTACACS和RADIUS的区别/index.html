@@ -1,0 +1,365 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>HWTACACS和RADIUS的区别 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="一 HWTACACS和RADIUS的区别
+1 传输层协议两者使用的传输层协议不同，HWTACACS使用的是TCP，而RADIUS采用的是UDP；
+2 认证、授权方式HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证。而RADIUS的认">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/12/HWTACACS和RADIUS的区别/" title="HWTACACS和RADIUS的区别" itemprop="url">HWTACACS和RADIUS的区别</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-05-12T06:31:22.000Z" itemprop="datePublished">2019-05-12</time>
+    更新日期:<time datetime="2019-08-25T12:02:22.872Z" itemprop="dateModified">2019-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-HWTACACS和RADIUS的区别"><span class="toc-number">1.</span> <span class="toc-text">一 HWTACACS和RADIUS的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-传输层协议"><span class="toc-number">1.1.</span> <span class="toc-text">1 传输层协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-认证、授权方式"><span class="toc-number">1.2.</span> <span class="toc-text">2 认证、授权方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-加密方式"><span class="toc-number">1.3.</span> <span class="toc-text">3 加密方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-HWTACACS和RADIUS使用场合"><span class="toc-number">2.</span> <span class="toc-text">二 HWTACACS和RADIUS使用场合</span></a></li></ol>
+		</div>
+		
+		<h2 id="一-HWTACACS和RADIUS的区别"><a href="#一-HWTACACS和RADIUS的区别" class="headerlink" title="一 HWTACACS和RADIUS的区别"></a>一 HWTACACS和RADIUS的区别</h2><p><img src="%5CHCIP-security%E4%BA%86%E8%A7%A3%5C1.png" alt="diff"></p>
+<h3 id="1-传输层协议"><a href="#1-传输层协议" class="headerlink" title="1 传输层协议"></a>1 传输层协议</h3><p>两者使用的传输层协议不同，HWTACACS使用的是TCP，而RADIUS采用的是UDP；</p>
+<h3 id="2-认证、授权方式"><a href="#2-认证、授权方式" class="headerlink" title="2 认证、授权方式"></a>2 认证、授权方式</h3><p>HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证。而RADIUS的认证和授权是捆在一起的；</p>
+<h3 id="3-加密方式"><a href="#3-加密方式" class="headerlink" title="3 加密方式"></a>3 加密方式</h3><p>HWTACACS对用户报文会进行整个加密，而RADIUS仅对用户密码进行加密。</p>
+<h2 id="二-HWTACACS和RADIUS使用场合"><a href="#二-HWTACACS和RADIUS使用场合" class="headerlink" title="二 HWTACACS和RADIUS使用场合"></a>二 HWTACACS和RADIUS使用场合</h2><p>当用户需从本地网络与NAS建立连接从而取得访问其他网络的权利或取得使用某些网络资源时，一般都需对此类用户接入请求进行认证、授权和计费等。认证为合法用户将被分配网络资源，同时可对用户上线时间统计计时，并拒绝非法用户的请求。电信运营商和一些院校及企事业单位一般都采用HWTACACS或RADIUS服务器对接入用户进行有效控制，保证网络安全性和计时（方便计费）。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/HCIP/">HCIP</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/课堂笔记/">课堂笔记</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/05/12/HWTACACS和RADIUS的区别/" data-title="HWTACACS和RADIUS的区别 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/05/13/tcpdump-记录/" title="tcpdump 记录">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  tcpdump 记录</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/05/11/HCIP-security了解/"  title="HCIP-security了解">
+ <strong>NEXT:</strong><br/> 
+ <span>HCIP-security了解
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-HWTACACS和RADIUS的区别"><span class="toc-number">1.</span> <span class="toc-text">一 HWTACACS和RADIUS的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-传输层协议"><span class="toc-number">1.1.</span> <span class="toc-text">1 传输层协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-认证、授权方式"><span class="toc-number">1.2.</span> <span class="toc-text">2 认证、授权方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-加密方式"><span class="toc-number">1.3.</span> <span class="toc-text">3 加密方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-HWTACACS和RADIUS使用场合"><span class="toc-number">2.</span> <span class="toc-text">二 HWTACACS和RADIUS使用场合</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>1</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/https/" title="https">https<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hub/" title="hub">hub<sup>1</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>4</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+			<li><a href="/tags/retdec/" title="retdec">retdec<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

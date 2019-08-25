@@ -1,0 +1,410 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>angr学习文档 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="安装不会建议直接上docker 大是大了点，但是是相对很简单的事
+官方文档翻译angr Documentation我们首先要了解angr的构造，开始第一步肯定是导入二进制程序
+&amp;gt;&amp;gt;&amp;gt; import angr
+&amp;gt;&amp;gt;&amp;gt; proj = angr.Project(&amp;#39">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/04/29/angr学习文档/" title="angr学习文档" itemprop="url">angr学习文档</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-04-29T13:29:49.000Z" itemprop="datePublished">2019-04-29</time>
+    更新日期:<time datetime="2019-08-25T12:03:59.486Z" itemprop="dateModified">2019-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#官方文档翻译"><span class="toc-number">2.</span> <span class="toc-text">官方文档翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础属性"><span class="toc-number">2.1.</span> <span class="toc-text">基础属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-loader-方法"><span class="toc-number">2.2.</span> <span class="toc-text">The loader 方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#the-factory"><span class="toc-number">2.3.</span> <span class="toc-text">the factory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#states"><span class="toc-number">2.4.</span> <span class="toc-text">states</span></a></li></ol></li></ol>
+		</div>
+		
+		<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>不会建议直接上docker 大是大了点，但是是相对很简单的事</p>
+<h2 id="官方文档翻译"><a href="#官方文档翻译" class="headerlink" title="官方文档翻译"></a>官方文档翻译</h2><p><a href="https://docs.angr.io/core-concepts/toplevel" target="_blank" rel="noopener">angr Documentation</a><br>我们首先要了解angr的构造，开始第一步肯定是导入二进制程序</p>
+<pre><code>&gt;&gt;&gt; import angr
+&gt;&gt;&gt; proj = angr.Project(&#39;/bin/true&#39;)</code></pre><p>之后我们的操作都会基于这个proj对象，</p>
+<h3 id="基础属性"><a href="#基础属性" class="headerlink" title="基础属性"></a>基础属性</h3><pre><code>&gt;&gt;&gt; import monkeyhex //将以十六进制格式化数值输出结果
+&gt;&gt;&gt; proj.arch //程序的
+&lt;Arch AMD64 (LE)&gt;
+&gt;&gt;&gt; proj.entry //程序入口处
+0x401670
+&gt;&gt;&gt; proj.filename //程序二进制地址
+&#39;/bin/true&#39;</code></pre><h3 id="The-loader-方法"><a href="#The-loader-方法" class="headerlink" title="The loader 方法"></a>The loader 方法</h3><p>从二进制文件转变为虚拟地址空间的表现形式的过程是十分复杂的。我们有一个名为CLE的模块来处理这个过程。CLE的结果，称为loader，可通过.loader属性来进行操控。</p>
+<pre><code>
+&gt;&gt;&gt; proj.loader
+&lt;Loaded true, maps [0x400000:0x5004000]&gt;
+&gt;&gt;&gt; proj.loader.shared_objects # may look a little different for you!
+{&#39;ld-linux-x86-64.so.2&#39;: &lt;ELF Object ld-2.24.so, maps [0x2000000:0x2227167]&gt;,
+&#39;libc.so.6&#39;: &lt;ELF Object libc-2.24.so, maps [0x1000000:0x13c699f]&gt;}
+&gt;&gt;&gt; proj.loader.min_addr
+0x400000
+&gt;&gt;&gt; proj.loader.max_addr
+0x5004000
+&gt;&gt;&gt; proj.loader.main_object # we&#39;ve loaded several binaries into this project. Here&#39;s the main one!
+&lt;ELF Object true, maps [0x400000:0x60721f]&gt;
+&gt;&gt;&gt; proj.loader.main_object.execstack # sample query: does this binary have an executable stack?
+False
+&gt;&gt;&gt; proj.loader.main_object.pic # sample query: is this binary position-independent?
+</code></pre><h3 id="the-factory"><a href="#the-factory" class="headerlink" title="the factory"></a>the factory</h3><p>在angr中有非常多的类，它们中的大多数都需要project来进行实例化。为了不让你到处传递project，我们提供了project.factory，它有一些你会经常用到的对象的构造器。</p>
+<p>本节还会介绍angr的几种基本概念，系好安全带！</p>
+<p>blocks</p>
+<p>首先，有一个project.factory.block()的构造器，它用来提取一个指定地址的代码基本块。一个重要的事实是，angr分析的代码是使用基本块作为单元相连的。该构造器返回一个Block对象，它可以告诉你一些关于代码块的有趣信息</p>
+<pre><code>&gt;&gt;&gt; block = proj.factory.block(proj.entry) # 从程序入口点枚举一个基本块
+&lt;Block for 0x401670, 42 bytes&gt;
+&gt;&gt;&gt; block.pp() # 打印反汇编形式
+0x401670: xor ebp, ebp
+0x401672: mov r9, rdx
+0x401675: pop rsi
+0x401676: mov rdx, rsp
+0x401679: and rsp, 0xfffffffffffffff0
+0x40167d: push rax
+0x40167e: push rsp
+0x40167f: lea r8, [rip + 0x2e2a]
+0x401686: lea rcx, [rip + 0x2db3]
+0x40168d: lea rdi, [rip - 0xd4]
+0x401694: call qword ptr [rip + 0x205866]
+&gt;&gt;&gt; block.instructions # 指令数量
+0xb
+&gt;&gt;&gt; block.instruction_addrs # 每条指令对应的地址
+[0x401670, 0x401672, 0x401675, 0x401676, 0x401679, 0x40167d, 0x40167e, 0x40167f, 0x401686, 0x40168d, 0x401694]</code></pre><h3 id="states"><a href="#states" class="headerlink" title="states"></a>states</h3><p>另一个关于angr的事实是，Project对象仅仅代表程序的一个已初始化映像。当你要使用angr来进行执行时，你需要使用到一个表示模拟程序状态的特殊对象，SimState对象，我们现在就来获取一个</p>
+<pre><code>&gt;&gt;&gt; state = proj.factory.entry_state()
+&lt;SimState @ 0x401670&gt;</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Angr/">Angr</a><a href="/tags/程序自动化/">程序自动化</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/逆向/">逆向</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/04/29/angr学习文档/" data-title="angr学习文档 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/05/11/HCIP-security了解/" title="HCIP-security了解">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  HCIP-security了解</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/04/28/课程笔记：安全运维平台设计/"  title="课程笔记：安全运维平台设计">
+ <strong>NEXT:</strong><br/> 
+ <span>课程笔记：安全运维平台设计
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#官方文档翻译"><span class="toc-number">2.</span> <span class="toc-text">官方文档翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础属性"><span class="toc-number">2.1.</span> <span class="toc-text">基础属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-loader-方法"><span class="toc-number">2.2.</span> <span class="toc-text">The loader 方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#the-factory"><span class="toc-number">2.3.</span> <span class="toc-text">the factory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#states"><span class="toc-number">2.4.</span> <span class="toc-text">states</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>1</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/https/" title="https">https<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hub/" title="hub">hub<sup>1</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>4</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+			<li><a href="/tags/retdec/" title="retdec">retdec<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

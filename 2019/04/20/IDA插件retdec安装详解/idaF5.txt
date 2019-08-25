@@ -1,0 +1,53 @@
+signed int __cdecl sub_434990(int input, unsigned int a1024, int output)
+{
+  signed int result; // eax
+  unsigned int v4; // [esp+E0h] [ebp-2Ch]
+  int v5; // [esp+F8h] [ebp-14h]
+  unsigned int i; // [esp+104h] [ebp-8h]
+
+  v5 = 0;
+  for ( i = 0; i < a1024; ++i )
+  {
+    if ( *(_BYTE *)(i + input) == '=' )
+      return 0;
+    if ( *(char *)(i + input) < 43 )
+      return 1;
+    if ( *(char *)(i + input) > 122 )
+      return 1;
+    v4 = data1[*(char *)(i + input)];
+    if ( v4 == -1 )
+      return 1;
+    switch ( i % 4 )
+    {
+      case 0u:
+        *(_BYTE *)(v5 + output) = 4 * v4;
+        if ( check_dbg() == 1 )                 // 根据查找子窗口名来判断调试
+          funexit();
+        if ( sub_42E26B() == 1 )                // 查询运行的软件中是否有调试器
+          funexit();
+        if ( sub_42D7F8() == HANDLE_FLAG_INHERIT )
+          funexit();
+        return result;
+      case 1u:
+        *(_BYTE *)(v5++ + output) += (v4 >> 4) & 3;
+        if ( i < a1024 - 3 || *(_BYTE *)(a1024 + input - 2) != '=' )// 输入最后两位是不是==
+          *(_BYTE *)(v5 + output) = 16 * (v4 & 0xF);
+        break;
+      case 2u:
+        *(_BYTE *)(v5++ + output) += (v4 >> 2) & 0xF;
+        if ( sub_42E26B() == 1 )
+          funexit();
+        if ( sub_42D7F8() == HANDLE_FLAG_INHERIT )
+          funexit();
+        if ( i < a1024 - 2 || *(_BYTE *)(a1024 + input - 1) != '=' )
+          *(_BYTE *)(v5 + output) = (v4 & 3) << 6;
+        break;
+      case 3u:
+        *(_BYTE *)(v5++ + output) += v4;
+        break;
+      default:
+        continue;
+    }
+  }
+  return 0;
+}

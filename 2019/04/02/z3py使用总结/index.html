@@ -1,0 +1,454 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>z3py使用总结 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="遇到一个需要计算的题，逆向不出来，就想想使用正向求解，z3了解一下
+什么是z3
+Z3 is a theorem prover from Microsoft Research. It &amp;gt;is licensed under the MIT license.
+If you are not famil">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/04/02/z3py使用总结/" title="z3py使用总结" itemprop="url">z3py使用总结</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-04-02T15:01:58.000Z" itemprop="datePublished">2019-04-02</time>
+    更新日期:<time datetime="2019-08-25T11:59:21.576Z" itemprop="dateModified">2019-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是z3"><span class="toc-number">1.</span> <span class="toc-text">什么是z3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通俗易懂"><span class="toc-number">2.</span> <span class="toc-text">通俗易懂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Int型"><span class="toc-number">2.1.</span> <span class="toc-text">Int型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#案例"><span class="toc-number">2.1.1.</span> <span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RealVal型"><span class="toc-number">2.2.</span> <span class="toc-text">RealVal型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#案例-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BitVec型"><span class="toc-number">2.3.</span> <span class="toc-text">BitVec型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#案例-2"><span class="toc-number">2.3.1.</span> <span class="toc-text">案例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CTF案例"><span class="toc-number">3.</span> <span class="toc-text">CTF案例</span></a></li></ol>
+		</div>
+		
+		<p>遇到一个需要计算的题，逆向不出来，就想想使用正向求解，z3了解一下</p>
+<h2 id="什么是z3"><a href="#什么是z3" class="headerlink" title="什么是z3"></a><a href="https://github.com/Z3Prover/z3" target="_blank" rel="noopener">什么是z3</a></h2><blockquote>
+<p>Z3 is a theorem prover from Microsoft Research. It &gt;is licensed under the MIT license.</p>
+<p>If you are not familiar with Z3, you can start &gt;here.</p>
+<p>Pre-built binaries for releases are available from &gt;here, and nightly builds from here.</p>
+<p>Z3 can be built using Visual Studio, a Makefile or &gt;using CMake. It provides bindings for several &gt;programming languages.</p>
+<p>See the release notes for notes on various stable &gt;releases of Z3.</p>
+</blockquote>
+<p>就是一个约束器，可以简单理解为解方程的东西。</p>
+<p><strong><a href="https://ericpony.github.io/z3py-tutorial/guide-examples.htm" target="_blank" rel="noopener">z3英文文档</a></strong></p>
+<p><strong><a href="http://xj.poke8.com/?p=149" target="_blank" rel="noopener">z3翻译文档</a></strong></p>
+<h2 id="通俗易懂"><a href="#通俗易懂" class="headerlink" title="通俗易懂"></a>通俗易懂</h2><p>z3有三种变量类型 </p>
+<h3 id="Int型"><a href="#Int型" class="headerlink" title="Int型"></a>Int型</h3><p>这种就像是我们平常说的整型，一般简单运算都可以用这个，用运算符&lt;， &lt;=， &gt;， &gt; =， ==和 ！=来进行比较</p>
+<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><pre><code>x = Int(&#39;x&#39;)
+y = Int(&#39;y&#39;)
+solve(x &gt; 2, y &lt; 10, x + 2*y == 7)</code></pre><h3 id="RealVal型"><a href="#RealVal型" class="headerlink" title="RealVal型"></a>RealVal型</h3><p>就是小数形式，使用的很多，</p>
+<h4 id="案例-1"><a href="#案例-1" class="headerlink" title="案例"></a>案例</h4><pre><code>x = Real(&#39;x&#39;)
+y = Real(&#39;y&#39;)
+solve(x**2 + y**2 == 3, x**3 == 2)
+
+set_option(precision=30)
+print &quot;Solving, and displaying result with 30 decimal places&quot;
+solve(x**2 + y**2 == 3, x**3 == 2)</code></pre><h3 id="BitVec型"><a href="#BitVec型" class="headerlink" title="BitVec型"></a>BitVec型</h3><p>现代CPU和主流编程语言使用固定大小的位向量进行算术运算。机器算法在Z3Py中可用Bit-Vectors来表示。<br>它实现了无符号和有符号二补数算术的精确表示，<strong>只有这个类型才可以使用异或等位运算</strong></p>
+<h4 id="案例-2"><a href="#案例-2" class="headerlink" title="案例"></a>案例</h4><pre><code>x = BitVec(&#39;x&#39;, 16)
+y = BitVec(&#39;y&#39;, 16)
+print x + 2
+# Internal representation
+print (x + 2).sexpr()
+
+# -1 is equal to 65535 for 16-bit integers 
+print simplify(x + y - 1)
+
+# Creating bit-vector constants
+a = BitVecVal(-1, 16)
+b = BitVecVal(65535, 16)
+print simplify(a == b)
+
+a = BitVecVal(-1, 32)
+b = BitVecVal(65535, 32)
+# -1 is not equal to 65535 for 32-bit integers 
+print simplify(a == b)</code></pre><p>一些命令如下</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>set_option(rational_to_decimal=True)</code></td>
+<td>设置结果全局十进制表示</td>
+</tr>
+<tr>
+<td><code>set_option(precision=30)</code></td>
+<td>设置结果小数点后位数表示</td>
+</tr>
+<tr>
+<td><code>simplify</code></td>
+<td>化简之后约束条件</td>
+</tr>
+<tr>
+<td><code>assertions</code></td>
+<td>显示全部约束条件</td>
+</tr>
+</tbody></table>
+<h2 id="CTF案例"><a href="#CTF案例" class="headerlink" title="CTF案例"></a>CTF案例</h2><p><a href="https://pan.baidu.com/s/1o8QdFIE" target="_blank" rel="noopener">文件地址</a><br>主要IDA逻辑<br><img src="z3py%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/1.png" alt></p>
+<pre><code>from z3 import *
+data1 = [0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 
+  0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 
+  0x3F, 0x40, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x7B, 0x7C, 
+  0x7D, 0x7E]
+data2 = [0x72, 0xE9, 0x4D, 0xAC, 0xC1, 0xD0, 0x24, 0x6B, 0xB2, 0xF5, 
+  0xFD, 0x45, 0x49, 0x94, 0xDC, 0x10, 0x10, 0x6B, 0xA3, 0xFB, 
+  0x5C, 0x13, 0x17, 0xE4, 0x67, 0xFE, 0x72, 0xA1, 0xC7, 0x04, 
+  0x2B, 0xC2, 0x9D, 0x3F, 0xA7, 0x6C, 0xE7, 0xD0, 0x90, 0x71, 
+  0x36, 0xB3, 0xAB, 0x67, 0xBF, 0x60, 0x30, 0x3E, 0x78, 0xCD, 
+  0x6D, 0x35, 0xC8, 0x55, 0xFF, 0xC0, 0x95, 0x62, 0xE6, 0xBB, 
+  0x57, 0x34, 0x29, 0x0E, 0x03]
+
+s = Solver()
+xor_res = [0]*0x41
+k = [BitVec((&quot;k%s&quot;%i),8) for i in range(0x22)]
+for i in k:
+    s.add(i&gt;0x20,i&lt;0x7E)
+for m in range(0x22):
+    for n in range(0x20):
+        xor_res[m+n] += k[m]^data1[n]
+for j in range(0x41):
+    s.add(xor_res[j]==data2[j])
+print(s.check())
+aa = s.model()
+for i in range(0x22):
+    print(chr(int(&#39;%s&#39;%aa[k[i]])),end=&#39;&#39;)</code></pre><p>几秒解出，很方便</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/z3/">z3</a><a href="/tags/Python/">Python</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/逆向/">逆向</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/04/02/z3py使用总结/" data-title="z3py使用总结 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/04/04/看雪刷题系列：2017/" title="看雪刷题系列：2017">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  看雪刷题系列：2017</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/04/01/coding-hexo配置/"  title="coding+hexo配置">
+ <strong>NEXT:</strong><br/> 
+ <span>coding+hexo配置
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是z3"><span class="toc-number">1.</span> <span class="toc-text">什么是z3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通俗易懂"><span class="toc-number">2.</span> <span class="toc-text">通俗易懂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Int型"><span class="toc-number">2.1.</span> <span class="toc-text">Int型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#案例"><span class="toc-number">2.1.1.</span> <span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RealVal型"><span class="toc-number">2.2.</span> <span class="toc-text">RealVal型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#案例-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BitVec型"><span class="toc-number">2.3.</span> <span class="toc-text">BitVec型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#案例-2"><span class="toc-number">2.3.1.</span> <span class="toc-text">案例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CTF案例"><span class="toc-number">3.</span> <span class="toc-text">CTF案例</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>1</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/https/" title="https">https<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hub/" title="hub">hub<sup>1</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>4</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+			<li><a href="/tags/retdec/" title="retdec">retdec<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

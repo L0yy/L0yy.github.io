@@ -1,0 +1,426 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>tcpdump 记录 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="tcpdump一些常用的选项。-s number：tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容，就需要使用这个选项，其中number是需要截取的报文字节数，如果是0的话，表示截取报文全部内容；
+-nn：表示不解析域名，直接显示IP，在netstat命令中，也有这个选项；
+-X：">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/13/tcpdump-记录/" title="tcpdump 记录" itemprop="url">tcpdump 记录</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-05-13T07:18:48.000Z" itemprop="datePublished">2019-05-13</time>
+    更新日期:<time datetime="2019-08-25T12:02:37.862Z" itemprop="dateModified">2019-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#tcpdump一些常用的选项。"><span class="toc-number">1.</span> <span class="toc-text">tcpdump一些常用的选项。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤器"><span class="toc-number">2.</span> <span class="toc-text">过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#条件组合"><span class="toc-number">3.</span> <span class="toc-text">条件组合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用实例"><span class="toc-number">4.</span> <span class="toc-text">使用实例</span></a></li></ol>
+		</div>
+		
+		<h3 id="tcpdump一些常用的选项。"><a href="#tcpdump一些常用的选项。" class="headerlink" title="tcpdump一些常用的选项。"></a>tcpdump一些常用的选项。</h3><p>-s number：tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容，就需要使用这个选项，其中number是需要截取的报文字节数，如果是0的话，表示截取报文全部内容；</p>
+<p>-nn：表示不解析域名，直接显示IP，在netstat命令中，也有这个选项；</p>
+<p>-X：同时使用hex和ascii显示报文内容；</p>
+<p>-S：显示绝对的序列号（sequence number），而不是相对编号；</p>
+<p>-i：指定监听的网卡，如果为-i any则表示监听所有的网卡；</p>
+<p>-v，-vv，-vvv：显示更多的详细信息；</p>
+<p>-c number：表示截取number个报文，然后结束；</p>
+<p>-w：将监听到的数据包写入文件中保存，而并不分析和打印出来；</p>
+<p>-A：只使用ascii打印报文的全部数据，不要和-X选项一起使用。截取HTTP请求的时候可以用sudo tcpdump -nSA port 80</p>
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p>先进行使用实例详解时，有必要先掌握tcpdump一些基本的使用理论知识，先来说说过滤器。</p>
+<p>在服务器上的网络报文是异常的多，很多时候我们只关注和具体问题有关的数据报文，而这些有用的报文只占到很小的一部分，学习一下tcpdump提供的灵活而且功能强大的过滤器。</p>
+<p>过滤器也可以简单地分为三类：type，dir和proto。</p>
+<p>type：主要用来区分过滤报文源类型，主要由host主机报文，net网段报文和port指定端口的报文组成；</p>
+<p>dir：只过滤报文的源地址和目的地址，主要包括src源地址和dst目的地址；</p>
+<p>proto：只过滤报文的协议类型，支持tcp，udp和icmp等；使用的时候可以省略<br>proto关键字：</p>
+<p>tcpdump -i eth1 arp</p>
+<p>tcpdump -i eth1 ip</p>
+<p>tcpdump -i eth1 tcp</p>
+<p>tcpdump -i eth1 udp</p>
+<p>tcpdump -i eth1 icmp</p>
+<p>在我们使用tcpdump命令时是离不开这些过滤器的。</p>
+<h3 id="条件组合"><a href="#条件组合" class="headerlink" title="条件组合"></a>条件组合</h3><p>在茫茫网络中，想要找到那个你想要的网络包，还是有一定难度的。为了抓住那个我们想要的网络包，在我们抓包命令中，包含越多的限制条件，抓的无关包就会越少，所以在进行抓包时，我们可以使用“与”（and、&amp;&amp;）、“或”（or、||）和“非”（not、!）来将多个条件组合起来。这对我们需要基于某些条件来分析网络包是非常有用的。</p>
+<h3 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h3><ul>
+<li>命令：tcpdump -i eth1</li>
+</ul>
+<p>说明：监视指定网络接口的数据包</p>
+<ul>
+<li>命令：tcpdump host 210.27.48.3</li>
+</ul>
+<p>说明：截获210.27.48.3主机收到的和发出的所有数据包</p>
+<ul>
+<li>命令：tcpdump host 210.27.48.4 and (210.27.48.5 or 210.27.48.6)</li>
+</ul>
+<p>说明：截获210.27.48.3主机和210.27.48.5或者210.27.48.6主机进行通信的所<br>有数据包</p>
+<ul>
+<li>命令：tcpdump net 192.168.1.0/24</li>
+</ul>
+<p>说明：截获192.168.1.0/24整个网络的数据包</p>
+<ul>
+<li>命令：tcpdump -i eth0 src host 210.27.48.3</li>
+</ul>
+<p>说明：监视eth0网卡上源地址是210.27.48.3的所有网络包</p>
+<ul>
+<li>命令：tcpdump -i eth0 dst host 210.27.48.3</li>
+</ul>
+<p>说明：监视eth0网卡上目的地址是210.27.48.3的所有网络包</p>
+<ul>
+<li>命令：tcpdump tcp port 23 and host 210.27.48.3</li>
+</ul>
+<p>说明：获取主机210.27.48.3上端口为23的应用发出和接收的所有TCP协议包</p>
+<ul>
+<li>命令：tcpdump udp port 123</li>
+</ul>
+<p>说明：获取本机123端口发出和接收的所有UDP协议包</p>
+<ul>
+<li>命令：tcpdump src host 10.126.1.222 and dst net 10.126.1.0/24</li>
+</ul>
+<p>说明：截获源主地址为10.126.1.222，目的地址是10.126.1.0/24整个网络</p>
+<ul>
+<li>命令：tcpdump -i eth0 -s0 -G 60 -Z root -w %Y_%m%d_%H%M_%S.pcap</li>
+</ul>
+<p>说明：抓取报文后按照指定时间间隔保存；-G选项后面接时间，单位为秒；上述命令就是每隔60秒生存一个文件</p>
+<ul>
+<li>命令：tcpdump -i eth0 -s0 -C 1 -Z root -w eth0Packet.pcap</li>
+</ul>
+<p>说明：抓取报文后按照指定报文大小保存；-C选项后接文件大小，单位为MB；上述命令就是每抓包文件达到1MB时就使用一个新的文件保存新抓的报文</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/TcpDump/">TcpDump</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/课堂笔记/">课堂笔记</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/05/13/tcpdump-记录/" data-title="tcpdump 记录 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/05/13/https工作原理/" title="https 工作原理">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  https 工作原理</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/05/12/HWTACACS和RADIUS的区别/"  title="HWTACACS和RADIUS的区别">
+ <strong>NEXT:</strong><br/> 
+ <span>HWTACACS和RADIUS的区别
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#tcpdump一些常用的选项。"><span class="toc-number">1.</span> <span class="toc-text">tcpdump一些常用的选项。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤器"><span class="toc-number">2.</span> <span class="toc-text">过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#条件组合"><span class="toc-number">3.</span> <span class="toc-text">条件组合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用实例"><span class="toc-number">4.</span> <span class="toc-text">使用实例</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>1</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/https/" title="https">https<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hub/" title="hub">hub<sup>1</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>4</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+			<li><a href="/tags/retdec/" title="retdec">retdec<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>

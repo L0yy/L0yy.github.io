@@ -1,0 +1,366 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>vulnhub 靶机系列 dc-2 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="靶机地址
+网络拓扑我在这里使用VM虚拟机来搭建环境
+攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24
+靶机为 dc-2 使用桥接本机无线网卡 
+开始测试主机发现扫描主机详细信息，发现有web服务和一个修改了端口的ssh根据作者的说明，需要parrot的hosts">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/06/15/dc-2/" title="vulnhub 靶机系列 dc-2" itemprop="url">vulnhub 靶机系列 dc-2</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-06-15T11:11:22.000Z" itemprop="datePublished">2019-06-15</time>
+    更新日期:<time datetime="2019-08-25T11:46:48.704Z" itemprop="dateModified">2019-08-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#网络拓扑"><span class="toc-number">1.</span> <span class="toc-text">网络拓扑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始测试"><span class="toc-number">2.</span> <span class="toc-text">开始测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wpscan-安装"><span class="toc-number">3.</span> <span class="toc-text">Wpscan 安装</span></a></li></ol>
+		</div>
+		
+		<p><a href="https://www.vulnhub.com/entry/dc-2,311/" target="_blank" rel="noopener">靶机地址</a></p>
+<h2 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h2><p>我在这里使用VM虚拟机来搭建环境</p>
+<p>攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24</p>
+<p>靶机为 dc-2 使用桥接本机无线网卡 </p>
+<h2 id="开始测试"><a href="#开始测试" class="headerlink" title="开始测试"></a>开始测试</h2><p>主机发现<br><img src="dc2.png" alt><br>扫描主机详细信息，发现有web服务和一个修改了端口的ssh<br><img src="dc3.png" alt><br>根据作者的说明，需要parrot的hosts文件，才能正常访问web网站<br><img src="dc5.png" alt><br>修改后记得重启网络  <code>service netwoking restart</code>,访问 <a href="http://dc-2" target="_blank" rel="noopener">http://dc-2</a> 成功找到flag1<br><img src="dc6.png" alt><br>发现是Wordpress框架的网站，那就直接上Wpscan,但是parrot或kali虽然自带，但是都需要update，但是会出现请求超时（搭梯子都不行），直接开始枚举用户名<br><img src="dc7.png" alt><br>发现有三个用户名 admin jerry tom<br><img src="dc8.png" alt><br>把他们都保存到保存到一个文本里，后面的爆破需要用到<br><img src="dc9.png" alt><br>这里有点坑，用常用字典跑步不出来，然后认真读了下flag发现作者提示使用cewl来搜集密码。。。这里保存到pass.txt<br><img src="dc10.png" alt><br>然后是爆破对应密码，docker wpscan使用见下文<br><img src="dc11.png" alt><br>很不错，跑出来了两个，如图所示<br><img src="dc12.png" alt><br>wordoress 后台地址默认是 /wp-admin，<br><img src="dc13.png" alt><br>先使用tom登陆，什么都没有，然后看了下jerry的，发现了flag2<br><img src="dc14.png" alt><br>没什么头绪了，试试ssh，jerry的没有远程登陆权限，tom能登上<br><img src="dc15.png" alt><br>ls看到flag3 但是没有cat命令，于是我们看看$PATH(然后在ls /home/tom/usr/bin)可以看到可使用的命令，发现只有四个可用 (ls less scp vi) OTZ<br><img src="dc16.png" alt><br>vi 直接看flag3 ，他说jerry权限比较高，我们应该尝试切换到jerry</p>
+<p>因为命令太少了，su也没有，我们现在需要更多的命令<br><img src="dc17.png" alt><br>使用scp远程拷贝，加入dc-2的usr目录里（这里的ip地址使用之前的，我这里是重启了虚拟机，IP地址改变了）<br><img src="dc18.png" alt><br>可以看到我们可以使用的命令多了很多，可以看到有python<br><img src="dc19.png" alt><br>使用python弹回一个shell<br><img src="dc20.png" alt><br>这个shell可以export 目录 将su所在的目录加入到$PATH，这样我们就可以使用su 切换用户了<br><img src="dc21.png" alt></p>
+<p>在jerry目录下有个flag4 里面提示git  <a href="http://blog.securelayer7.net/abusing-sudo-advance-linux-privilege-escalation/" target="_blank" rel="noopener">如何使用sudo 提权</a><br><img src="dc22.png" alt><br><img src="dc24.png" alt></p>
+<p><img src="dc23.png" alt></p>
+<h2 id="Wpscan-安装"><a href="#Wpscan-安装" class="headerlink" title="Wpscan 安装"></a>Wpscan 安装</h2><p>因为parrot和kali自带的使用时候需要更新，但是怎么弄都更新不了，这就很烦，于是找到<a href="https://github.com/wpscanteam/wpscan" target="_blank" rel="noopener">GitHub</a>上的README</p>
+<p>有 docker 那肯定是使用docker安装一波</p>
+<p>如何使用docker 请看之前docker笔记。</p>
+<p>这里有个使用中的问题，如果你使用文本爆破的时候不管怎么写目录都会找不到，是因为文件不在docker里面，所以使用的时候需要将本地文件映射到docker里面去。使用如下所示<br><img src="1.png" alt></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/web渗透/">web渗透</a><a href="/tags/靶机/">靶机</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/CTF/">CTF</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/06/15/dc-2/" data-title="vulnhub 靶机系列 dc-2 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/06/11/WEB温习第三天/"  title="web渗透基础三">
+ <strong>NEXT:</strong><br/> 
+ <span>web渗透基础三
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#网络拓扑"><span class="toc-number">1.</span> <span class="toc-text">网络拓扑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始测试"><span class="toc-number">2.</span> <span class="toc-text">开始测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wpscan-安装"><span class="toc-number">3.</span> <span class="toc-text">Wpscan 安装</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>1</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/https/" title="https">https<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hub/" title="hub">hub<sup>1</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>4</sup></a></li>
+		
+			<li><a href="/tags/php/" title="php">php<sup>1</sup></a></li>
+		
+			<li><a href="/tags/retdec/" title="retdec">retdec<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
