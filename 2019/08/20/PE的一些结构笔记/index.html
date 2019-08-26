@@ -1,0 +1,386 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>PE的一些结构笔记 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="实模式开电脑一瞬间，就处于实模式，1M寻址 dos 使用实模式
+保护模式windows在保护模式
+windows me 是windows 9x系列的最后一个
+windows NT 2000以后的 现在的都是NT系列的
+不同进程使用操作系统的共享地址
+com 的特点就是没有特点
+PE格式解释有用的字段">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/20/PE的一些结构笔记/" title="PE的一些结构笔记" itemprop="url">PE的一些结构笔记</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-08-20T11:11:22.000Z" itemprop="datePublished">2019-08-20</time>
+    更新日期:<time datetime="2019-08-26T02:23:04.550Z" itemprop="dateModified">2019-08-26</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#实模式"><span class="toc-number">1.</span> <span class="toc-text">实模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保护模式"><span class="toc-number">2.</span> <span class="toc-text">保护模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PE格式解释"><span class="toc-number">3.</span> <span class="toc-text">PE格式解释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dos头的最后一个双字，指向PE头的起始地址"><span class="toc-number">3.1.</span> <span class="toc-text">dos头的最后一个双字，指向PE头的起始地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#File-header的大小永远是固定的20字节，下面4个字段比较重要"><span class="toc-number">3.2.</span> <span class="toc-text">File header的大小永远是固定的20字节，下面4个字段比较重要</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Optional-header-：是必要的头"><span class="toc-number">3.3.</span> <span class="toc-text">Optional header ：是必要的头</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><span class="toc-number">3.4.</span> <span class="toc-text">Section Headers:这里填写了各个节的文件偏移和内存偏移。</span></a></li></ol></li></ol>
+		</div>
+		
+		<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p>
+<h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p>
+<p>windows me 是windows 9x系列的最后一个</p>
+<p>windows NT 2000以后的 现在的都是NT系列的</p>
+<p>不同进程使用操作系统的共享地址</p>
+<p>com 的特点就是没有特点</p>
+<h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul>
+<li>Machine：表示这个程序是什么架构的 </li>
+<li>NumberOfSections:表示这个程序有多少个节</li>
+<li>SizeofOptionalHeader：表示optionsHeader的大小 </li>
+<li>Characters:表示这个程序的一些特性</li>
+</ul>
+<h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p>
+<p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" alt="在这里插入图片描述"></p>
+<h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/PE/">PE</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/课堂学习/">课堂学习</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/08/20/PE的一些结构笔记/" data-title="PE的一些结构笔记 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/08/22/MASH和内联MASH/" title="MASH和内联MASH">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  MASH和内联MASH</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/08/18/IDA制作签名/"  title="IDA制作签名">
+ <strong>NEXT:</strong><br/> 
+ <span>IDA制作签名
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#实模式"><span class="toc-number">1.</span> <span class="toc-text">实模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保护模式"><span class="toc-number">2.</span> <span class="toc-text">保护模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PE格式解释"><span class="toc-number">3.</span> <span class="toc-text">PE格式解释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dos头的最后一个双字，指向PE头的起始地址"><span class="toc-number">3.1.</span> <span class="toc-text">dos头的最后一个双字，指向PE头的起始地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#File-header的大小永远是固定的20字节，下面4个字段比较重要"><span class="toc-number">3.2.</span> <span class="toc-text">File header的大小永远是固定的20字节，下面4个字段比较重要</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Optional-header-：是必要的头"><span class="toc-number">3.3.</span> <span class="toc-text">Optional header ：是必要的头</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><span class="toc-number">3.4.</span> <span class="toc-text">Section Headers:这里填写了各个节的文件偏移和内存偏移。</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
+		
+			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>9</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
