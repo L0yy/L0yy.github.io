@@ -4,16 +4,12 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>vulnhub 靶机系列 dc-2 | CrayBlog</title>
+    <title>CrayBlog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Cray">
     
-    <meta name="description" content="靶机地址
-网络拓扑我在这里使用VM虚拟机来搭建环境
-攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24
-靶机为 dc-2 使用桥接本机无线网卡 
-开始测试主机发现扫描主机详细信息，发现有web服务和一个修改了端口的ssh根据作者的说明，需要parrot的hosts">
+    <meta name="description" content="google-site-verification: google661291fdc4231192.html">
     
     
     
@@ -69,15 +65,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/06/15/dc-2/" title="vulnhub 靶机系列 dc-2" itemprop="url">vulnhub 靶机系列 dc-2</a>
+      <a href="/2019/08/26/google661291fdc4231192/" title="" itemprop="url"></a>
   </h1>
   <p class="article-author">By
     
       <a href="http://L0yy.github.io" title="Cray">Cray</a>
     </p>
   <p class="article-time">
-    <time datetime="2019-06-15T11:11:22.000Z" itemprop="datePublished">2019-06-15</time>
-    更新日期:<time datetime="2019-08-25T11:46:48.704Z" itemprop="dateModified">2019-08-25</time>
+    <time datetime="2019-08-26T02:40:21.471Z" itemprop="datePublished">2019-08-26</time>
+    更新日期:<time datetime="2019-08-26T02:40:22.092Z" itemprop="dateModified">2019-08-26</time>
     
   </p>
 </header>
@@ -86,41 +82,19 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#网络拓扑"><span class="toc-number">1.</span> <span class="toc-text">网络拓扑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始测试"><span class="toc-number">2.</span> <span class="toc-text">开始测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wpscan-安装"><span class="toc-number">3.</span> <span class="toc-text">Wpscan 安装</span></a></li></ol>
+		
 		</div>
 		
-		<p><a href="https://www.vulnhub.com/entry/dc-2,311/" target="_blank" rel="noopener">靶机地址</a></p>
-<h2 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h2><p>我在这里使用VM虚拟机来搭建环境</p>
-<p>攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24</p>
-<p>靶机为 dc-2 使用桥接本机无线网卡 </p>
-<h2 id="开始测试"><a href="#开始测试" class="headerlink" title="开始测试"></a>开始测试</h2><p>主机发现<br><img src="dc2.png" alt><br>扫描主机详细信息，发现有web服务和一个修改了端口的ssh<br><img src="dc3.png" alt><br>根据作者的说明，需要parrot的hosts文件，才能正常访问web网站<br><img src="dc5.png" alt><br>修改后记得重启网络  <code>service netwoking restart</code>,访问 <a href="http://dc-2" target="_blank" rel="noopener">http://dc-2</a> 成功找到flag1<br><img src="dc6.png" alt><br>发现是Wordpress框架的网站，那就直接上Wpscan,但是parrot或kali虽然自带，但是都需要update，但是会出现请求超时（搭梯子都不行），直接开始枚举用户名<br><img src="dc7.png" alt><br>发现有三个用户名 admin jerry tom<br><img src="dc8.png" alt><br>把他们都保存到保存到一个文本里，后面的爆破需要用到<br><img src="dc9.png" alt><br>这里有点坑，用常用字典跑步不出来，然后认真读了下flag发现作者提示使用cewl来搜集密码。。。这里保存到pass.txt<br><img src="dc10.png" alt><br>然后是爆破对应密码，docker wpscan使用见下文<br><img src="dc11.png" alt><br>很不错，跑出来了两个，如图所示<br><img src="dc12.png" alt><br>wordoress 后台地址默认是 /wp-admin，<br><img src="dc13.png" alt><br>先使用tom登陆，什么都没有，然后看了下jerry的，发现了flag2<br><img src="dc14.png" alt><br>没什么头绪了，试试ssh，jerry的没有远程登陆权限，tom能登上<br><img src="dc15.png" alt><br>ls看到flag3 但是没有cat命令，于是我们看看$PATH(然后在ls /home/tom/usr/bin)可以看到可使用的命令，发现只有四个可用 (ls less scp vi) OTZ<br><img src="dc16.png" alt><br>vi 直接看flag3 ，他说jerry权限比较高，我们应该尝试切换到jerry</p>
-<p>因为命令太少了，su也没有，我们现在需要更多的命令<br><img src="dc17.png" alt><br>使用scp远程拷贝，加入dc-2的usr目录里（这里的ip地址使用之前的，我这里是重启了虚拟机，IP地址改变了）<br><img src="dc18.png" alt><br>可以看到我们可以使用的命令多了很多，可以看到有python<br><img src="dc19.png" alt><br>使用python弹回一个shell<br><img src="dc20.png" alt><br>这个shell可以export 目录 将su所在的目录加入到$PATH，这样我们就可以使用su 切换用户了<br><img src="dc21.png" alt></p>
-<p>在jerry目录下有个flag4 里面提示git  <a href="http://blog.securelayer7.net/abusing-sudo-advance-linux-privilege-escalation/" target="_blank" rel="noopener">如何使用sudo 提权</a><br><img src="dc22.png" alt><br><img src="dc24.png" alt></p>
-<p><img src="dc23.png" alt></p>
-<h2 id="Wpscan-安装"><a href="#Wpscan-安装" class="headerlink" title="Wpscan 安装"></a>Wpscan 安装</h2><p>因为parrot和kali自带的使用时候需要更新，但是怎么弄都更新不了，这就很烦，于是找到<a href="https://github.com/wpscanteam/wpscan" target="_blank" rel="noopener">GitHub</a>上的README</p>
-<p>有 docker 那肯定是使用docker安装一波</p>
-<p>如何使用docker 请看之前docker笔记。</p>
-<p>这里有个使用中的问题，如果你使用文本爆破的时候不管怎么写目录都会找不到，是因为文件不在docker里面，所以使用的时候需要将本地文件映射到docker里面去。使用如下所示<br><img src="1.png" alt></p>
-  
+		google-site-verification: google661291fdc4231192.html  
 	</div>
 		<footer class="article-footer clearfix">
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/web渗透/">web渗透</a><a href="/tags/靶机/">靶机</a>
-  </div>
-
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/CTF/">CTF</a>
-</div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://L0yy.github.io/2019/06/15/dc-2/" data-title="vulnhub 靶机系列 dc-2 | CrayBlog" data-tsina="" class="share clearfix">
+  <div data-url="http://L0yy.github.io/2019/08/26/google661291fdc4231192/" data-title="CrayBlog" data-tsina="" class="share clearfix">
   </div>
 
 </div>
@@ -130,18 +104,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2019/08/10/调试dll的两种方法/" title="调试dll的两种方法">
+ <a href="/2019/08/27/调用dll和编写dll的几种格式/" title="调用dll和编写dll的几种格式">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  调试dll的两种方法</span>
+  调用dll和编写dll的几种格式</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2019/06/11/WEB温习第二天/"  title="web渗透基础二">
+<a href="/2019/08/26/远线程注入/"  title="远线程注入">
  <strong>NEXT:</strong><br/> 
- <span>web渗透基础二
+ <span>远线程注入
 </span>
 </a>
 </div>
@@ -154,7 +128,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#网络拓扑"><span class="toc-number">1.</span> <span class="toc-text">网络拓扑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始测试"><span class="toc-number">2.</span> <span class="toc-text">开始测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wpscan-安装"><span class="toc-number">3.</span> <span class="toc-text">Wpscan 安装</span></a></li></ol>
+  
   </div>
 
 <div id="asidepart">
