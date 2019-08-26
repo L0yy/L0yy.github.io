@@ -4,12 +4,17 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>课程笔记：安全运维平台设计 | CrayBlog</title>
+    <title>看雪刷题系列：2017 | CrayBlog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Cray">
     
-    <meta name="description" content="基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风险感知与协同响应能力">
+    <meta name="description" content="创建一个SEH处理函数
+#include &amp;quot;stdafx.h&amp;quot;
+#define WIN32_LEAN_AND_MEAN
+#include &amp;lt;windows.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;quot;stdlib.h&amp;quot">
     
     
     
@@ -65,15 +70,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/04/28/课程笔记：安全运维平台设计/" title="课程笔记：安全运维平台设计" itemprop="url">课程笔记：安全运维平台设计</a>
+      <a href="/2019/08/26/20190826/" title="看雪刷题系列：2017" itemprop="url">看雪刷题系列：2017</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://L0yy.github.io" title="Cray">Cray</a>
     </p>
   <p class="article-time">
-    <time datetime="2019-04-28T09:23:52.000Z" itemprop="datePublished">2019-04-28</time>
-    更新日期:<time datetime="2019-08-25T11:43:12.014Z" itemprop="dateModified">2019-08-25</time>
+    <time datetime="2019-08-26T01:46:42.000Z" itemprop="datePublished">2019-08-26</time>
+    更新日期:<time datetime="2019-08-26T01:45:13.018Z" itemprop="dateModified">2019-08-26</time>
     
   </p>
 </header>
@@ -85,32 +90,155 @@
 		
 		</div>
 		
-		<blockquote>
-<p>基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风险感知与协同响应能力，以达到“摸清家底，认清风险，找出漏洞，通报结果，督促整改”的效果，真正实现聚焦业务稳定运行的安全运维。</p>
-</blockquote>
-<p>安全运维参评的了解<br>我的宏观概念：<br><img src="1.png" alt></p>
-<p>安全运维产品都是为我们为网络管理员和企业资源服务，包括但不限于：防火墙（NISG），入侵防御（IDS），上网行为管理系统（NIBC），漏洞扫描（NASM），防病毒，数据风控… 由他们相互合作，达到就好的服务效果。</p>
-<p>安全运维产品为安全和简洁为生，使网络结构化，高度安全化，以及便于管理员管理。</p>
+		<p>创建一个SEH处理函数</p>
+<pre><code>#include &quot;stdafx.h&quot;
+#define WIN32_LEAN_AND_MEAN
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &quot;stdlib.h&quot;
+
+DWORD scratch;
+
+EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
+                        void * EstablisherFrame,
+                        struct _CONTEXT *ContextRecord,
+                        void * DispatcherContext)
+{
+
+    unsigned i;
+
+    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);
+
+    ContextRecord-&gt;Eax = (DWORD)&amp;scratch;//将eax的值修改为一个全局变量的地址，就可以写入了
+
+    //printf(&quot;%08X \n &quot;, ContextRecord-&gt;Eip);//0x4114c5
+
+    ContextRecord-&gt;Eip += 0x2A;//这里修改的EIP，等于修改恢复异常后下一要执行的语句
+
+    return ExceptionContinueExecution;//这是异常处理的返回结果，让程序返回执行ContextRecord-&gt;Eip的代码
+}
+int main()
+{
+    __asm
+    {
+        push exceptHandler // handler函数的地址
+        push FS:[0] // 保存上一级的SEH链地址
+        mov FS:[0],ESP // 安装新的EXECEPTION_REGISTRATION结构
+    }
+    __asm
+    {
+        mov eax, 0     // 将EAX清零
+        mov[eax], 1 // 向0地址写入，会产生访问异常
+    }
+    printf(&quot;Yes you right!!!\n&quot;);
+    __asm
+    {
+        mov    eax, [ESP]    // 获取前一个结构
+        mov FS:[0], EAX // 恢复之前的链
+        add esp, 8       // 恢复堆栈
+    }
+    return 0;
+
+    printf(&quot;Hello Cray\n&quot;);
+    exit(0);
+}</code></pre><p><img src="D:%5Cgit%E7%AC%94%E8%AE%B0%5Csource_posts%5C20190826" alt></p>
+<p>Wingdb 调试如图断下，地址访问异常</p>
+<p>我来看看在内存中的什么位置</p>
+<p>因为SHE链在线程环境块结构偏移为0的地方</p>
+<pre><code>0:000&gt; !teb
+TEB at 7ffdf000
+    ExceptionList:        0012fe4c
+    StackBase:            00130000
+    StackLimit:           0012e000
+    SubSystemTib:         00000000
+    FiberData:            00001e00
+    ArbitraryUserPointer: 00000000
+    Self:                 7ffdf000
+    EnvironmentPointer:   00000000
+    ClientId:             000026a8 . 0000275c
+    RpcHandle:            00000000
+    Tls Storage:          7ffdf02c
+    PEB Address:          7ffd9000
+    LastErrorValue:       0
+    LastStatusValue:      c0000139
+    Count Owned Locks:    0
+    HardErrorMode:        0</code></pre><p>查看teb结构地址。接下来我们将这个地址与TEB结构对应</p>
+<pre><code>0:000&gt; dt _teb 7ffdf000 .
+ntdll!_TEB
+   +0x000 NtTib            : 
+      +0x000 ExceptionList    : 0x0012fe4c _EXCEPTION_REGISTRATION_RECORD
+      +0x004 StackBase        : 0x00130000 Void
+      +0x008 StackLimit       : 0x0012e000 Void
+      +0x00c SubSystemTib     : (null) 
+      +0x010 FiberData        : 0x00001e00 Void
+      +0x010 Version          : 0x1e00
+      +0x014 ArbitraryUserPointer : (null) 
+      +0x018 Self             : 0x7ffdf000 _NT_TIB
+   +0x01c EnvironmentPointer : 
+   +0x020 ClientId         : 
+      +0x000 UniqueProcess    : 0x000026a8 Void
+      +0x004 UniqueThread     : 0x0000275c Void
+   +0x028 ActiveRpcHandle  : 
+   +0x02c ThreadLocalStoragePointer : 
+   +0x030 ProcessEnvironmentBlock : </code></pre><p>可以看到<code>_EXCEPTION_REGISTRATION_RECORD</code> 结构的地址为</p>
+<p>0x0012fe4c </p>
+<pre><code class="0:000&gt;">Exceptions1!_EXCEPTION_REGISTRATION_RECORD
+   +0x000 Next             : 0x0012ff70 _EXCEPTION_REGISTRATION_RECORD
+   +0x004 Handler          : 0x004110a0     _EXCEPTION_DISPOSITION  Exceptions1!ILT+155(?_except_handler1YAKPAU_EXCEPTION_RECORDPAXPAU_CONTEXT+0</code></pre>
+<p>Next指向下一个处理函数，Handler指向当前SHE的处理函数</p>
+<pre><code>0:000&gt; u 0x004110a0     
+Exceptions1!ILT+155(?_except_handler1YAKPAU_EXCEPTION_RECORDPAXPAU_CONTEXT:
+004110a0 e91b030000      jmp     Exceptions1!_except_handler1 (004113c0)
+Exceptions1!ILT+160(__initterm):
+004110a5 e984220000      jmp     Exceptions1!initterm (0041332e)
+Exceptions1!ILT+165(___crtTerminateProcess):
+004110aa e9cd220000      jmp     Exceptions1!_crtTerminateProcess (0041337c)
+Exceptions1!ILT+170(___report_securityfailure):
+004110af e99c0d0000      jmp     Exceptions1!__report_securityfailure (00411e50)
+Exceptions1!ILT+175(___atonexitinit):
+004110b4 e9271f0000      jmp     Exceptions1!__atonexitinit (00412fe0)
+Exceptions1!ILT+180(__RTC_UninitUse):
+004110b9 e962180000      jmp     Exceptions1!_RTC_UninitUse (00412920)
+Exceptions1!ILT+185(___report_securityfailureEx):
+004110be e99d0e0000      jmp     Exceptions1!__report_securityfailureEx (00411f60)
+Exceptions1!ILT+190(__RTC_Shutdown):
+004110c3 e9d8060000      jmp     Exceptions1!_RTC_Shutdown (004117a0)</code></pre><p>我们看汇编代码，看看具体SHE的实现，因为我是debug版本的程序，所以由上面的跳转</p>
+<pre><code>0:000&gt; u 4113c0 .
+004113c0 55              push    ebp
+004113c1 8bec            mov     ebp,esp
+004113c3 81eccc000000    sub     esp,0CCh
+004113c9 53              push    ebx
+004113ca 56              push    esi
+004113cb 57              push    edi
+004113cc 8dbd34ffffff    lea     edi,[ebp-0CCh]
+004113d2 b933000000      mov     ecx,33h
+004113d7 b8cccccccc      mov     eax,0CCCCCCCCh
+004113dc f3ab            rep stos dword ptr es:[edi]
+004113de 8bf4            mov     esi,esp
+004113e0 6858584100      push    offset Exceptions1!`string&#39; (00415858)
+004113e5 ff1514914100    call    dword ptr [Exceptions1!_imp__printf (00419114)]
+004113eb 83c404          add     esp,4
+004113ee 3bf4            cmp     esi,esp</code></pre><p>这就是我们自己加的SHE处理函数</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/安全运维/">安全运维</a>
+  <span></span> <a href="/tags/SEH/">SEH</a><a href="/tags/Windbg/">Windbg</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/课堂笔记/">课堂笔记</a>
+  <a class="article-category-link" href="/categories/逆向/">逆向</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://L0yy.github.io/2019/04/28/课程笔记：安全运维平台设计/" data-title="课程笔记：安全运维平台设计 | CrayBlog" data-tsina="" class="share clearfix">
+  <div data-url="http://L0yy.github.io/2019/08/26/20190826/" data-title="看雪刷题系列：2017 | CrayBlog" data-tsina="" class="share clearfix">
   </div>
 
 </div>
@@ -119,19 +247,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2019/04/29/angr学习文档/" title="angr学习文档">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  angr学习文档</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2019/04/26/课程笔记：前端页面开发/"  title="课程笔记：前端页面开发">
+<a href="/2019/08/26/20190825/"  title="">
  <strong>NEXT:</strong><br/> 
- <span>课程笔记：前端页面开发
+ <span>(no title)
 </span>
 </a>
 </div>

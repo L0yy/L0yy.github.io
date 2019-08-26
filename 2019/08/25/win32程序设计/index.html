@@ -4,12 +4,17 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>课程笔记：安全运维平台设计 | CrayBlog</title>
+    <title>win32程序设计 | CrayBlog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Cray">
     
-    <meta name="description" content="基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风险感知与协同响应能力">
+    <meta name="description" content="最小的一个窗口
+#include &amp;quot;windows.h&amp;quot;
+
+HINSTANCE g_hInstance;
+
+LRESULT CALLBACK MainWndProc(_In_ HWND hWnd,_In_ UINT uMsg,_In_ WPARAM wParam,_In_ LPA">
     
     
     
@@ -65,15 +70,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/04/28/课程笔记：安全运维平台设计/" title="课程笔记：安全运维平台设计" itemprop="url">课程笔记：安全运维平台设计</a>
+      <a href="/2019/08/25/win32程序设计/" title="win32程序设计" itemprop="url">win32程序设计</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://L0yy.github.io" title="Cray">Cray</a>
     </p>
   <p class="article-time">
-    <time datetime="2019-04-28T09:23:52.000Z" itemprop="datePublished">2019-04-28</time>
-    更新日期:<time datetime="2019-08-25T11:43:12.014Z" itemprop="dateModified">2019-08-25</time>
+    <time datetime="2019-08-25T08:46:42.000Z" itemprop="datePublished">2019-08-25</time>
+    更新日期:<time datetime="2019-08-26T01:51:54.242Z" itemprop="dateModified">2019-08-26</time>
     
   </p>
 </header>
@@ -85,32 +90,132 @@
 		
 		</div>
 		
-		<blockquote>
-<p>基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风险感知与协同响应能力，以达到“摸清家底，认清风险，找出漏洞，通报结果，督促整改”的效果，真正实现聚焦业务稳定运行的安全运维。</p>
-</blockquote>
-<p>安全运维参评的了解<br>我的宏观概念：<br><img src="1.png" alt></p>
-<p>安全运维产品都是为我们为网络管理员和企业资源服务，包括但不限于：防火墙（NISG），入侵防御（IDS），上网行为管理系统（NIBC），漏洞扫描（NASM），防病毒，数据风控… 由他们相互合作，达到就好的服务效果。</p>
-<p>安全运维产品为安全和简洁为生，使网络结构化，高度安全化，以及便于管理员管理。</p>
+		<p>最小的一个窗口</p>
+<pre><code class="c">#include &quot;windows.h&quot;
+
+HINSTANCE g_hInstance;
+
+LRESULT CALLBACK MainWndProc(_In_ HWND hWnd,_In_ UINT uMsg,_In_ WPARAM wParam,_In_ LPARAM lParam)
+{
+    //每一个发给这个窗体的消息,通过不同的uMsg消息来做不同的动作，wParam和lParam保存的是这个消息的具体参数
+
+    switch(uMsg)
+    {
+    case WM_CREATE:
+    //这里可以添加创建时的界面选项，不要做耗时操作。
+        break;
+    case WM_CLOSE:
+        break;
+    case  WM_COMMAND:
+        break;
+    case WM_LBUTTONDOWN:
+        MessageBox(0,&quot;单击后的效果&quot;,&quot;Title&quot;,MB_OK);
+        break;
+    case WM_DESTROY:
+        PostQuitMessage(0);//按关闭按钮后，向GetMessage发送一个关闭的消息，然他退出循环，结束进程
+        break;
+    default:
+        return DefWindowProc(hWnd,uMsg,wParam,lParam);
+    }
+    return DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+{
+    g_hInstance = hInstance;
+    WNDCLASS MyWcs= {};
+    MyWcs.lpszClassName = &quot;LpszClassName&quot;;
+    MyWcs.lpfnWndProc = MainWndProc;////这里定义消息处理函数 很重要
+    MyWcs.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH+2);       
+    MyWcs.style = CS_HREDRAW | CS_VREDRAW;
+
+    RegisterClass(&amp;MyWcs);//注册为窗口类 
+
+    HWND hWnd = CreateWindow(
+        &quot;LpszClassName&quot;,           //   这个名字要和上面定义的lpszClassName名字一致
+        &quot;Sample_Tile&quot;,            // title-bar string 
+        WS_OVERLAPPEDWINDOW, // top-level window 
+        CW_USEDEFAULT,       // default horizontal position 
+        CW_USEDEFAULT,       // default vertical position 
+        290,       // default width 
+        500,       // default height 
+        (HWND) NULL,         // no owner window 
+        (HMENU) NULL,        // use class menu 
+        hInstance,           // handle to application instance 
+        (LPVOID) NULL);      // no window-creation data 
+    ShowWindow(hWnd,SW_SHOW);//展示窗口，不不展示的话你看不到图案，程序会在后台运行 
+
+    MSG msg = {};
+    while (GetMessage(&amp;msg,NULL,NULL,NULL))
+    {
+        TranslateMessage(&amp;msg);
+        DispatchMessage(&amp;msg);
+    }
+}</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20190821190947895.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>以上就是一个最基本窗体了，最重要的是以下几步</p>
+<p><strong>1.定义窗口类:定义了这个类的回调函数，也就是说使用这个类创建的窗体的消息由这里设置的函数处理。这个类控制着这个窗口的样式，比如颜色，背景，风格等等，这个窗口类可以多次使用。</strong></p>
+<p><strong>2.创建窗口:现在你就可以使用上面定义好的类，来创建一个窗口，可以控制窗口出现的位置，大小和一些其他选项</strong></p>
+<p><strong>3.创建循环接收消息:因为Windows是消息机制，循环接收发给控件的消息，我们就可以处理这些消息，这些消息比如鼠标点击了窗体，键盘按下了某个键，或者点击了那个按钮，这些都是不同的消息类型</strong></p>
+<p>下面是使用win32控制计算机的模拟按键<img src="https://img-blog.csdnimg.cn/20190822104205612.gif" alt="在这里插入图片描述"><br>这里只贴核心代码，其他都一样</p>
+<pre><code class="c">
+
+LRESULT CALLBACK OnWndCommand(_In_  HWND hwnd,_In_  UINT uMsg, _In_  WPARAM wParam,_In_  LPARAM lParam)
+{
+    switch (HIWORD(wParam))// wParam高2位保存的是通知码，低2位保存的是控件ID
+    {
+    case BN_CLICKED:
+        {
+            switch (LOWORD(wParam))
+            {
+            case 0x1000:
+            case 0x1001:
+            case 0x1002:
+                {
+                    HWND hCalc = FindWindowA(NULL,&quot;计算器&quot;);
+                    if(!hCalc)
+                    {
+                        WinExec(&quot;calc.exe&quot;,SW_SHOW);
+                        hCalc = FindWindowA(NULL,&quot;计算器&quot;);
+                    }
+                    SendMessage(hCalc,WM_COMMAND,wParam-0xF7D,0);
+                    return true;
+                }
+            }
+        }
+    }
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}</code></pre>
+<p>消息循环中这样写</p>
+<pre><code class="c">
+    case WM_COMMAND:
+        return OnWndCommand(hWnd, uMsg, wParam, lParam);</code></pre>
+<p>按钮事件是WM_COMMAND来处理<br><code>https://docs.microsoft.com/en-us/windows/win32/menurc/wm-command</code><br>wParam高2位保存的是通知码，低2位保存的是控件ID</p>
+<p>每个按钮能处理详细信息，注意看Notification（通知码类型）<br><code>https://docs.microsoft.com/en-us/windows/win32/controls/individual-control-info</code></p>
+<p>根据wParam的高两位看是否是控件信息，再看wParam的低两位，代表是谁发出的这个消息。</p>
+<p>接着我们就可以处理他了</p>
+<p>处理的时候我<code>FindWindowA</code>查看有没有计算器处于打开状态，没有就开一个<br>最重要的一步是模拟给他发消息，就像自己给自己发一样<br> <code>SendMessage(hCalc,WM_COMMAND,83,0);</code><br> SendMessage MSDN <code>https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage</code><br><img src="https://img-blog.csdnimg.cn/20190822110642787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>上面这句理解为  我给hCalc 这个程序的控件ID为83的控件发送了一个WM_COMMAND消息</strong></p>
+<p>最后依次找到找到他们的控件ID，就能完全模拟计算器发包了</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/安全运维/">安全运维</a>
+  <span></span> <a href="/tags/Win32/">Win32</a><a href="/tags/回调函数/">回调函数</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/课堂笔记/">课堂笔记</a>
+  <a class="article-category-link" href="/categories/编程/">编程</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://L0yy.github.io/2019/04/28/课程笔记：安全运维平台设计/" data-title="课程笔记：安全运维平台设计 | CrayBlog" data-tsina="" class="share clearfix">
+  <div data-url="http://L0yy.github.io/2019/08/25/win32程序设计/" data-title="win32程序设计 | CrayBlog" data-tsina="" class="share clearfix">
   </div>
 
 </div>
@@ -120,18 +225,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2019/04/29/angr学习文档/" title="angr学习文档">
+ <a href="/2019/08/26/20190825/" title="">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  angr学习文档</span>
+  (no title)</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2019/04/26/课程笔记：前端页面开发/"  title="课程笔记：前端页面开发">
+<a href="/2019/06/15/dc-2/"  title="vulnhub 靶机系列 dc-2">
  <strong>NEXT:</strong><br/> 
- <span>课程笔记：前端页面开发
+ <span>vulnhub 靶机系列 dc-2
 </span>
 </a>
 </div>
