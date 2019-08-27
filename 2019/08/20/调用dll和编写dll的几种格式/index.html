@@ -77,15 +77,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/08/27/调用dll和编写dll的几种格式/" title="调用dll和编写dll的几种格式" itemprop="url">调用dll和编写dll的几种格式</a>
+      <a href="/2019/08/20/调用dll和编写dll的几种格式/" title="调用dll和编写dll的几种格式" itemprop="url">调用dll和编写dll的几种格式</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://L0yy.github.io" title="Cray">Cray</a>
     </p>
   <p class="article-time">
-    <time datetime="2019-08-27T11:11:22.000Z" itemprop="datePublished">2019-08-27</time>
-    更新日期:<time datetime="2019-08-26T02:29:14.424Z" itemprop="dateModified">2019-08-26</time>
+    <time datetime="2019-08-20T11:11:22.000Z" itemprop="datePublished">2019-08-20</time>
+    更新日期:<time datetime="2019-08-27T13:31:44.865Z" itemprop="dateModified">2019-08-27</time>
     
   </p>
 </header>
@@ -94,7 +94,7 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#dll的写法"><span class="toc-number">1.</span> <span class="toc-text">dll的写法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全部写在dllmain函数内"><span class="toc-number">1.1.</span> <span class="toc-text">全部写在dllmain函数内</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2"><span class="toc-number">1.2.</span> <span class="toc-text">2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加载dll的几种方式"><span class="toc-number"></span> <span class="toc-text">加载dll的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo1"><span class="toc-number">0.1.</span> <span class="toc-text">Demo1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo2"><span class="toc-number">0.2.</span> <span class="toc-text">Demo2</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#dll的写法"><span class="toc-number">1.</span> <span class="toc-text">dll的写法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全部写在dllmain函数内"><span class="toc-number">1.1.</span> <span class="toc-text">全部写在dllmain函数内</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2"><span class="toc-number">1.2.</span> <span class="toc-text">2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加载dll的几种方式"><span class="toc-number"></span> <span class="toc-text">加载dll的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo1"><span class="toc-number">0.1.</span> <span class="toc-text">Demo1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo2"><span class="toc-number">0.2.</span> <span class="toc-text">Demo2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试DLL"><span class="toc-number">0.3.</span> <span class="toc-text">调试DLL</span></a></li></ol></li></ol>
 		</div>
 		
 		<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p>
@@ -185,6 +185,9 @@ int main()
 <li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li>
 <li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li>
 </ul>
+<h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p>
+<p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p>
+<p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -204,7 +207,7 @@ int main()
 
 <div class="article-share" id="share">
 
-  <div data-url="http://L0yy.github.io/2019/08/27/调用dll和编写dll的几种格式/" data-title="调用dll和编写dll的几种格式 | CrayBlog" data-tsina="" class="share clearfix">
+  <div data-url="http://L0yy.github.io/2019/08/20/调用dll和编写dll的几种格式/" data-title="调用dll和编写dll的几种格式 | CrayBlog" data-tsina="" class="share clearfix">
   </div>
 
 </div>
@@ -213,11 +216,19 @@ int main()
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2019/08/20/PE的一些结构笔记/" title="PE的一些结构笔记">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  PE的一些结构笔记</span>
+</a>
+</div>
+
 
 <div class="next">
-<a href="/2019/08/26/输入法注入/"  title="输入法注入">
+<a href="/2019/08/18/IDA制作签名/"  title="IDA制作签名">
  <strong>NEXT:</strong><br/> 
- <span>输入法注入
+ <span>IDA制作签名
 </span>
 </a>
 </div>
@@ -230,7 +241,7 @@ int main()
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#dll的写法"><span class="toc-number">1.</span> <span class="toc-text">dll的写法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全部写在dllmain函数内"><span class="toc-number">1.1.</span> <span class="toc-text">全部写在dllmain函数内</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2"><span class="toc-number">1.2.</span> <span class="toc-text">2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加载dll的几种方式"><span class="toc-number"></span> <span class="toc-text">加载dll的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo1"><span class="toc-number">0.1.</span> <span class="toc-text">Demo1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo2"><span class="toc-number">0.2.</span> <span class="toc-text">Demo2</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#dll的写法"><span class="toc-number">1.</span> <span class="toc-text">dll的写法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全部写在dllmain函数内"><span class="toc-number">1.1.</span> <span class="toc-text">全部写在dllmain函数内</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2"><span class="toc-number">1.2.</span> <span class="toc-text">2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加载dll的几种方式"><span class="toc-number"></span> <span class="toc-text">加载dll的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo1"><span class="toc-number">0.1.</span> <span class="toc-text">Demo1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo2"><span class="toc-number">0.2.</span> <span class="toc-text">Demo2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试DLL"><span class="toc-number">0.3.</span> <span class="toc-text">调试DLL</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
