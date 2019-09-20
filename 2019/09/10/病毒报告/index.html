@@ -1,0 +1,583 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>tesla勒索病毒分析 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="基本信息 1
+简介 2
+流程图 3
+详细分析 3
+原始程序 5
+检测虚拟机 5
+动态解密程序字符串 6
+删除ADS（数据备用流） 8
+释放文件，开启新进程 9
+删除自身 9
+新进程 9
+初始化工作 10
+创建互斥体 10
+获取一些权限 10
+获取文件校验 11
+对抗常见监控软件 12
+删除卷影 13">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/09/10/病毒报告/" title="tesla勒索病毒分析" itemprop="url">tesla勒索病毒分析</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-09-10T11:11:22.000Z" itemprop="datePublished">2019-09-10</time>
+    更新日期:<time datetime="2019-09-20T11:37:06.711Z" itemprop="dateModified">2019-09-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本信息"><span class="toc-number">1.</span> <span class="toc-text">基本信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">2.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流程图"><span class="toc-number">3.</span> <span class="toc-text">流程图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细分析"><span class="toc-number">4.</span> <span class="toc-text">详细分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原始程序"><span class="toc-number">4.1.</span> <span class="toc-text">原始程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检测虚拟机"><span class="toc-number">4.1.1.</span> <span class="toc-text">检测虚拟机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动态解密程序字符串"><span class="toc-number">4.1.2.</span> <span class="toc-text">动态解密程序字符串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除ADS（数据备用流）"><span class="toc-number">4.1.3.</span> <span class="toc-text">删除ADS（数据备用流）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#释放文件，开启新进程"><span class="toc-number">4.1.4.</span> <span class="toc-text">释放文件，开启新进程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除自身"><span class="toc-number">4.1.5.</span> <span class="toc-text">删除自身</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新进程"><span class="toc-number">4.2.</span> <span class="toc-text">新进程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#初始化工作"><span class="toc-number">4.2.1.</span> <span class="toc-text">初始化工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建互斥体"><span class="toc-number">4.2.2.</span> <span class="toc-text">创建互斥体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取一些权限"><span class="toc-number">4.2.3.</span> <span class="toc-text">获取一些权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取文件校验"><span class="toc-number">4.2.4.</span> <span class="toc-text">获取文件校验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对抗常见监控软件"><span class="toc-number">4.2.5.</span> <span class="toc-text">对抗常见监控软件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除卷影"><span class="toc-number">4.2.6.</span> <span class="toc-text">删除卷影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成AES需要的密钥"><span class="toc-number">4.2.7.</span> <span class="toc-text">生成AES需要的密钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加入开机启动"><span class="toc-number">4.2.8.</span> <span class="toc-text">加入开机启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成勒索文本和图片"><span class="toc-number">4.2.9.</span> <span class="toc-text">生成勒索文本和图片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加密文件"><span class="toc-number">4.2.10.</span> <span class="toc-text">加密文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#展示勒索信息"><span class="toc-number">4.2.11.</span> <span class="toc-text">展示勒索信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#发送信息到C2服务器"><span class="toc-number">4.2.12.</span> <span class="toc-text">发送信息到C2服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#样本朔源"><span class="toc-number">5.</span> <span class="toc-text">样本朔源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查杀方案"><span class="toc-number">6.</span> <span class="toc-text">查杀方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+		</div>
+		
+		<p><a href="#基本信息">基本信息 1</a></p>
+<p><a href="#简介">简介 2</a></p>
+<p><a href="#流程图">流程图 3</a></p>
+<p><a href="#详细分析">详细分析 3</a></p>
+<p><a href="#原始程序">原始程序 5</a></p>
+<p><a href="#检测虚拟机">检测虚拟机 5</a></p>
+<p><a href="#动态解密程序字符串">动态解密程序字符串 6</a></p>
+<p><a href="#删除ads数据备用流">删除ADS（数据备用流） 8</a></p>
+<p><a href="#释放文件开启新进程">释放文件，开启新进程 9</a></p>
+<p><a href="#删除自身">删除自身 9</a></p>
+<p><a href="#新进程">新进程 9</a></p>
+<p><a href="#初始化工作">初始化工作 10</a></p>
+<p><a href="#创建互斥体">创建互斥体 10</a></p>
+<p><a href="#获取一些权限">获取一些权限 10</a></p>
+<p><a href="#获取文件校验">获取文件校验 11</a></p>
+<p><a href="#对抗常见监控软件">对抗常见监控软件 12</a></p>
+<p><a href="#删除卷影">删除卷影 13</a></p>
+<p><a href="#生成aes需要的密钥">生成AES需要的密钥 14</a></p>
+<p><a href="#加入开机启动">加入开机启动 15</a></p>
+<p><a href="#生成勒索文本和图片">生成勒索文本和图片 15</a></p>
+<p><a href="#加密文件">加密文件 17</a></p>
+<p><a href="#展示勒索信息">展示勒索信息 19</a></p>
+<p><a href="#发送信息到c2服务器">发送信息到C2服务器 19</a></p>
+<p><a href="#样本朔源">样本朔源 21</a></p>
+<p><a href="#查杀方案">查杀方案 21</a></p>
+<p><a href="#总结">总结 21</a></p>
+<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p>文件: C:\Users\john\Documents\dorjlo.exe</p>
+<p>大小: 240640 字节</p>
+<p>修改时间: 2017年11月25日, 16:57:32</p>
+<p>MD5: 72CCC18F3038E19273010D45AC2142CE</p>
+<p>SHA1: A47612524C64636C2ADB2FE01E09DFEFACB78ACA</p>
+<p>CRC32: DAA773C2</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>该木马为勒索软件，对抗常见监控软件，释放文件到其他目录，删除自身躲避怀疑，动态解密访问敏感字API，加入开机启动，持久会攻击</p>
+<h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="media/65a079c1ada0bb0f74dfa6b6d7b01711.png" alt></p>
+<h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>程序自动打开这勒索信息，程序自身被删除</p>
+<p><img src="media/7c9dbba8daece8a54872e51002b98c4b.png" alt></p>
+<p>文件都被加密</p>
+<p><img src="media/bc433a131c6ae12478b5e282a040b3c4.png" alt></p>
+<p>桌面以及每个被加密文件夹都创建了一个txt和图片</p>
+<p><img src="media/68f54f80f6f9e825d3466644f323ff13.png" alt></p>
+<h3 id="原始程序"><a href="#原始程序" class="headerlink" title="原始程序"></a>原始程序</h3><h4 id="检测虚拟机"><a href="#检测虚拟机" class="headerlink" title="检测虚拟机"></a>检测虚拟机</h4><p><img src="media/f2e93c73a413fd5c063fddcc476e16df.png" alt></p>
+<p>通过Com组件检测系统的状态，因为一般虚拟机沙箱功能都模仿不完，这里检测系统的视频音频设备，操作设备句柄，随机加入一些过滤器，如果是在沙箱环境和真实机返回结果不同</p>
+<h4 id="动态解密程序字符串"><a href="#动态解密程序字符串" class="headerlink" title="动态解密程序字符串"></a>动态解密程序字符串</h4><p>这个程序为了对抗杀毒软件，利用程序运行是动态释放关键字符串，加载敏感函数之类的。</p>
+<p><img src="media/ab14b2c23c22fbcc2877410c12874085.png" alt></p>
+<p>解密的VI首先被加密，先解码出后面解密索要的VI值</p>
+<p><img src="media/172bab54a77ba898be89be56d3bc32a5.png" alt></p>
+<p>利用上面解码出来的vi，带去解密unk_435f80中密文</p>
+<p>解密后会传入一个数据处理函数然乎放入新开的堆空间中，如下</p>
+<p><img src="media/992217dad80e7e8516fca22645e471dd.png" alt></p>
+<p>将数据按分号分隔</p>
+<p><img src="media/843b88f11062dc676e1a73d150f2a169.png" alt></p>
+<p><img src="media/511410a5ac83b4376f79c90d6ea4c61d.png" alt></p>
+<p>后面还有几处解密，分别是</p>
+<p><img src="media/b86a73c977a7aa8753f4d81ef56fd68b.png" alt></p>
+<p><img src="media/38f3c8731ba264eb3e32679ef2799255.png" alt></p>
+<p><img src="media/44a3520a6ae8fbc27203bdae3d5cfcaa.png" alt></p>
+<p>这些都是程序后面使用到的常量字符串</p>
+<h4 id="删除ADS（数据备用流）"><a href="#删除ADS（数据备用流）" class="headerlink" title="删除ADS（数据备用流）"></a>删除ADS（数据备用流）</h4><p><img src="media/51b8159f57af57c7f65d304a6e9db274.png" alt></p>
+<p>删除备用流信息，避免UAC的弹窗</p>
+<h4 id="释放文件，开启新进程"><a href="#释放文件，开启新进程" class="headerlink" title="释放文件，开启新进程"></a>释放文件，开启新进程</h4><p><img src="media/01b99ef2e5186de04a4f9f5e2ef80632.png" alt></p>
+<p>将自身拷贝到document下，重命名为随机字符名，设置文件为隐藏</p>
+<p>然后新开进程，程序则是复制过去的程序</p>
+<h4 id="删除自身"><a href="#删除自身" class="headerlink" title="删除自身"></a>删除自身</h4><p><img src="media/25f67f7094f960345effb6a7446a6c9d.png" alt></p>
+<p>创建新进程后，程序会删除自身。</p>
+<h3 id="新进程"><a href="#新进程" class="headerlink" title="新进程"></a>新进程</h3><p>前面的主程序释放到document后，创建新的进程，然后删除了自己，现在来看看这个新进程的流程</p>
+<h4 id="初始化工作"><a href="#初始化工作" class="headerlink" title="初始化工作"></a>初始化工作</h4><p>因为是拷贝的原程序，所以初始化行为和之前的程序一样，都有恢复字符串，获取某些函数的地方</p>
+<p>不同的地方在于一个路径检测</p>
+<p><img src="media/aa265c96529c7fa335fdb89595daa1ee.png" alt></p>
+<p>GerLastError第一次返回2，因为document里面还没有这个文件</p>
+<p>第二次GerLastError这个地方<br>返回的值为0，因为第二次程序是在document目录下启动的，CreateFile也就能找到文件。所以这样就能判断是第一次运行还是已经是释放后的程序了。</p>
+<h4 id="创建互斥体"><a href="#创建互斥体" class="headerlink" title="创建互斥体"></a>创建互斥体</h4><p>因为他是一个勒索样本，如果程序多次运行会导致多次加密，造成文件不能恢复，所以加入一个互斥体，老保证只有一个自己在运行</p>
+<p><img src="media/66ada1f5f6176c2ad6d0ac06b55b5821.png" alt></p>
+<p>创建一个名为9_9_9_9的互斥体</p>
+<h4 id="获取一些权限"><a href="#获取一些权限" class="headerlink" title="获取一些权限"></a>获取一些权限</h4><p>将访问令牌中禁用的权限启用，来达到权限提升</p>
+<p><img src="media/844c46900afa68c0e1ebb1fa79eecc08.png" alt></p>
+<p>提升权限，便于后面对特殊文件的操作</p>
+<h4 id="获取文件校验"><a href="#获取文件校验" class="headerlink" title="获取文件校验"></a>获取文件校验</h4><p><img src="media/6d3aa35401be183881cc4421d49a6ab3.png" alt></p>
+<p><img src="media/63731167cee7cad79a85244d4d07b26a.png" alt></p>
+<p>这个样本返回的是一个int16，所以这里返回451，这个值最后会发送给样本作者，我认为这个值是可以来替代版本信息，告诉样本作者，被勒索者中的是哪个版本的木马。</p>
+<h4 id="对抗常见监控软件"><a href="#对抗常见监控软件" class="headerlink" title="对抗常见监控软件"></a>对抗常见监控软件</h4><p>通过枚举进程，检测进程名，来关闭一些常见的监控软件，进程包含关键字taskmg,regedit,procex,msconfi,cmd，只要在进程名中匹配到，则使用TerminlProcess强行关闭这个进程</p>
+<p><img src="media/bcd787a517602ef92508106efbf1d2e3.png" alt></p>
+<h4 id="删除卷影"><a href="#删除卷影" class="headerlink" title="删除卷影"></a>删除卷影</h4><p>先判断如果版本不是WinXP2600那就执行删除卷影线程</p>
+<p><img src="media/ba1b9a7b8cca943fe87e53df94d04cd9.png" alt></p>
+<p><img src="media/bca1af69ed942921170fa79982597c5f.png" alt></p>
+<p>通过ShellExecuteExW执行vssadmin.exe Delete Shadows /All /Quiet<br>来删除卷影，这个操作会触发系统UAC提示</p>
+<h4 id="生成AES需要的密钥"><a href="#生成AES需要的密钥" class="headerlink" title="生成AES需要的密钥"></a>生成AES需要的密钥</h4><p>待补</p>
+<p>使用现有的椭圆曲线算法，使用hash生成一段值，这个值去当AES的密钥，去解密一段数据，而这个返回的数据就是后面赋值给文件加密AES算法256位的密钥。所以只需要找到hash生成的规则就能找到逻辑。</p>
+<p><img src="media/7a0d8e2d354c0540a40737d3f0a9fb85.png" alt></p>
+<p>下图中的Key_45f4ec其实就是上面V27的地址，所以就能推出加密key的数据</p>
+<p><img src="media/2c32c1069e4afb99209fbe27b7adabbd.png" alt></p>
+<h4 id="加入开机启动"><a href="#加入开机启动" class="headerlink" title="加入开机启动"></a>加入开机启动</h4><p><img src="media/9bebbddf42c5782eb2c034b9b247b28b.png" alt></p>
+<p>将释放的文件加入开机启动注册表项中，持续化攻击。</p>
+<h4 id="生成勒索文本和图片"><a href="#生成勒索文本和图片" class="headerlink" title="生成勒索文本和图片"></a>生成勒索文本和图片</h4><p>使用gdi对象，调用GdipCreateBitmapFromHBITMAP 构建一个位图，保存勒索信息</p>
+<p><img src="media/79d9bee8d370b001bdc182a3e929c439.png" alt></p>
+<p><img src="media/a1e9de4dd124b2d4719e86d2200ab7fc.png" alt></p>
+<p>chText中就保存着图片的二进制的信息</p>
+<h4 id="加密文件"><a href="#加密文件" class="headerlink" title="加密文件"></a>加密文件</h4><p>这个程序新开一个线程进行问价加密和释放勒索信息，因为加密过程较长，所以将这个进程优先级调低，然他最后执行</p>
+<p><img src="media/62489ed592b27c4b36eda7cecfb39ac6.png" alt></p>
+<p>加密函数是这个样本的核心</p>
+<p>首先获取了逻辑分区的信息，返回结果存入Buffer</p>
+<p><img src="media/8a2b3e30dd0d61736a16632fabd5dc20.png" alt></p>
+<p>便利这个Buffer，按序查看当前分区是否是<br>固定磁盘，移动磁盘和远程磁盘这三种格式，是如果，就开始执加密流程</p>
+<p><img src="media/ca2bc8e13680f04d89b8a5030be3ab73.png" alt></p>
+<p>查找目录下的文件</p>
+<p><img src="media/79ac90dc641baf3d37587263f5491c74.png" alt></p>
+<p>首先判断是否是目录，如果是C:\windows或C:\Program Files文件夹，则跳过不加密</p>
+<p>这个函数会递归调用自己去到便利目录，然后会执行WritePngText函数</p>
+<p><img src="media/2d3a38af95580fe08b622bb02b60b889.png" alt></p>
+<p>给每个遍历的文件夹都写入勒索图片和txt文档，除了几个桌面，和刻录文件夹</p>
+<p>因为如果往刻录文件夹写入东西，操作系统或提示你有文件需要刻录，木马作者也是想到了这一点。</p>
+<p>回到上一个函数</p>
+<p>如果不是目录呢？</p>
+<p><img src="media/85debd894d8da4003578bab1a256ce5f.png" alt></p>
+<p>首先排除几个不加密的（自身和.com结尾的文件），然后就是要加密的文件，匹配以下后缀进行加密</p>
+<p>r3d,ptx,pef,srw,x3f,der,cer,crt,pem,odt,ods,odp,odm,odc,odb,doc,docx,kdc,mef,mrwref,nrw,orf,raw,rwl,rw2,mdf,dbf,psd,pdd,pdf,eps,jpg,jpe,dng,3fr,arw,srf,sr2,bay,crw,cr2,dcr,ai,indd,cdr,erf,bar,hkx,raf,rofl,dba,db0,kdb,mpqge,vfs0,mcmeta,m2,lrf,vpp_pc,ff,cfr,snx,lvl,arch00,ntl,fsh,itdb,itl,mddata,sidd,sidn,bkf,qic,bkp,bc7,bc6,pkpass,tax,gdb,qdf,t12,t13,ibank,sum,sie,zip,w3x,rim,psk,tor,vpk,iwd,kf,mlx,fpk,dazip,vtf,,vcf,esm,blob,dmp,layout,menu,ncf,sid,sis,ztmp,vdf,mov,fos,sb,itm,wmo,itm,map,wmo,sb,svg,cas,gho,syncdb,mdbackup,hkdb,hplg,hvpl,icxs,docm,wps,xls,xlsx,xlsm,xlsb,xlk,ppt,pptx,pptm,mdb,accdb,pst,dwg,xf,dxg,wpd,rtf,wb2,pfx,p12,p7b,p7c,txt,jpeg,png,rb,css,js,flv,m3u,py,desc,xxx,litesql,wallet,big,pak,rgss3a,epk,bik,slm,lbf,sav,re4,apk,bsa,ltx,forge,asset,litemod,iwi,das,upk,d3dbsp,csv,wmv,avi,wma,m4a,rar,7z,mp4,sql,bak,tiff</p>
+<p>看看加密函数</p>
+<h4 id="展示勒索信息"><a href="#展示勒索信息" class="headerlink" title="展示勒索信息"></a>展示勒索信息</h4><p>当全部文件都被加密后，打开txt和png展示在桌面</p>
+<p><img src="media/adb2a28bb4f7f975d90ad2c540586a69.png" alt></p>
+<h4 id="发送信息到C2服务器"><a href="#发送信息到C2服务器" class="headerlink" title="发送信息到C2服务器"></a>发送信息到C2服务器</h4><p>打开一个网络连接对象，参数设置的是火狐的Header</p>
+<p>Mozilla/5.0 (Windows NT 6.3 rv:11.0) like Gecko</p>
+<p><img src="media/a206a6b5e975288263c5a46c20e85710.png" alt></p>
+<p>最后将之前生成的四个关键值一起都格式化为一个字符串,并加密</p>
+<p><img src="media/48467d2d131ca37f501598d8e51675e2.png" alt></p>
+<p><img src="media/1e71d2d85bc1e2157e5711385cd9acfc.png" alt></p>
+<p>开始模拟浏览器发送数据</p>
+<p><img src="media/9fd050e9b9db36a9bb88f5db0fc11e34.png" alt></p>
+<p>设置虚拟浏览器配置</p>
+<p><img src="media/125abbc8eb7c5f1495010a2680b9ffa8.png" alt></p>
+<p>最后发送被加密的信息给服务服务器，如果发送成功，就退出。</p>
+<p>分别向下面六个网页发送关键密钥</p>
+<p><a href="http://videoaminproduktion.de/plugins/binstr.php" target="_blank" rel="noopener">http://videoaminproduktion.de/plugins/binstr.php</a></p>
+<p><a href="http://clubsaintandre.fr/images/binstr.php" target="_blank" rel="noopener">http://clubsaintandre.fr/images/binstr.php</a></p>
+<p><a href="http://affiliateproductes.com/binstr.php" target="_blank" rel="noopener">http://affiliateproductes.com/binstr.php</a></p>
+<p><a href="http://ptgp.pl/tmp/binstr.php" target="_blank" rel="noopener">http://ptgp.pl/tmp/binstr.php</a></p>
+<p><a href="http://strategicdisaster.info/wordpress/wp-content/plugins/binstr.php" target="_blank" rel="noopener">http://strategicdisaster.info/wordpress/wp-content/plugins/binstr.php</a></p>
+<p><a href="http://minteee.com/images/binstr.php" target="_blank" rel="noopener">http://minteee.com/images/binstr.php</a></p>
+<table>
+<thead>
+<tr>
+<th>域名/IP</th>
+<th>获取的IP地址</th>
+<th>数字地址</th>
+<th>IP的物理位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="http://strategicdisaster.info/" target="_blank" rel="noopener">strategicdisaster.info</a></td>
+<td>域名解析失败</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="http://affiliateproductes.com/" target="_blank" rel="noopener">affiliateproductes.com</a></td>
+<td>域名解析失败</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="javascript:" target="_blank" rel="noopener">ptgp.pl</a></td>
+<td><a href="http://ip.tool.chinaz.com/?ip=85.128.216.188" target="_blank" rel="noopener">85.128.216.188</a></td>
+<td>1434507452</td>
+<td>波兰</td>
+</tr>
+<tr>
+<td><a href="http://clubsaintandre.fr/" target="_blank" rel="noopener">clubsaintandre.fr</a></td>
+<td>域名解析失败</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="javascript:" target="_blank" rel="noopener">minteee.com</a></td>
+<td><a href="http://ip.tool.chinaz.com/?ip=85.13.137.133" target="_blank" rel="noopener">85.13.137.133</a></td>
+<td>1426950533</td>
+<td>德国</td>
+</tr>
+<tr>
+<td><a href="javascript:" target="_blank" rel="noopener">videoaminproduktion.de</a></td>
+<td><a href="http://ip.tool.chinaz.com/?ip=87.238.192.67" target="_blank" rel="noopener">87.238.192.67</a></td>
+<td>1475264579</td>
+<td>德国</td>
+</tr>
+</tbody></table>
+<h2 id="样本朔源"><a href="#样本朔源" class="headerlink" title="样本朔源"></a>样本朔源</h2><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><ol>
+<li><p>删除注册表程序启动项</p>
+</li>
+<li><p>删除源程序和document下隐藏的6位随机字符的.exe文件</p>
+</li>
+<li><p>可以创建要个名为9_9_9_9的互斥体，来组织程序启动</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>该木马主要还是加密文档类的文件，这个木马会有弹窗提示删除卷影，所以会让人起疑，其实也能想是恶意软件，这种木马，启发式的安全软件都能检测识别。安装联网安全软件，能保证不是已知的木马</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/加密-勒索/">加密 勒索</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/样本详细分析/">样本详细分析</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/09/10/病毒报告/" data-title="tesla勒索病毒分析 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/09/06/Lunlayloo 木马/"  title="Lunlayloo 木马">
+ <strong>NEXT:</strong><br/> 
+ <span>Lunlayloo 木马
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本信息"><span class="toc-number">1.</span> <span class="toc-text">基本信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">2.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流程图"><span class="toc-number">3.</span> <span class="toc-text">流程图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细分析"><span class="toc-number">4.</span> <span class="toc-text">详细分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原始程序"><span class="toc-number">4.1.</span> <span class="toc-text">原始程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检测虚拟机"><span class="toc-number">4.1.1.</span> <span class="toc-text">检测虚拟机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动态解密程序字符串"><span class="toc-number">4.1.2.</span> <span class="toc-text">动态解密程序字符串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除ADS（数据备用流）"><span class="toc-number">4.1.3.</span> <span class="toc-text">删除ADS（数据备用流）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#释放文件，开启新进程"><span class="toc-number">4.1.4.</span> <span class="toc-text">释放文件，开启新进程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除自身"><span class="toc-number">4.1.5.</span> <span class="toc-text">删除自身</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新进程"><span class="toc-number">4.2.</span> <span class="toc-text">新进程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#初始化工作"><span class="toc-number">4.2.1.</span> <span class="toc-text">初始化工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建互斥体"><span class="toc-number">4.2.2.</span> <span class="toc-text">创建互斥体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取一些权限"><span class="toc-number">4.2.3.</span> <span class="toc-text">获取一些权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取文件校验"><span class="toc-number">4.2.4.</span> <span class="toc-text">获取文件校验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对抗常见监控软件"><span class="toc-number">4.2.5.</span> <span class="toc-text">对抗常见监控软件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除卷影"><span class="toc-number">4.2.6.</span> <span class="toc-text">删除卷影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成AES需要的密钥"><span class="toc-number">4.2.7.</span> <span class="toc-text">生成AES需要的密钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加入开机启动"><span class="toc-number">4.2.8.</span> <span class="toc-text">加入开机启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成勒索文本和图片"><span class="toc-number">4.2.9.</span> <span class="toc-text">生成勒索文本和图片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加密文件"><span class="toc-number">4.2.10.</span> <span class="toc-text">加密文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#展示勒索信息"><span class="toc-number">4.2.11.</span> <span class="toc-text">展示勒索信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#发送信息到C2服务器"><span class="toc-number">4.2.12.</span> <span class="toc-text">发送信息到C2服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#样本朔源"><span class="toc-number">5.</span> <span class="toc-text">样本朔源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查杀方案"><span class="toc-number">6.</span> <span class="toc-text">查杀方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
+		
+			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
+		
+			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-146435492-1', 'l0yy.github.io');  
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+</html>

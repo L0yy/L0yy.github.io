@@ -73,6 +73,222 @@
 
   <section class="post" itemscope itemprop="blogPost">
   
+    <a href="/2019/09/10/病毒报告/" title="tesla勒索病毒分析" itemprop="url">
+  
+    <h1 itemprop="name">tesla勒索病毒分析</h1>
+    
+     
+           <p itemprop="description" >基本信息 1
+简介 2
+流程图 3
+详细分析 3
+原始程序 5
+检测虚拟机 5
+动态解密程序字符串 6
+删除ADS（数据备用流） 8
+释放文件，开启新进程 9
+删除自身 9
+新进程 9
+初始化工作 10
+创建互斥体 10
+获取一些权限 10
+获取文件校验 11
+对抗常见监控软件 </p>
+        
+    
+    <time datetime="2019-09-10T11:11:22.000Z" itemprop="datePublished">2019-09-10</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/09/06/Lunlayloo 木马/" title="Lunlayloo 木马" itemprop="url">
+  
+    <h1 itemprop="name">Lunlayloo 木马</h1>
+    
+     
+           <p itemprop="description" >基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+Order____679873892.xls
+rat
+7641FEF8ABC7CB24B66655D11EF3DAF2
+41472 bytes
+
+
+## 简介
+
+
+
+
+
+该样本语言类型为 VBS和JS编写，</p>
+        
+    
+    <time datetime="2019-09-06T11:11:22.000Z" itemprop="datePublished">2019-09-06</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/09/05/ida查找检测虚拟机代码/" title="IDA 查找检测虚拟机代码" itemprop="url">
+  
+    <h1 itemprop="name">IDA 查找检测虚拟机代码</h1>
+    
+     
+           <p itemprop="description" >FindAntiVM 来自github
+如果找到，以红色标注
+from idautils import *
+from idc import *
+
+heads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))
+
+#Calls to </p>
+        
+    
+    <time datetime="2019-09-05T11:11:22.000Z" itemprop="datePublished">2019-09-05</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/09/04/Com添加过滤器来检测沙箱/" title="Com组建检测虚拟沙箱" itemprop="url">
+  
+    <h1 itemprop="name">Com组建检测虚拟沙箱</h1>
+    
+     
+           <p itemprop="description" >因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &amp;quot;stdafx.h&amp;qu</p>
+        
+    
+    <time datetime="2019-09-04T11:11:22.000Z" itemprop="datePublished">2019-09-04</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/09/04/H-WORM变种远控分析/" title="H-WORM变种远控分析" itemprop="url">
+  
+    <h1 itemprop="name">H-WORM变种远控分析</h1>
+    
+     
+           <p itemprop="description" >基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+4gdrwceq60b7dbl.sct
+rat
+69B7D326575C5616D82645960B3D081A
+403845 bytes
+
+
+简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全</p>
+        
+    
+    <time datetime="2019-09-04T11:11:22.000Z" itemprop="datePublished">2019-09-04</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/09/03/替换特权指令 提升权限/" title="替换特权指令 提升权限" itemprop="url">
+  
+    <h1 itemprop="name">替换特权指令 提升权限</h1>
+    
+     
+           <p itemprop="description" >什么是特权
+注意，这里说的提权不是从Administrator提升到 System,只是开启一些Administrator组的特殊权限
+Administrator组管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是SeDebugPrivilege，要是进程拥有了这个权限，</p>
+        
+    
+    <time datetime="2019-09-03T11:11:22.000Z" itemprop="datePublished">2019-09-03</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/09/02/利用弱口令传播横向的远控组件/" title="弱口令横向传播" itemprop="url">
+  
+    <h1 itemprop="name">弱口令横向传播</h1>
+    
+     
+           <p itemprop="description" >@[toc]
+基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+sample.exe
+rat
+4D049BC19B03572EF8A00980050BAFFF
+28160 bytes
+
+
+简介此木马拥有横向传播能力扫描局域网主机，利用弱口令尝试登陆，上传运</p>
+        
+    
+    <time datetime="2019-09-02T11:11:22.000Z" itemprop="datePublished">2019-09-02</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/09/01/宏病毒下载器/" title="宏病毒" itemprop="url">
+  
+    <h1 itemprop="name">宏病毒</h1>
+    
+     
+           <p itemprop="description" >基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+58e4d0.xls
+Downloader
+3effeba64d9a1a4dd1bddaeb1858e4d0
+346112  bytes
+
+
+## 简介
+
+
+
+
+
+带有恶意宏的office文件，加载dll，</p>
+        
+    
+    <time datetime="2019-09-01T11:11:22.000Z" itemprop="datePublished">2019-09-01</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
     <a href="/2019/08/26/输入法注入/" title="输入法注入" itemprop="url">
   
     <h1 itemprop="name">输入法注入</h1>
@@ -102,153 +318,9 @@
   </a>
 </section>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/26/SEH创建与查找/" title="SEH创建与查找" itemprop="url">
-  
-    <h1 itemprop="name">SEH创建与查找</h1>
-    
-     
-           <p itemprop="description" >创建一个SEH处理函数
-#include &amp;quot;stdafx.h&amp;quot;
-#define WIN32_LEAN_AND_MEAN
-#include &amp;lt;windows.h&amp;gt;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;quot;std</p>
-        
-    
-    <time datetime="2019-08-26T01:46:42.000Z" itemprop="datePublished">2019-08-26</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/25/win32程序设计/" title="win32程序设计" itemprop="url">
-  
-    <h1 itemprop="name">win32程序设计</h1>
-    
-     
-           <p itemprop="description" >最小的一个窗口
-#include &amp;quot;windows.h&amp;quot;
-
-HINSTANCE g_hInstance;
-
-LRESULT CALLBACK MainWndProc(_In_ HWND hWnd,_In_ UINT uMsg,_In_ WPARAM wPara</p>
-        
-    
-    <time datetime="2019-08-25T08:46:42.000Z" itemprop="datePublished">2019-08-25</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/23/简单的加密壳/" title="简单的加密壳" itemprop="url">
-  
-    <h1 itemprop="name">简单的加密壳</h1>
-    
-     
-           <p itemprop="description" >一个简单的加密壳笔记
-基本思路
-提示框，点击 “是” 后壳开始解压程序代码
-有一个call来还原这个原程序的IAT表，而这个壳也是只加密了他的IAT
-进入这个call后，找到GetProcessAddress函数，这个函数的返回值保存在eax里面，这个eax才是我们需要的地址，但</p>
-        
-    
-    <time datetime="2019-08-23T11:11:22.000Z" itemprop="datePublished">2019-08-23</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/22/MASH和内联MASH/" title="MASH和内联MASH" itemprop="url">
-  
-    <h1 itemprop="name">MASH和内联MASH</h1>
-    
-     
-           <p itemprop="description" >开始前一定先了解下汇编的种类https://blog.csdn.net/ye1223/article/details/79060434
-我这里只简述我学习的MASH汇编和内联的MASH格式的汇编
-mash 汇编如下下面程序的目的是遍历Kernel32模块的导出函数和基值，在she</p>
-        
-    
-    <time datetime="2019-08-22T11:11:22.000Z" itemprop="datePublished">2019-08-22</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/20/PE的一些结构笔记/" title="PE的一些结构笔记" itemprop="url">
-  
-    <h1 itemprop="name">PE的一些结构笔记</h1>
-    
-     
-           <p itemprop="description" >实模式开电脑一瞬间，就处于实模式，1M寻址 dos 使用实模式
-保护模式windows在保护模式
-windows me 是windows 9x系列的最后一个
-windows NT 2000以后的 现在的都是NT系列的
-不同进程使用操作系统的共享地址
-com 的特点就是没有特点
-P</p>
-        
-    
-    <time datetime="2019-08-20T11:11:22.000Z" itemprop="datePublished">2019-08-20</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/20/调用dll和编写dll的几种格式/" title="调用dll和编写dll的几种格式" itemprop="url">
-  
-    <h1 itemprop="name">调用dll和编写dll的几种格式</h1>
-    
-     
-           <p itemprop="description" >dll的写法一共两种
-全部写在dllmain函数内extern &amp;quot;C&amp;quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
-{
-    MessageBox(0,&amp;quot;this Sum call&amp;qu</p>
-        
-    
-    <time datetime="2019-08-20T11:11:22.000Z" itemprop="datePublished">2019-08-20</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/18/IDA制作签名/" title="IDA制作签名" itemprop="url">
-  
-    <h1 itemprop="name">IDA制作签名</h1>
-    
-     
-           <p itemprop="description" >我这里使用的是IDA6.8的制作签名包如果我们知道是什么语言 的，但是没有签名包，就自己做一个
-手工方式：1.pcf.exe source.lib XXXX.pcf
-2.sigmake.exe XXXX.pcf YYYY.sig
-这里一般会生成一个XXXX.exc的文件，打开它，</p>
-        
-    
-    <time datetime="2019-08-18T11:11:22.000Z" itemprop="datePublished">2019-08-18</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/10/调试dll的两种方法/" title="调试dll的两种方法" itemprop="url">
-  
-    <h1 itemprop="name">调试dll的两种方法</h1>
-    
-     
-           <p itemprop="description" >首先把dll调起来看看
-方法一自己写loadlibrary()和GetProcAddress()来加载dll。
-编写有一个导出函数的测试 的 A.dll
-// dllmain.cpp : 定义 DLL 应用程序的入口点。
-#include &amp;quot;stdafx.h&amp;quot;</p>
-        
-    
-    <time datetime="2019-08-10T11:11:22.000Z" itemprop="datePublished">2019-08-10</time>
-  </a>
-</section>
-
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </div>
@@ -273,13 +345,15 @@ P</p>
 		
 			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
 		
+			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
+		
 			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
 		
 			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
 		
 			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
 		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>10</sup></a></li>
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
 		
 		</ul>
 </div>
@@ -298,13 +372,15 @@ P</p>
 		
 			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
 		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>2</sup></a></li>
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
 		
 			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
 		
 			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
 		
 			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
 		
 			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
 		
@@ -327,8 +403,6 @@ P</p>
 			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
 		
 			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
 		
 		</ul>
 </div>

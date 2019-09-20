@@ -1,0 +1,436 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>IDA 查找检测虚拟机代码 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="FindAntiVM 来自github
+如果找到，以红色标注
+from idautils import *
+from idc import *
+
+heads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))
+
+#Calls to autorun/au">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/09/05/ida查找检测虚拟机代码/" title="IDA 查找检测虚拟机代码" itemprop="url">IDA 查找检测虚拟机代码</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-09-05T11:11:22.000Z" itemprop="datePublished">2019-09-05</time>
+    更新日期:<time datetime="2019-09-20T11:34:37.185Z" itemprop="dateModified">2019-09-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+		</div>
+		
+		<p>FindAntiVM <a href="https://github.com/zim123abc/virtualization-detection-ida-script/blob/dd8015ec6e130cf04272805730c78950b857c02b/src/findAntiVM.py" target="_blank" rel="noopener">来自github</a></p>
+<p>如果找到，以红色标注</p>
+<pre><code class="python">from idautils import *
+from idc import *
+
+heads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))
+
+#Calls to autorun/autorunsc -- these hide signed MS entries!!
+pill_check = [&#39;sidt&#39;, &#39;sgdt&#39;, &#39;sldt&#39;, &#39;smsw&#39;, &#39;str&#39;, &#39;in&#39;]
+malicious_check = [&#39;cmd&#39;,&#39;cpuid&#39;,&#39;autorun&#39;, &#39;autorunsc&#39;]
+vmware_check = [&#39;Vmtoolsd&#39;, &#39;Vmwaretrat&#39;, &#39;Vmwareuser&#39;, &#39;Vmacthlp&#39;]
+vbox_check = [&#39;vboxservice&#39;, &#39;vboxtray&#39;, &#39;VBOXBIOS&#39;]
+hostname_check = [&#39;brbrb-d8fb22af1&#39;,&#39;KVMKVMKVM&#39;, &#39;prl hyperv&#39;, &#39;Microsoft Hv&#39;, &#39;XenVMMXenVMM&#39;]
+env_check = [&#39;dmesg&#39;, &#39;kmods&#39;, &#39;pcidevs&#39;,&#39; dmidecode&#39;,&#39;sysfs&#39;,&#39;procfs&#39;, &#39;dashXmstdout&#39;]
+antiVM = []
+
+for i in heads:
+        for x in pill_check,vmware_check,vbox_check,hostname_check,env_check,malicious_check:
+                if GetMnem(i) in x: 
+                    antiVM.append(i)
+
+#reset head to beginning of instructions
+heads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))
+
+#Check out Hex View-A for I/O ports
+for x in heads:
+        if GetMnem(x) == &quot;mov&quot; and &quot;eax&quot; in GetOpnd(x, 0) and &quot;564D5868h&quot; in GetOpnd(x, 1):
+                if GetMnem(x + 1) == &quot;mov&quot; and &quot;edx&quot; in GetOpnd(x + 1, 0) and &quot;5658h&quot; in GetOpnd(x + 1, 1):
+                        if GetMnem(x + 2) == &quot;in&quot; and &quot;eax&quot; in GetOpnd(x + 2, 0) and &quot;dx&quot; in GetOpnd(x + 2, 1):
+                                antiVM.append(x)
+
+        elif GetMnem(x) == &quot;call&quot; and &quot;RtlGetNativeSystemInformation&quot; in GetOpnd(x, 0):
+                antiVM.append(x)
+
+        if &quot;564D5868h&quot; in GetOpnd(x, 1) or &quot;5658h&quot; in GetOpnd(x, 1):
+                antiVM.append(x)
+
+for i in antiVM:
+    SetColor(i, CIC_ITEM, 0x0000ff)
+        instruction = GetMnem(i)
+    Message(&quot;Anti-VM: %08x &gt;&gt;&quot; % i)
+        Message(&quot; %s\n&quot; % instruction)
+
+print &quot;Number of potential Anti-VM instructions: %d&quot; % (len(antiVM))</code></pre>
+<p>或者使用<code>ScoopyNG</code>工具检测</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/IDA/">IDA</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/逆向/">逆向</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/09/05/ida查找检测虚拟机代码/" data-title="IDA 查找检测虚拟机代码 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/09/06/Lunlayloo 木马/" title="Lunlayloo 木马">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Lunlayloo 木马</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/09/04/Com添加过滤器来检测沙箱/"  title="Com组建检测虚拟沙箱">
+ <strong>NEXT:</strong><br/> 
+ <span>Com组建检测虚拟沙箱
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
+		
+			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
+		
+			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-146435492-1', 'l0yy.github.io');  
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+</html>

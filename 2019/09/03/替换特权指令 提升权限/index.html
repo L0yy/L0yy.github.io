@@ -1,0 +1,514 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>替换特权指令 提升权限 | CrayBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Cray">
+    
+    <meta name="description" content="什么是特权
+注意，这里说的提权不是从Administrator提升到 System,只是开启一些Administrator组的特殊权限
+Administrator组管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是SeDebugPrivilege，要是进程拥有了这个权限，就能对任意进程进行操">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+
+</head>
+</html>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:L0yy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/09/03/替换特权指令 提升权限/" title="替换特权指令 提升权限" itemprop="url">替换特权指令 提升权限</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://L0yy.github.io" title="Cray">Cray</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2019-09-03T11:11:22.000Z" itemprop="datePublished">2019-09-03</time>
+    更新日期:<time datetime="2019-09-20T11:34:45.685Z" itemprop="dateModified">2019-09-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Administrator组"><span class="toc-number">1.</span> <span class="toc-text">Administrator组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#普通用户组"><span class="toc-number">2.</span> <span class="toc-text">普通用户组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看进程权限"><span class="toc-number">2.1.</span> <span class="toc-text">查看进程权限</span></a></li></ol></li></ol>
+		</div>
+		
+		<p><strong><a href="https://zh.wikipedia.org/wiki/%E7%89%B9%E6%9D%83_(Windows)" target="_blank" rel="noopener">什么是特权</a></strong></p>
+<p><strong>注意，这里说的提权不是从<code>Administrator</code>提升到 <code>System</code>,只是开启一些<code>Administrator</code>组的特殊权限</strong></p>
+<h3 id="Administrator组"><a href="#Administrator组" class="headerlink" title="Administrator组"></a>Administrator组</h3><p>管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是<code>SeDebugPrivilege</code>，要是进程拥有了这个权限，就能对任意进程进行操作（包括<code>system</code>）</p>
+<p><img src="https://img-blog.csdnimg.cn/20190905184130154.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20190905190534272.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>当用户试图执行一个特权操作，系统检查用户的访问令牌以确定使用是否具有必要的特权。调用GetTokenInformation函数可以检查特权。</p>
+</blockquote>
+<p>我要做的就是找到找到一个系统中有<code>SeDebugPrivilege</code>权限的令牌，然后复制下来，把自己的令牌改为他这个，然乎自己就拥有了<code>SeDebugPrivilege</code>权限了。这也就是提升权限的核心。</p>
+<p>下图是我使用 <code>OpenProcess</code>对SID为4的系统进程进行操作，且操作权限是<code>PROCESS_ALL_ACCESS</code></p>
+<p><img src="https://img-blog.csdnimg.cn/20190905190019240.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>下面看看具体实现</p>
+<pre><code class="c">void CgPivilige()
+{
+    BOOL retn;
+    HANDLE hToken;
+    retn = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | READ_CONTROL, &amp;hToken);//修改令牌特权值
+    if (retn != TRUE)
+    {
+        printf(&quot;获取令牌句柄失败!&quot; );
+        return;
+    }
+
+    TOKEN_PRIVILEGES tp; //新特权结构体
+    LUID Luid;
+    retn = LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &amp;Luid);//查看具有调试权限的令牌
+
+    if (retn != TRUE)
+    {
+        printf(&quot;获取Luid失败&quot; );
+        return;
+    }
+    //给TP和TP里的LUID结构体赋值
+    tp.PrivilegeCount = 1;
+    tp.Privileges[0].Luid = Luid;
+    tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+    AdjustTokenPrivileges(hToken, FALSE, &amp;tp, sizeof(TOKEN_PRIVILEGES), NULL, NULL);//调整自己Token为有调试特权的Token
+    if (GetLastError() != ERROR_SUCCESS)
+    {
+        printf(&quot;修改特权不完全或失败!&quot; );
+    }
+    else
+    {
+        printf(&quot;修改成功!&quot; );
+    }
+}</code></pre>
+<p>下面给一个病毒使用的提升权限 IDA伪代码</p>
+<pre><code>int __cdecl reloadToken_4108F0(LPCWSTR lpName)
+{
+  HANDLE v2; // eax
+  struct _LUID Luid; // [esp+0h] [ebp-24h]
+  HANDLE TokenHandle; // [esp+8h] [ebp-1Ch]
+  struct _TOKEN_PRIVILEGES NewState; // [esp+Ch] [ebp-18h]
+
+  if ( !LookupPrivilegeValueW(0, lpName, &amp;Luid) )// lpnmae SedebugPrivilege  查看拥有调试权限的令牌
+    return 0;
+  v2 = GetCurrentProcess();
+  if ( !OpenProcessToken(v2, 0x20028u, &amp;TokenHandle) )// 0x20028 = TOKEN_ADJUST_PRIVILEGES|TOKEN_QUERY|READ_CONTROL
+    return 0;
+  NewState.Privileges[0].Luid = Luid;
+  NewState.PrivilegeCount = 1;
+  NewState.Privileges[0].Attributes = 2;
+  AdjustTokenPrivileges(TokenHandle, 0, &amp;NewState, 0, 0, 0);// 将访问令牌中禁用的权限启用，来达到权限提升
+  CloseHandle(TokenHandle);
+  return 1;
+}</code></pre><h3 id="普通用户组"><a href="#普通用户组" class="headerlink" title="普通用户组"></a>普通用户组</h3><p>普通用户组本身权限就比较少<br><img src="https://img-blog.csdnimg.cn/20190905175911142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20190905183658642.png" alt="在这里插入图片描述"><br>Crat是普通用户组成员<br><img src="https://img-blog.csdnimg.cn/20190905191224944.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>普通用户一般是没有<code>SeDebugPrivilege</code> 权限的，也就是说这个用户组根本就没这个权限，不是能不能打开的问题，而是根本没有。</p>
+<p>所以普通用户不存在什么使用令牌的权限提升，即使有，都只是很小的一些权限。</p>
+<h4 id="查看进程权限"><a href="#查看进程权限" class="headerlink" title="查看进程权限"></a>查看进程权限</h4><p>程序能运行在<code>low</code> <code>medium</code> <code>hight</code> 三个level下,那怎么在通过代码检测自己拥有什么权限呢？</p>
+<p>通过<code>GetTokenInformation</code>拿到这个进程的<code>TokenInformation</code>信息 再通过比较<code>Label.Sid,</code>的值</p>
+<pre><code class="c">void ShowProcessIntegrityLevel()
+{
+    HANDLE hToken;
+    HANDLE hProcess;
+
+    DWORD dwLengthNeeded;
+    DWORD dwError = ERROR_SUCCESS;
+
+    PTOKEN_MANDATORY_LABEL pTIL = NULL;
+    DWORD dwIntegrityLevel;
+
+    hProcess = GetCurrentProcess();
+    if (OpenProcessToken(hProcess, TOKEN_QUERY |
+        TOKEN_QUERY_SOURCE, &amp;hToken))
+    {
+        // Get the Integrity level.
+        if (!GetTokenInformation(hToken, TokenIntegrityLevel,
+            NULL, 0, &amp;dwLengthNeeded))
+        {
+            dwError = GetLastError();
+            if (dwError == ERROR_INSUFFICIENT_BUFFER)
+            {
+                pTIL = (PTOKEN_MANDATORY_LABEL)LocalAlloc(0,
+                    dwLengthNeeded);
+                if (pTIL != NULL)
+                {
+                    if (GetTokenInformation(hToken, TokenIntegrityLevel,
+                        pTIL, dwLengthNeeded, &amp;dwLengthNeeded))
+                    {
+                        dwIntegrityLevel = *GetSidSubAuthority(pTIL-&gt;Label.Sid,
+                            (DWORD)(UCHAR)(*GetSidSubAuthorityCount(pTIL-&gt;Label.Sid) - 1));
+
+                        if (dwIntegrityLevel &lt; SECURITY_MANDATORY_MEDIUM_RID)
+                        {
+                            // Low Integrity
+                            wprintf(L&quot;Low Integrity Process&quot;);
+                        }
+                        else if (dwIntegrityLevel &gt;= SECURITY_MANDATORY_MEDIUM_RID &amp;&amp;
+                            dwIntegrityLevel &lt; SECURITY_MANDATORY_HIGH_RID)
+                        {
+                            // Medium Integrity
+                            wprintf(L&quot;Medium Integrity Process&quot;);
+                        }
+                        else if (dwIntegrityLevel &gt;= SECURITY_MANDATORY_HIGH_RID)
+                        {
+                            // High Integrity
+                            wprintf(L&quot;High Integrity Process&quot;);
+                        }
+                    }
+                    LocalFree(pTIL);
+                }
+            }
+        }
+        CloseHandle(hToken);
+    }
+}</code></pre>
+<p>参考  <a href="https://www.cnblogs.chom/hqu-ye/articles/4838381.html" target="_blank" rel="noopener">https://www.cnblogs.chom/hqu-ye/articles/4838381.html</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/提权/">提权</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/逆向/">逆向</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://L0yy.github.io/2019/09/03/替换特权指令 提升权限/" data-title="替换特权指令 提升权限 | CrayBlog" data-tsina="" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/09/04/H-WORM变种远控分析/" title="H-WORM变种远控分析">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  H-WORM变种远控分析</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/09/02/利用弱口令传播横向的远控组件/"  title="弱口令横向传播">
+ <strong>NEXT:</strong><br/> 
+ <span>弱口令横向传播
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Administrator组"><span class="toc-number">1.</span> <span class="toc-text">Administrator组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#普通用户组"><span class="toc-number">2.</span> <span class="toc-text">普通用户组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看进程权限"><span class="toc-number">2.1.</span> <span class="toc-text">查看进程权限</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
+		
+			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		
+			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
+		
+			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
+		
+			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
+		
+			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
+		
+			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
+		
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
+		
+			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
+		
+			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
+		
+			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
+		
+			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
+		
+			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
+		
+		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-146435492-1', 'l0yy.github.io');  
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+</html>

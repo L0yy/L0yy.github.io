@@ -4,12 +4,16 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>CrayBlog</title>
+    <title>Com组建检测虚拟沙箱 | CrayBlog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Cray">
     
-    <meta name="description" content="google-site-verification: google661291fdc4231192.html">
+    <meta name="description" content="因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &amp;quot;stdafx.h&amp;quot;
+#inclu">
     
     
     
@@ -74,15 +78,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/08/26/google661291fdc4231192/" title="" itemprop="url"></a>
+      <a href="/2019/09/04/Com添加过滤器来检测沙箱/" title="Com组建检测虚拟沙箱" itemprop="url">Com组建检测虚拟沙箱</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://L0yy.github.io" title="Cray">Cray</a>
     </p>
   <p class="article-time">
-    <time datetime="2019-08-26T02:40:21.471Z" itemprop="datePublished">2019-08-26</time>
-    更新日期:<time datetime="2019-08-26T02:40:22.092Z" itemprop="dateModified">2019-08-26</time>
+    <time datetime="2019-09-04T11:11:22.000Z" itemprop="datePublished">2019-09-04</time>
+    更新日期:<time datetime="2019-09-20T11:34:43.654Z" itemprop="dateModified">2019-09-20</time>
     
   </p>
 </header>
@@ -94,16 +98,123 @@
 		
 		</div>
 		
-		google-site-verification: google661291fdc4231192.html  
+		<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p>
+<p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p>
+<p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p>
+<pre><code class="c">#include &quot;stdafx.h&quot;
+#include &lt;conio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;dshow.h&gt;
+#include &lt;objbase.h&gt;
+
+#pragma comment(lib, &quot;Strmiids.lib&quot;)
+
+void useCom()
+{
+    /*
+    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
+    只有安装了音频设备，此处的沙箱才会被视为真实系统。
+    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
+    */
+    CoInitialize(0);
+    wchar_t * filerName = L&quot;random_name&quot;;
+    IGraphBuilder * pGraph;
+    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);
+    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))
+    {
+        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);
+        ExitProcess(-1);
+    }
+
+    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL
+    IBaseFilter *pBaseFile;
+    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);
+
+    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。
+    pGraph-&gt;AddFilter(pBaseFile, filerName);
+    IBaseFilter *pBaseFile2;
+    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);
+
+    if (pBaseFile2 == NULL)
+    {
+        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);
+        ExitProcess(1);
+    }
+    //检查achName是不是之前添加的过滤器名
+    FILTER_INFO info = { 0 };
+    pBaseFile2-&gt;QueryFilterInfo(&amp;info);
+    if (wcscmp(info.achName,filerName)!=0)
+    {
+        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);
+        exit(0);
+    }
+
+    IReferenceClock *pClock;
+    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))
+    {
+        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);
+        exit(0);
+    }
+    if (pClock != NULL)
+    {
+        exit(0);
+    }
+    CLSID clsID;
+    pBaseFile2-&gt;GetClassID(&amp;clsID);
+    if (clsID.Data1 == 0)
+    {
+        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);
+        exit(1);
+    }
+    if (pBaseFile2 ==NULL)
+    {
+        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);
+        exit(1);
+    }
+
+    IEnumPins *pEnum = NULL;
+    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)
+    {
+        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);
+        exit(-1);
+    }
+    //AddRef返回的引用计数必须大于0
+    if (pBaseFile2-&gt;AddRef() == 0)
+    {
+        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);
+        exit(-1);
+    }
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    useCom();
+    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);
+
+    return 0;
+}</code></pre>
+<p>IDA反编译结果</p>
+<p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/检测沙箱/">检测沙箱</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/逆向/">逆向</a>
+</div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://L0yy.github.io/2019/08/26/google661291fdc4231192/" data-title="CrayBlog" data-tsina="" class="share clearfix">
+  <div data-url="http://L0yy.github.io/2019/09/04/Com添加过滤器来检测沙箱/" data-title="Com组建检测虚拟沙箱 | CrayBlog" data-tsina="" class="share clearfix">
   </div>
 
 </div>
@@ -113,18 +224,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2019/08/27/调用dll和编写dll的几种格式/" title="调用dll和编写dll的几种格式">
+ <a href="/2019/09/05/ida查找检测虚拟机代码/" title="IDA 查找检测虚拟机代码">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  调用dll和编写dll的几种格式</span>
+  IDA 查找检测虚拟机代码</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2019/08/26/远线程注入/"  title="远线程注入">
+<a href="/2019/09/04/H-WORM变种远控分析/"  title="H-WORM变种远控分析">
  <strong>NEXT:</strong><br/> 
- <span>远线程注入
+ <span>H-WORM变种远控分析
 </span>
 </a>
 </div>
@@ -159,13 +270,15 @@
 		
 			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
 		
+			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
+		
 			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
 		
 			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
 		
 			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
 		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>9</sup></a></li>
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
 		
 		</ul>
 </div>
@@ -184,13 +297,15 @@
 		
 			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
 		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>2</sup></a></li>
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
 		
 			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
 		
 			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
 		
 			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
 		
 			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
 		
@@ -213,8 +328,6 @@
 			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
 		
 			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
 		
 		</ul>
 </div>

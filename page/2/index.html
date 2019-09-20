@@ -73,6 +73,150 @@
 
   <section class="post" itemscope itemprop="blogPost">
   
+    <a href="/2019/08/26/SEH创建与查找/" title="SEH创建与查找" itemprop="url">
+  
+    <h1 itemprop="name">SEH创建与查找</h1>
+    
+     
+           <p itemprop="description" >创建一个SEH处理函数
+#include &amp;quot;stdafx.h&amp;quot;
+#define WIN32_LEAN_AND_MEAN
+#include &amp;lt;windows.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;quot;std</p>
+        
+    
+    <time datetime="2019-08-26T01:46:42.000Z" itemprop="datePublished">2019-08-26</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/08/25/win32程序设计/" title="win32程序设计" itemprop="url">
+  
+    <h1 itemprop="name">win32程序设计</h1>
+    
+     
+           <p itemprop="description" >最小的一个窗口
+#include &amp;quot;windows.h&amp;quot;
+
+HINSTANCE g_hInstance;
+
+LRESULT CALLBACK MainWndProc(_In_ HWND hWnd,_In_ UINT uMsg,_In_ WPARAM wPara</p>
+        
+    
+    <time datetime="2019-08-25T08:46:42.000Z" itemprop="datePublished">2019-08-25</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/08/23/简单的加密壳/" title="简单的加密壳" itemprop="url">
+  
+    <h1 itemprop="name">简单的加密壳</h1>
+    
+     
+           <p itemprop="description" >一个简单的加密壳笔记
+基本思路
+提示框，点击 “是” 后壳开始解压程序代码
+有一个call来还原这个原程序的IAT表，而这个壳也是只加密了他的IAT
+进入这个call后，找到GetProcessAddress函数，这个函数的返回值保存在eax里面，这个eax才是我们需要的地址，但</p>
+        
+    
+    <time datetime="2019-08-23T11:11:22.000Z" itemprop="datePublished">2019-08-23</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/08/22/MASH和内联MASH/" title="MASH和内联MASH" itemprop="url">
+  
+    <h1 itemprop="name">MASH和内联MASH</h1>
+    
+     
+           <p itemprop="description" >开始前一定先了解下汇编的种类https://blog.csdn.net/ye1223/article/details/79060434
+我这里只简述我学习的MASH汇编和内联的MASH格式的汇编
+mash 汇编如下下面程序的目的是遍历Kernel32模块的导出函数和基值，在she</p>
+        
+    
+    <time datetime="2019-08-22T11:11:22.000Z" itemprop="datePublished">2019-08-22</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/08/20/PE的一些结构笔记/" title="PE的一些结构笔记" itemprop="url">
+  
+    <h1 itemprop="name">PE的一些结构笔记</h1>
+    
+     
+           <p itemprop="description" >实模式开电脑一瞬间，就处于实模式，1M寻址 dos 使用实模式
+保护模式windows在保护模式
+windows me 是windows 9x系列的最后一个
+windows NT 2000以后的 现在的都是NT系列的
+不同进程使用操作系统的共享地址
+com 的特点就是没有特点
+P</p>
+        
+    
+    <time datetime="2019-08-20T11:11:22.000Z" itemprop="datePublished">2019-08-20</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/08/20/调用dll和编写dll的几种格式/" title="调用dll和编写dll的几种格式" itemprop="url">
+  
+    <h1 itemprop="name">调用dll和编写dll的几种格式</h1>
+    
+     
+           <p itemprop="description" >dll的写法一共两种
+全部写在dllmain函数内extern &amp;quot;C&amp;quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
+{
+    MessageBox(0,&amp;quot;this Sum call&amp;qu</p>
+        
+    
+    <time datetime="2019-08-20T11:11:22.000Z" itemprop="datePublished">2019-08-20</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/08/18/IDA制作签名/" title="IDA制作签名" itemprop="url">
+  
+    <h1 itemprop="name">IDA制作签名</h1>
+    
+     
+           <p itemprop="description" >我这里使用的是IDA6.8的制作签名包如果我们知道是什么语言 的，但是没有签名包，就自己做一个
+手工方式：1.pcf.exe source.lib XXXX.pcf
+2.sigmake.exe XXXX.pcf YYYY.sig
+这里一般会生成一个XXXX.exc的文件，打开它，</p>
+        
+    
+    <time datetime="2019-08-18T11:11:22.000Z" itemprop="datePublished">2019-08-18</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2019/08/10/调试dll的两种方法/" title="调试dll的两种方法" itemprop="url">
+  
+    <h1 itemprop="name">调试dll的两种方法</h1>
+    
+     
+           <p itemprop="description" >首先把dll调起来看看
+方法一自己写loadlibrary()和GetProcAddress()来加载dll。
+编写有一个导出函数的测试 的 A.dll
+// dllmain.cpp : 定义 DLL 应用程序的入口点。
+#include &amp;quot;stdafx.h&amp;quot;</p>
+        
+    
+    <time datetime="2019-08-10T11:11:22.000Z" itemprop="datePublished">2019-08-10</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
     <a href="/2019/08/10/call的几种传参方式/" title="call的几种传参方式" itemprop="url">
   
     <h1 itemprop="name">call的几种传参方式</h1>
@@ -106,150 +250,9 @@ fastcall 是通过寄存器，因为是寄存器fast嘛
   </a>
 </section>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/11/WEB温习第二天/" title="web渗透基础二" itemprop="url">
-  
-    <h1 itemprop="name">web渗透基础二</h1>
-    
-     
-           <p itemprop="description" >宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_</p>
-        
-    
-    <time datetime="2019-06-11T10:20:56.000Z" itemprop="datePublished">2019-06-11</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/11/WEB温习第三天/" title="web渗透基础三" itemprop="url">
-  
-    <h1 itemprop="name">web渗透基础三</h1>
-    
-     
-           <p itemprop="description" >命令执行以及反弹shell姿势还是DVWA靶机的Command Injection
-功能是在本地使用shell_exec执行ping命令
-Low&amp;lt;?php 
-
-if( isset( $_POST[ &amp;#39;Submit&amp;#39; ]  ) ) { 
-    // Get </p>
-        
-    
-    <time datetime="2019-06-11T10:20:56.000Z" itemprop="datePublished">2019-06-11</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/10/WEB温习第一天/" title="web渗透基础一" itemprop="url">
-  
-    <h1 itemprop="name">web渗透基础一</h1>
-    
-     
-           <p itemprop="description" >这之后都会是巩固的笔记，把以前留下的坑填一下。
-DVWA Brute Force通过这个靶机来温习下sql注入的一下要点和防御。
-low源码
-&amp;lt;?php 
-
-if( isset( $_GET[ &amp;#39;Login&amp;#39; ] ) ) { 
-    // Get user</p>
-        
-    
-    <time datetime="2019-06-10T10:20:56.000Z" itemprop="datePublished">2019-06-10</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/03/silky：0x02靶机总结/" title="silky：0x02靶机总结" itemprop="url">
-  
-    <h1 itemprop="name">silky：0x02靶机总结</h1>
-    
-     
-           <p itemprop="description" >靶机靶机来源vulnhub
-下载 ova文件，VM 或 VB 都是可以直接打开的
-渗透具体可以详细可以参阅 YouTube
-我这里来记录下我的过程
-扫主机nmap 10.0.0.0/24我的是这个网段
-或者直接使用netdiscover进行主机发现，比不过比较慢
-我这里的靶机IP</p>
-        
-    
-    <time datetime="2019-06-03T10:20:56.000Z" itemprop="datePublished">2019-06-03</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/30/内存基础/" title="内存基础" itemprop="url">
-  
-    <h1 itemprop="name">内存基础</h1>
-    
-     
-           <p itemprop="description" >原文地址
-看点好玩的东西显然，并非每次应用程序崩溃都会导致漏洞利用。在许多情况下，应用程序崩溃不会导致利用…但有时它会。对于“exploitation”，我的意思是你希望应用程序做一些不打算做的事情……例如运行你自己的代码。使应用程序执行不应该执行的操作的最简单方法是控制其应用程</p>
-        
-    
-    <time datetime="2019-05-30T00:41:45.000Z" itemprop="datePublished">2019-05-30</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/14/TCP总结/" title="TCP总结" itemprop="url">
-  
-    <h1 itemprop="name">TCP总结</h1>
-    
-     
-           <p itemprop="description" >这里总结下TCP的三次握手，数据传输和四次分手过程
-pdf文件地址TCP图解
-TCP头部
-
-来源连接端口（16位长）－识别发送连接端口
-目的连接端口（16位长）－识别接收连接端口
-序列号（seq，32位长）
-如果含有同步化旗标（SYN），则此为最初的序列号；第一个数据比特的序列码</p>
-        
-    
-    <time datetime="2019-05-14T14:50:41.000Z" itemprop="datePublished">2019-05-14</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/13/https工作原理/" title="https 工作原理" itemprop="url">
-  
-    <h1 itemprop="name">https 工作原理</h1>
-    
-     
-           <p itemprop="description" >https学习资料
-https基本原理1
-https基本原理2
-ssl原理解释</p>
-        
-    
-    <time datetime="2019-05-13T09:28:14.000Z" itemprop="datePublished">2019-05-13</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/13/tcpdump-记录/" title="tcpdump 记录" itemprop="url">
-  
-    <h1 itemprop="name">tcpdump 记录</h1>
-    
-     
-           <p itemprop="description" >tcpdump一些常用的选项。-s number：tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容，就需要使用这个选项，其中number是需要截取的报文字节数，如果是0的话，表示截取报文全部内容；
--nn：表示不解析域名，直接显示IP，在netstat命令中，也</p>
-        
-    
-    <time datetime="2019-05-13T07:18:48.000Z" itemprop="datePublished">2019-05-13</time>
-  </a>
-</section>
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </div>
@@ -274,13 +277,15 @@ ssl原理解释</p>
 		
 			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
 		
+			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
+		
 			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
 		
 			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
 		
 			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
 		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>10</sup></a></li>
+			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
 		
 		</ul>
 </div>
@@ -299,13 +304,15 @@ ssl原理解释</p>
 		
 			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
 		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>2</sup></a></li>
+			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
 		
 			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
 		
 			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
 		
 			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
 		
 			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
 		
@@ -328,8 +335,6 @@ ssl原理解释</p>
 			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
 		
 			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
 		
 		</ul>
 </div>
