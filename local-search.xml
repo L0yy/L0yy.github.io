@@ -100,31 +100,6 @@
   
   
   <entry>
-    <title>H-WORM变种远控分析</title>
-    <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
-    <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
-    
-    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>4gdrwceq60b7dbl.sct</td><td>rat</td><td>69B7D326575C5616D82645960B3D081A</td><td>403845 bytes</td></tr></tbody></table><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。</p><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190916190802115.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>这个样本母体总共会释放3个脚本</p><h3 id="脚本1"><a href="#脚本1" class="headerlink" title="脚本1"></a>脚本1</h3><p>首先我们看看<code>4gdrwceq60b7dbl.sct</code>，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件<br>我们用<code>Sublimi Text</code>来打开它，记事本也是可以的。</p><p><img src="https://img-blog.csdnimg.cn/20190916155338357.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>利用组数来存关键字符串，通过字符串的拼接来合成完整路径<br>会尝试删除<code>%APPDATA%\\taskmgr.js</code>  这个文件<br><img src="https://img-blog.csdnimg.cn/20190916155609819.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190916160236624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>文件中有很长一段密文，这里我改名为了<code>EncodeList</code>，通过<code>System.IO.MemoryStream.WriteByte()</code>方法把数据读入数据流中。<br>最重要的是使用<code>ADODB.Stream</code>类方法把这个数据流保存到了被上面删除掉的<code>%APPDATA%\\taskmgr.js</code>文件中<br><img src="https://img-blog.csdnimg.cn/20190916155832544.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后使用<code>WScript.Shell.Run</code>方法运行<code>taskmgr.js</code>文件</p><p>我这里使Python给他拿出来，命名为<code>taskmgr.js</code><br><img src="https://img-blog.csdnimg.cn/20190916161513776.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本2"><a href="#脚本2" class="headerlink" title="脚本2"></a>脚本2</h3><p>下面是<code>taskmgr.js</code> ，这个脚本其实还是一个解密脚本，也是 使用<code>AdoDB.Stream</code>处理数据流，然后使用<code>monKeyKing</code>中动态生成的eval方法去执行数据，来达到免杀<br><img src="https://img-blog.csdnimg.cn/20190916162014581.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>通过一个<code>Microsoft.XmlDom</code>的创建一个<code>tmp</code>对象，然后把这个对象赋予<code>eval</code>方法<br>最后就可以用<code>this.p</code>去访问到<code>Microsoft.XmlDom.tmp</code>，来达到命令执行<br><img src="https://img-blog.csdnimg.cn/20190916162041325.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当然执行的命令也肯定是被加过密的，下面就是解密数据部分，这里就简单的把base64后的结果，然后把字符”A”替换成”!-%”<br><img src="https://img-blog.csdnimg.cn/20190916163628179.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>最后使用上面构造的<code>eval</code>去执行这段解密的代码<br><img src="https://img-blog.csdnimg.cn/2019091616391031.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本3-核心代码"><a href="#脚本3-核心代码" class="headerlink" title="脚本3 核心代码"></a>脚本3 核心代码</h3><p>这里开始分析脚本2中解密出来的代码</p><p>根据这host，port和代码量，可以判断出这个应该就是这个样本的实现核心的地方了。<br>这里其实这是一个远控加感染U盘传播</p><h4 id="U盘传播"><a href="#U盘传播" class="headerlink" title="U盘传播"></a>U盘传播</h4><p><img src="https://img-blog.csdnimg.cn/20190916165932567.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>加入开机启动注册表项，来达到持久化攻击，这基本已是木马的共性<br><img src="https://img-blog.csdnimg.cn/20190916170039587.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>在下面的try块中，有一个install函数会被循环调用，这个函数是用来检测感染移动存储设备的<br><img src="https://img-blog.csdnimg.cn/20190916170300961.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>install() 会去判断当前系统磁盘是否有U盘或其他移动存储介质，有的话就执行感染操作<br><img src="https://img-blog.csdnimg.cn/20190916170657111.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举移动盘文件<br><img src="https://img-blog.csdnimg.cn/20190916171010711.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>如果文件不是快捷方式，那就将权限改为<strong>隐藏</strong>和<strong>系统权限</strong>，然后给他们创建一个同名<code>.lnk</code>的快捷方式<br><img src="https://img-blog.csdnimg.cn/20190916171254264.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>快捷方式被修改为了特殊构造的恶意代码，构造过程如下<br><img src="https://img-blog.csdnimg.cn/20190916171656803.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这样每个文件都会被隐藏，然后生成一个被感染的快捷方式去诱惑其他人点击，只要一点击，就会被感染。</p><h4 id="远控模块"><a href="#远控模块" class="headerlink" title="远控模块"></a>远控模块</h4><p>这个远控一共有<code>26</code>个命令模块，分别是<br>|命令  |含义  |<br>|–|–|<br>|disconnect|   断开连接 |<br>|reboot|   重启脚本 |<br>|shutdown| 关闭脚本 |<br>|excecute| 执行命令  |<br>|install-sdk|  安装SDK |<br>|get-pass|搜集密码  |<br>|get-pass-offline|  获取浏览器密码|<br>|update|    更新|<br>|uninstall| 卸载|<br>|up-n-exec| 请求下载执行文件|<br>|bring-log| 上传日志|<br>|down-n-exec|  下载执行文件 |<br>|filemanager|   文件管理|<br>|rdp|  启动RDP |<br>|keylogger| 启动kleylogger|<br>|offline-keylogger| 启动离线版kerlogger|<br>|browse-logs|   上传日志|<br>|cmd-shell| 执行cmd命令|<br>|get-processes| 枚举进程|<br>|disable-uac|   关闭UAC|<br>|check-eligible|    检测权限|<br>|force-eligible| 暴力提权   |<br>|elevate|  普通提权 |<br>|if-elevate|   检测权限 |<br>|kill-process| 结束进程 |<br>|sleep| 挂起进程|</p><p>这个程序会释放一个脚本到%appdata%下去，命名为<code>aFCnKVCdfY.js</code><br><img src="https://img-blog.csdnimg.cn/20190916164502275.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本4"><a href="#脚本4" class="headerlink" title="脚本4"></a>脚本4</h3><p>aFCnKVCdfY.js这个和脚本三是一样的，除了域名变了，其他都没变化。</p><p><img src="https://img-blog.csdnimg.cn/20190916174051698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="样本溯源"><a href="#样本溯源" class="headerlink" title="样本溯源"></a>样本溯源</h2><p><strong>C&amp;C</strong><br>unknownsoft.duckdns.org:7744<br>globalization.duckdns.org:50071</p><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><p>删除自启动表项<br>HKEY_CURRENT_USER\software\microsoft\windows\currentversion\run\scriptName<br>HKEY_LOCAL_MACHINE\software\microsoft\windows\currentversion\run\scriptName</p><p>删除<br>%appdata%\aFCnKVCdfY.js<br>%temp%\aFCnKVCdfY.js<br>%APPDATA%\taskmgr.js </p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>谨防不明来路的邮件，网页 文件要谨慎，要对未知文件表示怀疑，切勿怀着试一试的态度打开</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>样本详细分析</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Rat H-worm</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Com组建检测虚拟沙箱</title>
     <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
     <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
@@ -142,6 +117,31 @@
     <tags>
       
       <tag>检测沙箱</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>H-WORM变种远控分析</title>
+    <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
+    <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
+    
+    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>4gdrwceq60b7dbl.sct</td><td>rat</td><td>69B7D326575C5616D82645960B3D081A</td><td>403845 bytes</td></tr></tbody></table><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。</p><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190916190802115.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>这个样本母体总共会释放3个脚本</p><h3 id="脚本1"><a href="#脚本1" class="headerlink" title="脚本1"></a>脚本1</h3><p>首先我们看看<code>4gdrwceq60b7dbl.sct</code>，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件<br>我们用<code>Sublimi Text</code>来打开它，记事本也是可以的。</p><p><img src="https://img-blog.csdnimg.cn/20190916155338357.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>利用组数来存关键字符串，通过字符串的拼接来合成完整路径<br>会尝试删除<code>%APPDATA%\\taskmgr.js</code>  这个文件<br><img src="https://img-blog.csdnimg.cn/20190916155609819.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190916160236624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>文件中有很长一段密文，这里我改名为了<code>EncodeList</code>，通过<code>System.IO.MemoryStream.WriteByte()</code>方法把数据读入数据流中。<br>最重要的是使用<code>ADODB.Stream</code>类方法把这个数据流保存到了被上面删除掉的<code>%APPDATA%\\taskmgr.js</code>文件中<br><img src="https://img-blog.csdnimg.cn/20190916155832544.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后使用<code>WScript.Shell.Run</code>方法运行<code>taskmgr.js</code>文件</p><p>我这里使Python给他拿出来，命名为<code>taskmgr.js</code><br><img src="https://img-blog.csdnimg.cn/20190916161513776.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本2"><a href="#脚本2" class="headerlink" title="脚本2"></a>脚本2</h3><p>下面是<code>taskmgr.js</code> ，这个脚本其实还是一个解密脚本，也是 使用<code>AdoDB.Stream</code>处理数据流，然后使用<code>monKeyKing</code>中动态生成的eval方法去执行数据，来达到免杀<br><img src="https://img-blog.csdnimg.cn/20190916162014581.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>通过一个<code>Microsoft.XmlDom</code>的创建一个<code>tmp</code>对象，然后把这个对象赋予<code>eval</code>方法<br>最后就可以用<code>this.p</code>去访问到<code>Microsoft.XmlDom.tmp</code>，来达到命令执行<br><img src="https://img-blog.csdnimg.cn/20190916162041325.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当然执行的命令也肯定是被加过密的，下面就是解密数据部分，这里就简单的把base64后的结果，然后把字符”A”替换成”!-%”<br><img src="https://img-blog.csdnimg.cn/20190916163628179.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>最后使用上面构造的<code>eval</code>去执行这段解密的代码<br><img src="https://img-blog.csdnimg.cn/2019091616391031.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本3-核心代码"><a href="#脚本3-核心代码" class="headerlink" title="脚本3 核心代码"></a>脚本3 核心代码</h3><p>这里开始分析脚本2中解密出来的代码</p><p>根据这host，port和代码量，可以判断出这个应该就是这个样本的实现核心的地方了。<br>这里其实这是一个远控加感染U盘传播</p><h4 id="U盘传播"><a href="#U盘传播" class="headerlink" title="U盘传播"></a>U盘传播</h4><p><img src="https://img-blog.csdnimg.cn/20190916165932567.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>加入开机启动注册表项，来达到持久化攻击，这基本已是木马的共性<br><img src="https://img-blog.csdnimg.cn/20190916170039587.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>在下面的try块中，有一个install函数会被循环调用，这个函数是用来检测感染移动存储设备的<br><img src="https://img-blog.csdnimg.cn/20190916170300961.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>install() 会去判断当前系统磁盘是否有U盘或其他移动存储介质，有的话就执行感染操作<br><img src="https://img-blog.csdnimg.cn/20190916170657111.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举移动盘文件<br><img src="https://img-blog.csdnimg.cn/20190916171010711.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>如果文件不是快捷方式，那就将权限改为<strong>隐藏</strong>和<strong>系统权限</strong>，然后给他们创建一个同名<code>.lnk</code>的快捷方式<br><img src="https://img-blog.csdnimg.cn/20190916171254264.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>快捷方式被修改为了特殊构造的恶意代码，构造过程如下<br><img src="https://img-blog.csdnimg.cn/20190916171656803.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这样每个文件都会被隐藏，然后生成一个被感染的快捷方式去诱惑其他人点击，只要一点击，就会被感染。</p><h4 id="远控模块"><a href="#远控模块" class="headerlink" title="远控模块"></a>远控模块</h4><p>这个远控一共有<code>26</code>个命令模块，分别是<br>|命令  |含义  |<br>|–|–|<br>|disconnect|   断开连接 |<br>|reboot|   重启脚本 |<br>|shutdown| 关闭脚本 |<br>|excecute| 执行命令  |<br>|install-sdk|  安装SDK |<br>|get-pass|搜集密码  |<br>|get-pass-offline|  获取浏览器密码|<br>|update|    更新|<br>|uninstall| 卸载|<br>|up-n-exec| 请求下载执行文件|<br>|bring-log| 上传日志|<br>|down-n-exec|  下载执行文件 |<br>|filemanager|   文件管理|<br>|rdp|  启动RDP |<br>|keylogger| 启动kleylogger|<br>|offline-keylogger| 启动离线版kerlogger|<br>|browse-logs|   上传日志|<br>|cmd-shell| 执行cmd命令|<br>|get-processes| 枚举进程|<br>|disable-uac|   关闭UAC|<br>|check-eligible|    检测权限|<br>|force-eligible| 暴力提权   |<br>|elevate|  普通提权 |<br>|if-elevate|   检测权限 |<br>|kill-process| 结束进程 |<br>|sleep| 挂起进程|</p><p>这个程序会释放一个脚本到%appdata%下去，命名为<code>aFCnKVCdfY.js</code><br><img src="https://img-blog.csdnimg.cn/20190916164502275.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本4"><a href="#脚本4" class="headerlink" title="脚本4"></a>脚本4</h3><p>aFCnKVCdfY.js这个和脚本三是一样的，除了域名变了，其他都没变化。</p><p><img src="https://img-blog.csdnimg.cn/20190916174051698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="样本溯源"><a href="#样本溯源" class="headerlink" title="样本溯源"></a>样本溯源</h2><p><strong>C&amp;C</strong><br>unknownsoft.duckdns.org:7744<br>globalization.duckdns.org:50071</p><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><p>删除自启动表项<br>HKEY_CURRENT_USER\software\microsoft\windows\currentversion\run\scriptName<br>HKEY_LOCAL_MACHINE\software\microsoft\windows\currentversion\run\scriptName</p><p>删除<br>%appdata%\aFCnKVCdfY.js<br>%temp%\aFCnKVCdfY.js<br>%APPDATA%\taskmgr.js </p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>谨防不明来路的邮件，网页 文件要谨慎，要对未知文件表示怀疑，切勿怀着试一试的态度打开</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>样本详细分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Rat H-worm</tag>
       
     </tags>
     
@@ -360,31 +360,6 @@
   
   
   <entry>
-    <title>PE的一些结构笔记</title>
-    <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
-    <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
-    
-    <content type="html"><![CDATA[<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p><h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p><p>windows me 是windows 9x系列的最后一个</p><p>windows NT 2000以后的 现在的都是NT系列的</p><p>不同进程使用操作系统的共享地址</p><p>com 的特点就是没有特点</p><h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul><li>Machine：表示这个程序是什么架构的 </li><li>NumberOfSections:表示这个程序有多少个节</li><li>SizeofOptionalHeader：表示optionsHeader的大小 </li><li>Characters:表示这个程序的一些特性</li></ul><h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p><p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>]]></content>
-    
-    
-    <categories>
-      
-      <category>课堂学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>PE</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>调用dll和编写dll的几种格式</title>
     <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
     <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
@@ -402,6 +377,31 @@
     <tags>
       
       <tag>dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>PE的一些结构笔记</title>
+    <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
+    <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p><h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p><p>windows me 是windows 9x系列的最后一个</p><p>windows NT 2000以后的 现在的都是NT系列的</p><p>不同进程使用操作系统的共享地址</p><p>com 的特点就是没有特点</p><h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul><li>Machine：表示这个程序是什么架构的 </li><li>NumberOfSections:表示这个程序有多少个节</li><li>SizeofOptionalHeader：表示optionsHeader的大小 </li><li>Characters:表示这个程序的一些特性</li></ul><h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p><p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PE</tag>
       
     </tags>
     
@@ -435,31 +435,6 @@
   
   
   <entry>
-    <title>call的几种传参方式</title>
-    <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
-    <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<p>stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 </p><p>cdecl 栈传参，函数外平衡堆栈</p><p>fastcall 是通过寄存器，因为是寄存器fast嘛</p><p><strong>下面这种call是用在有类对象引用的时候来表示传参的</strong><br>thiscall 是用ecx来穿this指针的，一般都是 类似<code>lea ecx [ebp+var_20]</code><br>进入函数函数后  ecx就能会直接拿来用，不会再次赋值。</p><p><strong>识别参数个数</strong><br>1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小<br>2.划分push 的归属<br>3.遇到栈平衡相关指令。点亮push核对下已分配是否有误<br>4.注意识别出某些push为下一个函数所用<br>5.另外还要看某push归属于某个函数的最后参数却不使用的参数<br>不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>传参方式</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>调试dll的两种方法</title>
     <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
     <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
@@ -477,6 +452,31 @@
     <tags>
       
       <tag>调试dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>call的几种传参方式</title>
+    <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
+    <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<p>stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 </p><p>cdecl 栈传参，函数外平衡堆栈</p><p>fastcall 是通过寄存器，因为是寄存器fast嘛</p><p><strong>下面这种call是用在有类对象引用的时候来表示传参的</strong><br>thiscall 是用ecx来穿this指针的，一般都是 类似<code>lea ecx [ebp+var_20]</code><br>进入函数函数后  ecx就能会直接拿来用，不会再次赋值。</p><p><strong>识别参数个数</strong><br>1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小<br>2.划分push 的归属<br>3.遇到栈平衡相关指令。点亮push核对下已分配是否有误<br>4.注意识别出某些push为下一个函数所用<br>5.另外还要看某push归属于某个函数的最后参数却不使用的参数<br>不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>传参方式</tag>
       
     </tags>
     
