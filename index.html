@@ -7,8 +7,8 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/onepage/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/onepage/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
@@ -43,7 +43,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/onepage/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -58,31 +58,31 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/onepage/">Home</a>
+            <a class="nav-link" href="/">Home</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/onepage/archives/">Archives</a>
+            <a class="nav-link" href="/archives/">Archives</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/onepage/categories/">Categories</a>
+            <a class="nav-link" href="/categories/">Categories</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/onepage/tags/">Tags</a>
+            <a class="nav-link" href="/tags/">Tags</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/onepage/about/">About</a>
+            <a class="nav-link" href="/about/">About</a>
           </li>
         
         
@@ -99,7 +99,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/default.png')no-repeat center center;
+         style="background: url('https://w.wallhaven.cc/full/ox/wallhaven-ox678m.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -136,8 +136,76 @@
   <div class="row mb-4 mx-auto">
     
     
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/10/10/宏病毒下载器/" target="_self">
+          <img src="https://w.wallhaven.cc/full/83/wallhaven-839kvo.jpg" srcset="/img/loading.gif" alt="文章标题" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/10/病毒报告/">
+      <a href="/2019/10/10/宏病毒下载器/">
+        <p class="h4 index-header">文章标题</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+58e4d0.xls
+Downloader
+3effeba64d9a1a4dd1bddaeb1858e4d0
+346112  bytes
+
+
+## 简介
+
+
+
+
+
+带有恶意宏的office文件，加载dll，下载程序执行
+
+
+
+
+
+流程图
+详细分析有宏，会在你允许宏运行的时候执行起来首先会切换目录到TMPT下
+然后会调用窗体UserFrom1的Show方法,也就值展示提示窗体在展示的时候会执行UserFrom_Activate()函数，也就会调用CreatGifFile这个方法这个方法在模块 modle1中定义拼接在TEMP下的路径，根据系统位数走不同分支，我这里是win7 32位下面会拷贝本身到上面拼接好的路径 TempName中，然后复制到ZipName中会把ZipName文件按压缩包打开，取出xl\embeddings\oleObject1.bin保存到Tmp\oleObject.bin中最后会调用ReadAndWriteExtractedBinFile函数，这个函数是在oleObject.bin中找到MZ开</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-10-10&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Hexo">Hexo</a>&nbsp;
+          
+            <a href="/tags/Fluid">Fluid</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/10/病毒报告/">
         <p class="h4 index-header">tesla勒索病毒分析</p>
         
         
@@ -206,7 +274,7 @@ CRC32: DAA773C2
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/06/Lunlayloo 木马/">
+      <a href="/2019/09/06/Lunlayloo 木马/">
         <p class="h4 index-header">Lunlayloo 木马</p>
         
         
@@ -271,7 +339,7 @@ rat
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/05/ida查找检测虚拟机代码/">
+      <a href="/2019/09/05/ida查找检测虚拟机代码/">
         <p class="h4 index-header">IDA 查找检测虚拟机代码</p>
         
         
@@ -317,61 +385,7 @@ vbox_check =</div>
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/04/Com添加过滤器来检测沙箱/">
-        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
-但经测试 any.run 和微步 都未被识别为沙箱
-这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
-#include &quot;stdafx.h&quot;
-#include &lt;conio.h&gt;
-#include &lt;windows.h&gt;
-#include &lt;dshow.h&gt;
-#include &lt;objbase.h&gt;
-
-#pragma comment(lib, &quot;Strmiids.lib&quot;)
-
-void useCom()
-{
-    /*
-    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
-    只有安装了音频设备，此处的沙箱才会被视为真实系统。
-    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
-    */
-    CoInitialize(0);
-    wchar_t * filerName = L&quot;random_nam</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/04/H-WORM变种远控分析/">
+      <a href="/2019/09/04/H-WORM变种远控分析/">
         <p class="h4 index-header">H-WORM变种远控分析</p>
         
         
@@ -426,7 +440,61 @@ rat
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/03/替换特权指令 提升权限/">
+      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
+        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &quot;stdafx.h&quot;
+#include &lt;conio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;dshow.h&gt;
+#include &lt;objbase.h&gt;
+
+#pragma comment(lib, &quot;Strmiids.lib&quot;)
+
+void useCom()
+{
+    /*
+    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
+    只有安装了音频设备，此处的沙箱才会被视为真实系统。
+    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
+    */
+    CoInitialize(0);
+    wchar_t * filerName = L&quot;random_nam</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/03/替换特权指令 提升权限/">
         <p class="h4 index-header">替换特权指令 提升权限</p>
         
         
@@ -477,7 +545,7 @@ void CgPivilige()
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/02/利用弱口令传播横向的远控组件/">
+      <a href="/2019/09/02/利用弱口令传播横向的远控组件/">
         <p class="h4 index-header">弱口令横向传播</p>
         
         
@@ -534,72 +602,7 @@ rat
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/09/01/宏病毒下载器/">
-        <p class="h4 index-header">宏病毒</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">基本信息
-
-
-FileName
-FileType
-MD5
-Size
-
-
-
-58e4d0.xls
-Downloader
-3effeba64d9a1a4dd1bddaeb1858e4d0
-346112  bytes
-
-
-## 简介
-
-
-
-
-
-带有恶意宏的office文件，加载dll，下载程序执行
-
-
-
-
-
-流程图
-详细分析有宏，会在你允许宏运行的时候执行起来首先会切换目录到TMPT下
-然后会调用窗体UserFrom1的Show方法,也就值展示提示窗体在展示的时候会执行UserFrom_Activate()函数，也就会调用CreatGifFile这个方法这个方法在模块 modle1中定义拼接在TEMP下的路径，根据系统位数走不同分支，我这里是win7 32位下面会拷贝本身到上面拼接好的路径 TempName中，然后复制到ZipName中会把ZipName文件按压缩包打开，取出xl\embeddings\oleObject1.bin保存到Tmp\oleObject.bin中最后会调用ReadAndWriteExtractedBinFile函数，这个函数是在oleObject.bin中找到MZ开</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-01&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/malware%20downloader">malware downloader</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/08/26/输入法注入/">
+      <a href="/2019/08/26/输入法注入/">
         <p class="h4 index-header">输入法注入</p>
         
         
@@ -650,7 +653,7 @@ void injectD</div>
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/08/26/远线程注入/">
+      <a href="/2019/08/26/远线程注入/">
         <p class="h4 index-header">远线程注入</p>
         
         
@@ -700,7 +703,7 @@ void main()
       
       
         <li class="page-item">
-          <a class="page-link" href="/onepage/onepage/page/2/#board">下一页</a>
+          <a class="page-link" href="/page/2/#board">下一页</a>
         </li>
       
     </ul>

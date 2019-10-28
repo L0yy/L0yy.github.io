@@ -4,6 +4,27 @@
   
   
   <entry>
+    <title>文章标题</title>
+    <link href="undefined2019/10/10/%E5%AE%8F%E7%97%85%E6%AF%92%E4%B8%8B%E8%BD%BD%E5%99%A8/"/>
+    <url>2019/10/10/%E5%AE%8F%E7%97%85%E6%AF%92%E4%B8%8B%E8%BD%BD%E5%99%A8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>58e4d0.xls</td><td>Downloader</td><td>3effeba64d9a1a4dd1bddaeb1858e4d0</td><td>346112  bytes</td></tr><tr><td>## 简介</td><td></td><td></td><td></td></tr><tr><td>带有恶意宏的office文件，加载dll，下载程序执行</td><td></td><td></td><td></td></tr></tbody></table><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190920145944891.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>有宏，会在你允许宏运行的时候执行起来<br><img src="https://img-blog.csdnimg.cn/20190918202734525.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>首先会切换目录到<code>TMPT</code>下</p><p>然后会调用窗体<code>UserFrom1</code>的<code>Show</code>方法,也就值展示提示窗体<br><img src="https://img-blog.csdnimg.cn/20190918202835482.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>在展示的时候会执行<code>UserFrom_Activate()</code>函数，也就会调用<code>CreatGifFile</code>这个方法<br><img src="https://img-blog.csdnimg.cn/20190918202716893.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这个方法在模块 modle1中定义<br><img src="https://img-blog.csdnimg.cn/20190918203052154.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>拼接在<code>TEMP</code>下的路径，根据系统位数走不同分支，我这里是win7 32位<br><img src="https://img-blog.csdnimg.cn/20190918203729411.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>下面会拷贝本身到上面拼接好的路径 <code>TempName</code>中，然后复制到<code>ZipName</code>中<br><img src="https://img-blog.csdnimg.cn/20190918205110760.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>会把<code>ZipName</code>文件按压缩包打开，取出<code>xl\embeddings\oleObject1.bin</code>保存到<code>Tmp\oleObject.bin</code>中<br><img src="https://img-blog.csdnimg.cn/20190918205329214.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190918205648726.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后会调用<code>ReadAndWriteExtractedBinFile</code>函数，这个函数是在<code>oleObject.bin</code>中找到MZ开头的字符区，然后读取指定字节保存<br><img src="https://img-blog.csdnimg.cn/20190918210305935.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>定义好MZ头标记，方便后面查找<br><img src="https://img-blog.csdnimg.cn/20190918210330686.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>循环查找<code>oleObject.bin</code>中MZ开头的数据，然后拷贝到<code>NewAr</code>数组中<br><img src="https://img-blog.csdnimg.cn/20190918210842310.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>将数组中的数据保存到<code>nm</code>中，也就是 <code>%APPDATA %+\exchange1.dll</code></p><p><img src="https://img-blog.csdnimg.cn/20190918211005818.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>然后程序返回<code>CreateGifFile</code>来执行关键代码，<code>k32LL</code>和<code>Amway</code> 都在模块2中定义<br><img src="https://img-blog.csdnimg.cn/20190918211226396.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><code>k32LL()</code>其实是C语言中的<code>LoadLibraryW()</code><br><code>Amway</code>则是这个dll的一个导出函数</p><h3 id="exchange1-dll"><a href="#exchange1-dll" class="headerlink" title="exchange1.dll"></a>exchange1.dll</h3><p>有壳，先脱壳，这里就说说思路</p><p>这个壳动态开辟空间，将加密的代码放到这个新开空间中，找准时机，dump出来</p><p>然后你会发现还有UPX的壳，UPX就是容易了</p><p>脱完壳之后看导出表<br><img src="https://img-blog.csdnimg.cn/20190919212420668.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>到这里就可以看出来<code>Amway</code>其实是这个dll的到导出函数了</p><p><strong>这个dll是个下载器，能够下载程序执行</strong></p><p>但是首先会获取一系列系统信息</p><p>获取主机名<br><img src="https://img-blog.csdnimg.cn/20190919212558142.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取用户名<br><img src="https://img-blog.csdnimg.cn/20190919212740460.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取系统版本信息<br><img src="https://img-blog.csdnimg.cn/20190919212819680.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举进程<br><img src="https://img-blog.csdnimg.cn/20190919212846287.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>然后将进程名按 <code>|</code>号隔开<br><img src="https://img-blog.csdnimg.cn/201909192130056.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>后面就开始构造上传数据头了<br><img src="https://img-blog.csdnimg.cn/20190919213616330.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>开始上传本机信息<br><img src="https://img-blog.csdnimg.cn/20190919213725137.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190919213759624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>上传后会检测response的状态码是否是正常(200)<br><img src="https://img-blog.csdnimg.cn/20190919214012375.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当上传配置后会get一个文件<br><img src="https://img-blog.csdnimg.cn/20190919214254175.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这里会创建一个<code>%temp%\boots.exe</code>文件<br><img src="https://img-blog.csdnimg.cn/20190919214316698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>打开文件，往里面写下载的数据<br><img src="https://img-blog.csdnimg.cn/20190919214453138.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>下面就是核心的地方了，新开一个进程，去执行这个下载的exe程序</p><p><img src="https://img-blog.csdnimg.cn/20190919214602693.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>由于目前这个C2地址已经失效，无法获得下载数据，但是能肯定的是这个下载程序才是这个木马的核心，因为这个宏代码中没有用做任何持久化处理。</p><h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><table><thead><tr><th>域名</th><th>类型</th></tr></thead><tbody><tr><td><a href="https://office-teml-en.com/tw" target="_blank" rel="noopener">https://office-teml-en.com/tw</a></td><td>C&amp;C</td></tr></tbody></table><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>该木马利用加载隐藏在xlsx中的dll来执行命令，根据不同系统释放不同文件，利用网络存储，可以随时改变攻击方式。<br>我们要时刻保持警惕，对未知文件保持怀疑的态度，安装安全软件。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>Fluid</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>tesla勒索病毒分析</title>
     <link href="undefined2019/09/10/%E7%97%85%E6%AF%92%E6%8A%A5%E5%91%8A/"/>
     <url>2019/09/10/%E7%97%85%E6%AF%92%E6%8A%A5%E5%91%8A/</url>
@@ -79,31 +100,6 @@
   
   
   <entry>
-    <title>Com组建检测虚拟沙箱</title>
-    <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
-    <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
-    
-    <content type="html"><![CDATA[<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p><p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p><p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &lt;conio.h&gt;#include &lt;windows.h&gt;#include &lt;dshow.h&gt;#include &lt;objbase.h&gt;#pragma comment(lib, &quot;Strmiids.lib&quot;)void useCom(){    /*    这些只是一些随机检查，以确保恶意软件在真实系统上执行。    只有安装了音频设备，此处的沙箱才会被视为真实系统。    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。    */    CoInitialize(0);    wchar_t * filerName = L&quot;random_name&quot;;    IGraphBuilder * pGraph;    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))    {        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);        ExitProcess(-1);    }    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL    IBaseFilter *pBaseFile;    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。    pGraph-&gt;AddFilter(pBaseFile, filerName);    IBaseFilter *pBaseFile2;    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);    if (pBaseFile2 == NULL)    {        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);        ExitProcess(1);    }    //检查achName是不是之前添加的过滤器名    FILTER_INFO info = { 0 };    pBaseFile2-&gt;QueryFilterInfo(&amp;info);    if (wcscmp(info.achName,filerName)!=0)    {        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);        exit(0);    }    IReferenceClock *pClock;    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);        exit(0);    }    if (pClock != NULL)    {        exit(0);    }    CLSID clsID;    pBaseFile2-&gt;GetClassID(&amp;clsID);    if (clsID.Data1 == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);        exit(1);    }    if (pBaseFile2 ==NULL)    {        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);        exit(1);    }    IEnumPins *pEnum = NULL;    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);        exit(-1);    }    //AddRef返回的引用计数必须大于0    if (pBaseFile2-&gt;AddRef() == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);        exit(-1);    }}int _tmain(int argc, _TCHAR* argv[]){    useCom();    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);    return 0;}</code></pre><p>IDA反编译结果</p><p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>检测沙箱</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>H-WORM变种远控分析</title>
     <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
     <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
@@ -121,6 +117,31 @@
     <tags>
       
       <tag>Rat H-worm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Com组建检测虚拟沙箱</title>
+    <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
+    <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
+    
+    <content type="html"><![CDATA[<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p><p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p><p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &lt;conio.h&gt;#include &lt;windows.h&gt;#include &lt;dshow.h&gt;#include &lt;objbase.h&gt;#pragma comment(lib, &quot;Strmiids.lib&quot;)void useCom(){    /*    这些只是一些随机检查，以确保恶意软件在真实系统上执行。    只有安装了音频设备，此处的沙箱才会被视为真实系统。    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。    */    CoInitialize(0);    wchar_t * filerName = L&quot;random_name&quot;;    IGraphBuilder * pGraph;    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))    {        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);        ExitProcess(-1);    }    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL    IBaseFilter *pBaseFile;    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。    pGraph-&gt;AddFilter(pBaseFile, filerName);    IBaseFilter *pBaseFile2;    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);    if (pBaseFile2 == NULL)    {        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);        ExitProcess(1);    }    //检查achName是不是之前添加的过滤器名    FILTER_INFO info = { 0 };    pBaseFile2-&gt;QueryFilterInfo(&amp;info);    if (wcscmp(info.achName,filerName)!=0)    {        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);        exit(0);    }    IReferenceClock *pClock;    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);        exit(0);    }    if (pClock != NULL)    {        exit(0);    }    CLSID clsID;    pBaseFile2-&gt;GetClassID(&amp;clsID);    if (clsID.Data1 == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);        exit(1);    }    if (pBaseFile2 ==NULL)    {        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);        exit(1);    }    IEnumPins *pEnum = NULL;    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);        exit(-1);    }    //AddRef返回的引用计数必须大于0    if (pBaseFile2-&gt;AddRef() == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);        exit(-1);    }}int _tmain(int argc, _TCHAR* argv[]){    useCom();    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);    return 0;}</code></pre><p>IDA反编译结果</p><p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>检测沙箱</tag>
       
     </tags>
     
@@ -171,31 +192,6 @@
     <tags>
       
       <tag>malware Rat</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>宏病毒</title>
-    <link href="undefined2019/09/01/%E5%AE%8F%E7%97%85%E6%AF%92%E4%B8%8B%E8%BD%BD%E5%99%A8/"/>
-    <url>2019/09/01/%E5%AE%8F%E7%97%85%E6%AF%92%E4%B8%8B%E8%BD%BD%E5%99%A8/</url>
-    
-    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>58e4d0.xls</td><td>Downloader</td><td>3effeba64d9a1a4dd1bddaeb1858e4d0</td><td>346112  bytes</td></tr><tr><td>## 简介</td><td></td><td></td><td></td></tr><tr><td>带有恶意宏的office文件，加载dll，下载程序执行</td><td></td><td></td><td></td></tr></tbody></table><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190920145944891.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>有宏，会在你允许宏运行的时候执行起来<br><img src="https://img-blog.csdnimg.cn/20190918202734525.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>首先会切换目录到<code>TMPT</code>下</p><p>然后会调用窗体<code>UserFrom1</code>的<code>Show</code>方法,也就值展示提示窗体<br><img src="https://img-blog.csdnimg.cn/20190918202835482.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>在展示的时候会执行<code>UserFrom_Activate()</code>函数，也就会调用<code>CreatGifFile</code>这个方法<br><img src="https://img-blog.csdnimg.cn/20190918202716893.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这个方法在模块 modle1中定义<br><img src="https://img-blog.csdnimg.cn/20190918203052154.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>拼接在<code>TEMP</code>下的路径，根据系统位数走不同分支，我这里是win7 32位<br><img src="https://img-blog.csdnimg.cn/20190918203729411.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>下面会拷贝本身到上面拼接好的路径 <code>TempName</code>中，然后复制到<code>ZipName</code>中<br><img src="https://img-blog.csdnimg.cn/20190918205110760.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>会把<code>ZipName</code>文件按压缩包打开，取出<code>xl\embeddings\oleObject1.bin</code>保存到<code>Tmp\oleObject.bin</code>中<br><img src="https://img-blog.csdnimg.cn/20190918205329214.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190918205648726.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后会调用<code>ReadAndWriteExtractedBinFile</code>函数，这个函数是在<code>oleObject.bin</code>中找到MZ开头的字符区，然后读取指定字节保存<br><img src="https://img-blog.csdnimg.cn/20190918210305935.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>定义好MZ头标记，方便后面查找<br><img src="https://img-blog.csdnimg.cn/20190918210330686.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>循环查找<code>oleObject.bin</code>中MZ开头的数据，然后拷贝到<code>NewAr</code>数组中<br><img src="https://img-blog.csdnimg.cn/20190918210842310.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>将数组中的数据保存到<code>nm</code>中，也就是 <code>%APPDATA %+\exchange1.dll</code></p><p><img src="https://img-blog.csdnimg.cn/20190918211005818.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>然后程序返回<code>CreateGifFile</code>来执行关键代码，<code>k32LL</code>和<code>Amway</code> 都在模块2中定义<br><img src="https://img-blog.csdnimg.cn/20190918211226396.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><code>k32LL()</code>其实是C语言中的<code>LoadLibraryW()</code><br><code>Amway</code>则是这个dll的一个导出函数</p><h3 id="exchange1-dll"><a href="#exchange1-dll" class="headerlink" title="exchange1.dll"></a>exchange1.dll</h3><p>有壳，先脱壳，这里就说说思路</p><p>这个壳动态开辟空间，将加密的代码放到这个新开空间中，找准时机，dump出来</p><p>然后你会发现还有UPX的壳，UPX就是容易了</p><p>脱完壳之后看导出表<br><img src="https://img-blog.csdnimg.cn/20190919212420668.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>到这里就可以看出来<code>Amway</code>其实是这个dll的到导出函数了</p><p><strong>这个dll是个下载器，能够下载程序执行</strong></p><p>但是首先会获取一系列系统信息</p><p>获取主机名<br><img src="https://img-blog.csdnimg.cn/20190919212558142.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取用户名<br><img src="https://img-blog.csdnimg.cn/20190919212740460.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取系统版本信息<br><img src="https://img-blog.csdnimg.cn/20190919212819680.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举进程<br><img src="https://img-blog.csdnimg.cn/20190919212846287.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>然后将进程名按 <code>|</code>号隔开<br><img src="https://img-blog.csdnimg.cn/201909192130056.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>后面就开始构造上传数据头了<br><img src="https://img-blog.csdnimg.cn/20190919213616330.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>开始上传本机信息<br><img src="https://img-blog.csdnimg.cn/20190919213725137.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190919213759624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>上传后会检测response的状态码是否是正常(200)<br><img src="https://img-blog.csdnimg.cn/20190919214012375.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当上传配置后会get一个文件<br><img src="https://img-blog.csdnimg.cn/20190919214254175.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这里会创建一个<code>%temp%\boots.exe</code>文件<br><img src="https://img-blog.csdnimg.cn/20190919214316698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>打开文件，往里面写下载的数据<br><img src="https://img-blog.csdnimg.cn/20190919214453138.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>下面就是核心的地方了，新开一个进程，去执行这个下载的exe程序</p><p><img src="https://img-blog.csdnimg.cn/20190919214602693.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>由于目前这个C2地址已经失效，无法获得下载数据，但是能肯定的是这个下载程序才是这个木马的核心，因为这个宏代码中没有用做任何持久化处理。</p><h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><table><thead><tr><th>域名</th><th>类型</th></tr></thead><tbody><tr><td><a href="https://office-teml-en.com/tw" target="_blank" rel="noopener">https://office-teml-en.com/tw</a></td><td>C&amp;C</td></tr></tbody></table><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>该木马利用加载隐藏在xlsx中的dll来执行命令，根据不同系统释放不同文件，利用网络存储，可以随时改变攻击方式。<br>我们要时刻保持警惕，对未知文件保持怀疑的态度，安装安全软件。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>样本详细分析</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>malware downloader</tag>
       
     </tags>
     
