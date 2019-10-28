@@ -1,146 +1,331 @@
-
- <!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh-CN">
+
+
+
+
+
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
+  <meta name="author" content="Cray">
+  <meta name="keywords" content>
+  <title>CrayBlog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css">
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css">
+
+
   
-    <title>CrayBlog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Cray">
-    
-    <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
+
+
 
 </head>
-</html>
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
-				<h2 class="blog-motto"></h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:L0yy.github.io">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
 
-    </header>
-    <div id="container">
-      <div id="main">
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/29/angr学习文档/" title="angr学习文档" itemprop="url">
-  
-    <h1 itemprop="name">angr学习文档</h1>
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fa fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
     
-     
-           <p itemprop="description" >安装不会建议直接上docker 大是大了点，但是是相对很简单的事
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/29/angr学习文档/">
+        <p class="h4 index-header">angr学习文档</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">安装不会建议直接上docker 大是大了点，但是是相对很简单的事
 官方文档翻译angr Documentation我们首先要了解angr的构造，开始第一步肯定是导入二进制程序
-&amp;gt;&amp;gt;&amp;gt; import angr
-&amp;gt;&amp;gt;&amp;gt; proj = angr.Pr</p>
-        
-    
-    <time datetime="2019-04-29T13:29:49.000Z" itemprop="datePublished">2019-04-29</time>
-  </a>
-</section>
+&gt;&gt;&gt; import angr
+&gt;&gt;&gt; proj = angr.Project(&#39;/bin/true&#39;)之后我们的操作都会基于这个proj对象，
+基础属性&gt;&gt;&gt; import monkeyhex //将以十六进制格式化数值输出结果
+&gt;&gt;&gt; proj.arch //程序的
+&lt;Arch AMD64 (LE)&gt;
+&gt;&gt;&gt; proj.entry //程序入口处
+0x401670
+&gt;&gt;&gt; proj.filename //程序二进制地址
+&#39;/bin/true&#39;The loader 方法从二进制文件转变为虚拟地址空间的表现形式的过程是十分复杂的。我们有一个名为CLE的模块来处理这个过程。CLE的结果，称为loader，可通过.loader属性来进行操控。
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/28/课程笔记：安全运维平台设计/" title="课程笔记：安全运维平台设计" itemprop="url">
-  
-    <h1 itemprop="name">课程笔记：安全运维平台设计</h1>
-    
-     
-           <p itemprop="description" >基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风</p>
-        
-    
-    <time datetime="2019-04-28T09:23:52.000Z" itemprop="datePublished">2019-04-28</time>
-  </a>
-</section>
+&gt;&gt;&gt</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/26/课程笔记：前端页面开发/" title="课程笔记：前端页面开发" itemprop="url">
-  
-    <h1 itemprop="name">课程笔记：前端页面开发</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-29&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Angr">Angr</a>&nbsp;
+          
+            <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E5%8C%96">程序自动化</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >不是写HTML基础，只记录一些框架和技术,我本人不是很喜欢前端，觉得枯燥。。。
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/28/课程笔记：安全运维平台设计/">
+        <p class="h4 index-header">课程笔记：安全运维平台设计</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">
+基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风险感知与协同响应能力，以达到“摸清家底，认清风险，找出漏洞，通报结果，督促整改”的效果，真正实现聚焦业务稳定运行的安全运维。
+
+安全运维参评的了解我的宏观概念：
+安全运维产品都是为我们为网络管理员和企业资源服务，包括但不限于：防火墙（NISG），入侵防御（IDS），上网行为管理系统（NIBC），漏洞扫描（NASM），防病毒，数据风控… 由他们相互合作，达到就好的服务效果。
+安全运维产品为安全和简洁为生，使网络结构化，高度安全化，以及便于管理员管理。
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-28&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%AE%89%E5%85%A8%E8%BF%90%E7%BB%B4">安全运维</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/26/课程笔记：前端页面开发/">
+        <p class="h4 index-header">课程笔记：前端页面开发</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">不是写HTML基础，只记录一些框架和技术,我本人不是很喜欢前端，觉得枯燥。。。
 什么是JavaScript
-JavaScript是一种属于网络的脚本语言,已经被广泛用于Web应用开发,常用来为网页添加各式各样的动态功能,为用户提供更流畅美观的浏览效果。通常JavaScript脚本</p>
-        
-    
-    <time datetime="2019-04-26T15:14:22.000Z" itemprop="datePublished">2019-04-26</time>
-  </a>
-</section>
+JavaScript是一种属于网络的脚本语言,已经被广泛用于Web应用开发,常用来为网页添加各式各样的动态功能,为用户提供更流畅美观的浏览效果。通常JavaScript脚本是通过嵌入在HTML中来实现自身的功能的。
+1.是一种解释性脚本语言（代码不进行预编译）。
+2.主要用来向HTML（标准通用标记语言下的一个应用）页面添加交互行为。
+3.可以直接嵌入HTML页面，但写成单独的js文件有利于结构和行为的分离。
+4.跨平台特性，在绝大多数浏览器的支持下，可以在多种平台下运行（如Windows、Linux、Mac、Android、iOS等）。
+Javascript脚本语言同其他语言一样，有它自身的基本数据类型，表达式和算术运算符及程序的基本程序框架。Javascript提供了四种基本的数据类型和两种特殊数据类型用来处理数据和文字。而变量提供存放信息的地方，表达式则可以完成较复杂的信息处理。 
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/26/课程笔记：计算机网络C程序设计/" title="课程笔记：计算机网络C程序设计" itemprop="url">
-  
-    <h1 itemprop="name">课程笔记：计算机网络C程序设计</h1>
-    
-     
-           <p itemprop="description" >前言我对这个就真的是很感兴趣的，但是苦于不想干开发，只喜欢自己写写代码玩，不能当做工作来干。。。
-这堂课是东软的开发工程师于玉龙老师上的，于老师代码写得是真的不错，简单易懂，比网上代码有好多了，说的写的都是重点，这篇文章我也主要介绍下我的一些学习中的理解，主要的代码实现还是看看源</p>
-        
-    
-    <time datetime="2019-04-26T15:13:44.000Z" itemprop="datePublished">2019-04-26</time>
-  </a>
-</section>
+什么是ajax
+Ajax 即“Asynchronous Javascript And XM</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/26/课程笔记：云平台概述-云安全/" title="课程笔记：云平台概述 云安全" itemprop="url">
-  
-    <h1 itemprop="name">课程笔记：云平台概述 云安全</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%89%8D%E7%AB%AF">前端</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >记录上课的一些东西，这些都很浅显，完全是为了记一笔这个技术
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/26/课程笔记：计算机网络C程序设计/">
+        <p class="h4 index-header">课程笔记：计算机网络C程序设计</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">前言我对这个就真的是很感兴趣的，但是苦于不想干开发，只喜欢自己写写代码玩，不能当做工作来干。。。
+这堂课是东软的开发工程师于玉龙老师上的，于老师代码写得是真的不错，简单易懂，比网上代码有好多了，说的写的都是重点，这篇文章我也主要介绍下我的一些学习中的理解，主要的代码实现还是看看源码。
+自己的C语言当初老师教的浅显，后来就基本使用python代替日常开发了，所以也算是个复习和巩固的过程吧。。
+linux与 C下面这些技术都是在linux上实现的，计算机网络C程序开发嘛，也是各种网络设备4层和7层设备的底层实现，因为C接近底层，而linux内核右是一个极具开发前途的系统，可以在在上面加上可行的任何功能。。。
+我也是在学习中，下面都是我的学习笔记。如果后期有必要，再写一些吧。
+代码都在github源码地址
+目录介绍
+CH0201hello依旧是最喜欢的hello world
+02option这个很有用，获取命令行参数，并且可以自己定义方法，使用了getopt.h这个头文件，命令行工具必备。
+03cli自定义一个获取参数行的参数，这个不如第二个好用，个人建议使用第二个，但是这个更简单， 如果只</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/GCC">GCC</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/26/课程笔记：云平台概述-云安全/">
+        <p class="h4 index-header">课程笔记：云平台概述 云安全</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">记录上课的一些东西，这些都很浅显，完全是为了记一笔这个技术
 云平台
 云技术是指在广域网或局域网内将硬件、软件、网络等系列资源统一起来，实现数据的计算、储存、处理和共享的一种托管技术。
 
@@ -148,274 +333,438 @@ JavaScript是一种属于网络的脚本语言,已经被广泛用于Web应用开
 下面是云技术的三种常见技术
 VMware ESX
 
-ESXi专为运行虚</p>
-        
-    
-    <time datetime="2019-04-26T15:13:10.000Z" itemprop="datePublished">2019-04-26</time>
-  </a>
-</section>
+ESXi专为运行虚拟机、最大限度降低配置要求和简化部署而设计。只需几分钟时间，客户便可完成从安装到运行虚拟机的全过程，特别是在下载并安装预配置虚拟设备的时候。
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/23/git迁移后第一次恢复/" title="git迁移后第一次恢复" itemprop="url">
-  
-    <h1 itemprop="name">git迁移后第一次恢复</h1>
+拓扑
+主要两个部件在裸机服务器装的ESXi 服务  和 在管理员电脑上用来访问 ESXi 服务并安装和管理上面的虚拟机的软件
+服务器上安装ESXI是为了提供虚拟化服务
+如果在小型拓扑环境下管理员可以使用vSphere client ,小巧，方柏霓管理ESXI服务器，但是如果在大型拓扑环境下，就要使用vCenter server，
+
+vCenter server和 vSphere client 很像，但是它和功能更加强大。vCenter server 是安装在 Window 服务器或 Linux 服务器里面。VMware vCenter server 是一个中心化的管理应</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%BA%91">云</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >下载安装git下载好后直接安装就是了，都是傻瓜操作，都点下一步就是了，git软件不大，安C盘不影响什么的安好后鼠标右键可以出现git Gui选项就好了
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/23/git迁移后第一次恢复/">
+        <p class="h4 index-header">git迁移后第一次恢复</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">下载安装git下载好后直接安装就是了，都是傻瓜操作，都点下一步就是了，git软件不大，安C盘不影响什么的安好后鼠标右键可以出现git Gui选项就好了
 生成自己的ssh密钥对在你本地和需要git的服务器进行数据交互需要身份认证，总不至于每次都输账号名和密码吧。。。
-这里我们使用非</p>
-        
-    
-    <time datetime="2019-04-23T01:42:03.000Z" itemprop="datePublished">2019-04-23</time>
-  </a>
-</section>
+这里我们使用非对称加密密钥对来识别身份。
+非对称加密
+非对称加密算法需要两个密钥：公开密钥（publickey:简称公钥）和私有密钥（privatekey:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/20/IDA插件retdec安装详解/" title="IDA插件retdec安装详解" itemprop="url">
-  
-    <h1 itemprop="name">IDA插件retdec安装详解</h1>
+去自己的用户目录下 ~/ 看看有没有/.ssh文件（是隐藏文件，需要打开查看里面的隐藏文件）没有就自己生成一个使用 
+ssh-keygen -t rsa -C &quot;youemail@163.com&quot;
+然后连续回车就好了
+安装到你github上登陆上你的github 打开个人设置里面的 SSH and GPG keys 新建一个，名字随意，key 就填刚才生成的.pub结尾的文件用记事本打开里面的全部内容
+概念
+配置一个git目录好了之后在我们要上传的文件夹内打开git </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Git">Git</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/git%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90%E4%BB%A5%E5%8F%8A%E5%AE%89%E8%A3%85">git密钥生成以及安装</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >先看看效果这是解码base64的汇编分别通过idaF5和retdec反编译的伪代码
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/20/IDA插件retdec安装详解/">
+        <p class="h4 index-header">IDA插件retdec安装详解</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">先看看效果这是解码base64的汇编分别通过idaF5和retdec反编译的伪代码
 IDAF5效果
 retdec效果
 官方指导
-The decompiler is not limited to any particular target architecture, operati</p>
-        
-    
-    <time datetime="2019-04-20T02:50:41.000Z" itemprop="datePublished">2019-04-20</time>
-  </a>
-</section>
+The decompiler is not limited to any particular target architecture, operating system, or executable file format:
+Supported file formats: ELF, PE, Mach-O, COFF, AR (archive), Intel HEX, and raw machine codeSupported architectures:
+32-bit: Intel x86, ARM, MIPS, PIC32, and PowerPC
+64-bit: x86-64
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/10/溢出到花指令去除，外加z3解决/" title="溢出到花指令去除，外加z3解决" itemprop="url">
-  
-    <h1 itemprop="name">溢出到花指令去除，外加z3解决</h1>
+就是说支持的反编译的种类
+这里贴一下它的官方地址
+retdec官网
+github项目
+本地安装目的：我们先本地安装好他的环境，再通过IDA插件调用它
+根据指导我们开始吧
+1.下载并解压缩预先构建的软件包进入https://github.com/avast/retdec/relea</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IDA">IDA</a>&nbsp;
+          
+            <a href="/tags/retdec">retdec</a>&nbsp;
+          
+            <a href="/tags/%E5%8F%8D%E7%BC%96%E8%AF%91">反编译</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >题目看雪.TSRC 2017CTF秋季赛
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/10/溢出到花指令去除，外加z3解决/">
+        <p class="h4 index-header">溢出到花指令去除，外加z3解决</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">题目看雪.TSRC 2017CTF秋季赛
 地址：https://ctf.pediy.com/game-fight-47.htm
 入坑初始程序打开国际惯例，查看字符串，找到引用，
 #main函数
 
-.text:00401000 ; int __cdecl main(int argc</p>
-        
-    
-    <time datetime="2019-04-10T08:10:17.000Z" itemprop="datePublished">2019-04-10</time>
-  </a>
-</section>
+.text:00401000 ; int __cdecl main(int argc, const char **argv, const char **envp)
+.text:00401000 _main           proc near               ; CODE XREF: start+AF↓p
+.text:00401000
+.text:00401000 argc            = dword ptr  4
+.text:00401000 argv            = dword ptr  8
+.text:00401000 envp            = dword ptr  0Ch
+.text:00401000
+.text:00401000                 push    offset aCrackmeForCtf2 ; &quot;\</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/08/docker-学习记录/" title="docker 学习记录" itemprop="url">
-  
-    <h1 itemprop="name">docker 学习记录</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/z3">z3</a>&nbsp;
+          
+            <a href="/tags/%E8%8A%B1%E6%8C%87%E4%BB%A4">花指令</a>&nbsp;
+          
+            <a href="/tags/OD">OD</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >起因本文背景操作系统：Ubuntu 16.04
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/08/docker-学习记录/">
+        <p class="h4 index-header">docker 学习记录</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">起因本文背景操作系统：Ubuntu 16.04
 今天上课就不想听老师的，就想写下自己之前没搞懂的docker，基本都是看的网上教程和官方文档
 认识docker官方文档：https://docs.docker.com/get-started/
-优秀博客：https://zhuanl</p>
-        
-    
-    <time datetime="2019-04-08T11:11:22.000Z" itemprop="datePublished">2019-04-08</time>
-  </a>
-</section>
+优秀博客：https://zhuanlan.zhihu.com/p/22403015
+我这里主要根据官方文档记录下学习过程
+什么是docker上面那篇知乎文章写的很好，详细解释了什么是docker，以及和虚拟机的区别，我这里还是给自己增强下记忆。
+虚拟机是模拟抽象出了硬件，然后在虚拟出的硬件上运行新的内核系统，所以虚拟机机开机慢（包括开机自检，启动操作系统等等）
+docker 我们可以理解成一个特别的进程，通过linux fork出来的一个进程，(fork出来的父进程和子进程都是一样的)，然后运用各种隔离形成‘独立进程’(这个可以看些知乎那篇文章)，docker不用安装其他操作系统，也不需要模拟kernel ，用的是本机的kernel 。
+总结一下docker 就是隔离了除内核资源外其应用层资源的进程，docker镜像的kernel和运行docke</div>
+        </div>
+      </a>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2019/04/04/看雪刷题系列：2017/" title="看雪刷题系列：2017" itemprop="url">
-  
-    <h1 itemprop="name">看雪刷题系列：2017</h1>
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Docker">Docker</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/docker">docker</a>&nbsp;
+          
+            <a href="/tags/hub">hub</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
     
-     
-           <p itemprop="description" >题目链接和write up
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/04/看雪刷题系列：2017/">
+        <p class="h4 index-header">看雪刷题系列：2017</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">题目链接和write up
 运行调试和结果就一个简单框题， vc6写的，而且作者也说没什么防护我的结果是 1555
-反编译F12 搜索字符串，确实有成功提示，跳转到引用出，但发现相应函数不能F5大法，说不在函数体内，其实是因为IDA没有把这段代码认识是代码OTZ，姑且这样认为吧，</p>
+反编译F12 搜索字符串，确实有成功提示，跳转到引用出，但发现相应函数不能F5大法，说不在函数体内，其实是因为IDA没有把这段代码认识是代码OTZ，姑且这样认为吧，我们可以手动点击函数体名，右击选择Creat function 就可以反编译了
+反编译位置之前函数设定有点问题 ，我是在.text:004011F4 .text:004012AA两个位置创建了函数，反编译出来很简单了
+int sub_4011F4()
+{
+  int v0; // ecx
+  double v1; // st7
+  double v2; // st6
+  double v3; // st6
+  CHAR num1; // [esp+0h] [ebp-1Ch]
+  char num2; // [esp+1h] [ebp-1Bh]
+  char num3; // [esp+2h] [ebp-1Ah]
+  char num4; // [esp+3h] [ebp-19h]
+  int v9; // [e</div>
+        </div>
+      </a>
+
+      <div>
         
-    
-    <time datetime="2019-04-04T08:46:42.000Z" itemprop="datePublished">2019-04-04</time>
-  </a>
-</section>
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
 
 
-  <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+
+  <nav aria-label="index posts navigation">
+    <ul class="pagination pg-blue justify-content-center mt-5">
+      
+      
+        <li class="page-item">
+          <a class="page-link" href="/page/3/#board">上一页</a>
+        </li>
+      
+      
+        <li class="page-item">
+          <a class="page-link" href="/page/5/#board">下一页</a>
+        </li>
+      
+    </ul>
   </nav>
 
-</div>
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
 
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
-		
-			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
-		
-			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
-		
-			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
-		
-			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
-		
-			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
-		
-			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
-		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
-		
-		</ul>
-</div>
-
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
 
   
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
-		
-			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
-		
-			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
-		
-			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
-		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
-		
-			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
-		
-			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
-		
-			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
-		
-			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
-		
-			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
-		
-			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-		</ul>
-</div>
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
 
-
-</aside>
-</div>
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
-		
-		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
-		
-		</p>
+  </div>
 </div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+    
+  </div>
 </footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
     };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-        
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $('#post').find('img').each(
+      function () {
+        var _this = $(this);
+        var _src = _this.attr("src");
+        _this.wrap('<a data-fancybox="images" href="' + _src + '" ></a>');
+      }
+    );
+  </script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
 
 
 
 
-
-
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-146435492-1', 'l0yy.github.io');  
-ga('send', 'pageview');
-</script>
-
-
-  </body>
- </html>
+</body>
+</html>

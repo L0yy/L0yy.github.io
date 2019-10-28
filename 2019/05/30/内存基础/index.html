@@ -1,101 +1,138 @@
-
- <!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh-CN">
+
+
+
+
+
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
+  <meta name="author" content="Cray">
+  <meta name="keywords" content>
+  <title>内存基础 ~ CrayBlog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css">
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css">
+
+
   
-    <title>内存基础 | CrayBlog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Cray">
-    
-    <meta name="description" content="原文地址
-看点好玩的东西显然，并非每次应用程序崩溃都会导致漏洞利用。在许多情况下，应用程序崩溃不会导致利用…但有时它会。对于“exploitation”，我的意思是你希望应用程序做一些不打算做的事情……例如运行你自己的代码。使应用程序执行不应该执行的操作的最简单方法是控制其应用程序流（并将其重定向到">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
+
+
 
 </head>
-</html>
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
-				<h2 class="blog-motto"></h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:L0yy.github.io">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
 
-    </header>
-    <div id="container">
-      <div id="main" class="post" itemscope itemprop="blogPost">
-	<article itemprop="articleBody"> 
-		<header class="article-info clearfix">
-  <h1 itemprop="name">
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              <p class="mt-3">星期四, 五月 30日 2019, 8:41 早上</p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
     
-      <a href="/2019/05/30/内存基础/" title="内存基础" itemprop="url">内存基础</a>
-  </h1>
-  <p class="article-author">By
-    
-      <a href="http://L0yy.github.io" title="Cray">Cray</a>
-    </p>
-  <p class="article-time">
-    <time datetime="2019-05-30T00:41:45.000Z" itemprop="datePublished">2019-05-30</time>
-    更新日期:<time datetime="2019-08-25T11:45:14.406Z" itemprop="dateModified">2019-08-25</time>
-    
-  </p>
-</header>
-	<div class="article-content">
-		
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#看点好玩的东西"><span class="toc-number">1.</span> <span class="toc-text">看点好玩的东西</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在我们开始之前-一些理论"><span class="toc-number">2.</span> <span class="toc-text">在我们开始之前 - 一些理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进程内存"><span class="toc-number">3.</span> <span class="toc-text">进程内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#栈"><span class="toc-number">4.</span> <span class="toc-text">栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调试器"><span class="toc-number">5.</span> <span class="toc-text">调试器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#确定缓冲区大小以准确写入EIP"><span class="toc-number">6.</span> <span class="toc-text">确定缓冲区大小以准确写入EIP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找写入shellcode的内存空间"><span class="toc-number">7.</span> <span class="toc-text">查找写入shellcode的内存空间</span></a></li></ol>
-		</div>
-		
-		<p> <a href="https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/" target="_blank" rel="noopener">原文地址</a></p>
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p> <a href="https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/" target="_blank" rel="noopener">原文地址</a></p>
 <h2 id="看点好玩的东西"><a href="#看点好玩的东西" class="headerlink" title="看点好玩的东西"></a>看点好玩的东西</h2><p>显然，并非每次应用程序崩溃都会导致漏洞利用。在许多情况下，应用程序崩溃不会导致利用…但有时它会。对于“exploitation”，我的意思是你希望应用程序做一些不打算做的事情……例如运行你自己的代码。使应用程序执行不应该执行的操作的最简单方法是控制其应用程序流（并将其重定向到其他位置）。这可以通过控制指令指针（或程序计数器）来完成，指令指针是一个CPU寄存器，它包含一个指针，指向需要执行的下一条指令所在的位置。假设应用程序使用参数调用函数。在转到函数之前，它将当前位置保存在指令指针中（因此它知道函数完成时返回的位置）。如果您可以修改此指针中的值，并将其指向内存中包含您自己的代码段的位置，那么您可以更改应用程序流并使其执行不同的操作（除了返回到原始位置）。您希望在控制流后执行的代码通常称为“shellcode”。因此，如果我们让应用程序运行我们的shellcode，我们可以将其称为有效的漏洞。在大多数情况下，此指针由术语EIP引用。该寄存器大小为4个字节。因此，如果您可以修改这4个字节，那么您拥有应用程序（以及运行应用程序的计算机）</p>
 <h2 id="在我们开始之前-一些理论"><a href="#在我们开始之前-一些理论" class="headerlink" title="在我们开始之前 - 一些理论"></a>在我们开始之前 - 一些理论</h2><ul>
 <li><p>代码段（处理器执行的指令.EIP跟踪下一条指令）</p>
@@ -141,7 +178,7 @@
 <li>指向SEH链中第一个条目的指针</li>
 </ul>
 <p>进程内的每个线程都有一个TEB。</p>
-<p>Win32进程内存映射如下所示：<br><img src="1.png" alt="png1"></p>
+<p>Win32进程内存映射如下所示：<br><img src="1.png" srcset="/img/loading.gif" alt="png1"></p>
 <p>程序image / dll的文本段是只读的，因为它只包含应用程序代码。这可以防止人们修改应用程序代码。该内存段具有固定大小。数据段用于存储全局和静态程序变量。数据段用于初始化的全局变量，字符串和其他常量。数据段是可写的并且具有固定的大小。堆段用于其余的程序变量。它可以根据需要变大或变小。堆中的所有内存都由allocator（和deallocator）算法管理。这些算法保留了一个存储区域。<strong>堆将朝着高的地址增长</strong>。在dll中，代码，导入（dll使用的函数列表，来自另一个dll或应用程序）和导出（它使其他dll的应用程序可用的函数）都是代码段的一部分。</p>
 <h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>堆栈是进程内存的一部分，一个工作LIFO的数据结构（后进先出）。操作系统为每个线程（创建线程时）分配栈。当线程结束时，栈也被清除。栈的大小在创建时定义，并且不会更改。结合LIFO以及不需要复杂的管理结构/机制来管理的事实，栈非常快，但是尺寸有限。</p>
 <p>LIFO意味着最近放置的数据（PUSH指令的结果）是第一个将再次从栈中删除的数据。（通过POP指令）。</p>
@@ -160,29 +197,29 @@ void do_something(char *Buffer)
 int main (int argc, char **argv)
 {
      do_something(argv[1]);
-}</code></pre><p><img src="2.png" alt="2"></p>
+}</code></pre><p><img src="2.png" srcset="/img/loading.gif" alt="2"></p>
 <p>这个应用程序接受一个参数（argv [1]并将参数传递给函数do_something（）。）在该函数中，参数被复制到一个最大为128个字节的局部变量中。所以…如果参数长于127个字节（一个空字节来终止字符串），缓冲区可能会溢出。</p>
 <p>当从main（）内部调用函数“do_something（param1）”时，会发生以下情况：</p>
 <p>将在“父”堆栈顶部创建一个新的堆栈帧。堆栈指针（ESP）指向新创建的堆栈的最高地址。这是“top of the stack”。</p>
-<p><img src="3.png" alt="3"></p>
+<p><img src="3.png" srcset="/img/loading.gif" alt="3"></p>
 <p>在调用do_something（）之前，指向参数的指针会被push到栈。在我们的例子中，这是一个指向argv [1]的指针。</p>
-<p><img src="4.png" alt="4"></p>
+<p><img src="4.png" srcset="/img/loading.gif" alt="4"></p>
 <p>MOV指令后栈：</p>
-<p><img src="5.png" alt="5"></p>
+<p><img src="5.png" srcset="/img/loading.gif" alt="5"></p>
 <p>然后，函数do_something被调用。会将主函数CALL指令的下一指令地址放到栈上（因此它是子函数返回的位置），然后跳转到功能代码。</p>
-<p><img src="6.png" alt="6"></p>
-<p>push的结果，ESP递减4个字节，现在指向较低的地址。<br><img src="7.png" alt="7"></p>
+<p><img src="6.png" srcset="/img/loading.gif" alt="6"></p>
+<p>push的结果，ESP递减4个字节，现在指向较低的地址。<br><img src="7.png" srcset="/img/loading.gif" alt="7"></p>
 <p>（或者，如在调试器中看到的）：ESP指向0022FF5C。在这个地址，我们看到保存的EIP（返回…），然后是指向参数的指针（本例中为AAAA）。在执行CALL指令之前，该指针已保存在堆栈中。</p>
-<p><img src="8.png" alt="8"></p>
+<p><img src="8.png" srcset="/img/loading.gif" alt="8"></p>
 <p>接下来，被调用函数开始执行。先将将父函数栈基指针（EBP）保存到栈中，因此当函数返回时也可以恢复它。保存父函数栈基指针的指令是“push ebp”。ESP再次以4个字节递减。</p>
-<p><img src="9.png" alt="9"><br><img src="10.png" alt="10"></p>
+<p><img src="9.png" srcset="/img/loading.gif" alt="9"><br><img src="10.png" srcset="/img/loading.gif" alt="10"></p>
 <p>在push ebp之后，当前栈指针（ESP）被置于EBP中。此时，ESP和EBP都指向当前栈的顶部。从那时起，栈通常由ESP（任何时候栈的顶部）和EBP（当前栈基指针）引用。这样，应用程序可以通过使用EBP的偏移量来引用变量。</p>
 <blockquote>
 <p>Most functions start with this sequence :  PUSH EBP, followed by MOV EBP,ESP</p>
 </blockquote>
 <p>因此，如果您将4个字节push到栈，ESP将减少4个字节，EBP仍将保持原样。然后，您可以使用EBP-0x4引用这4个字节。</p>
 <p>接下来，我们可以看到如何声明/分配变量MyVar（128bytes）的栈空间。为了保存数据，在栈上分配一些空间来保存此变量中的数据…… ESP减少了多个字节。由于编译器确定的分配例程，这个字节数很可能超过128个字节。在Dev-C ++的情况下，这是0x98字节。所以你会看到SUB ESP，0x98指令。这样，这个变量就有空间可用。</p>
-<p><img src="11.png" alt="11"></p>
+<p><img src="11.png" srcset="/img/loading.gif" alt="11"></p>
 <p><strong>子函数汇编码：</strong></p>
 <pre><code>00401290  /$ 55             PUSH EBP
 00401291  |. 89E5           MOV EBP,ESP
@@ -201,9 +238,9 @@ int main (int argc, char **argv)
 </blockquote>
 <p>在这个的例子中，我们有一个strcpy（）函数。</p>
 <p>此函数将从[<code>Buffer</code>]指向的地址读取数据并将其存储，读取所有数据，直到看到空字节（字符串终止符）。当它复制数据时，ESP就会保持原样。strcpy（）不使用PUSH指令将数据放入堆栈……它基本上读取一个字节并使用索引将其写入堆栈（例如ESP，ESP + 1，ESP + 2等）。所以在复制之后，ESP仍然指向字符串的开头。</p>
-<p><img src="12.png" alt="12"></p>
+<p><img src="12.png" srcset="/img/loading.gif" alt="12"></p>
 <p>这意味着……如果[<code>Buffer</code>]中的数据略长于0x98字节，strcpy（）将覆盖已保存的EBP并最终保存EIP（依此类推）。毕竟，它只是继续读写，直到它到达源位置的空字节（如果是字符串）</p>
-<p><img src="13.png" alt="13"></p>
+<p><img src="13.png" srcset="/img/loading.gif" alt="13"></p>
 <p>ESP仍然指向字符串的开头。strcpy（）完成就好没有错。在strcpy（）之后，函数结束。这就是事情变得有趣的地方。函数结束处理启动。基本上，它会将ESP移回存储EIP的位置，它将发出RET。它将采用指针（在我们的情况下为AAAA或0x41414141，因为它被覆盖），并将跳转到该地址。</p>
 <p>所以你控制EIP。</p>
 <p>简而言之，通过控制EIP，您可以更改函数返回值来“恢复正常流量”。</p>
@@ -215,9 +252,9 @@ int main (int argc, char **argv)
 <h2 id="调试器"><a href="#调试器" class="headerlink" title="调试器"></a>调试器</h2><p>为了查看堆栈的状态（以及寄存器的值，如指令指针，堆栈指针等），我们需要将调试器连接到应用程序，这样我们就可以看到应用程序运行时会发生什么（特别是当它dies时）。</p>
 <p>有许多调试器可用于此目的。我经常使用的两个调试器是 Windbg.olldbg.Immunity 的调试器</p>
 <p>下面是windbg调试器</p>
-<p><img src="14.png" alt="14"></p>
+<p><img src="14.png" srcset="/img/loading.gif" alt="14"></p>
 <p>您还可以通过设置以下注册表项来禁用“xxxx遇到问题并需要关闭”弹出窗口：HKLM \ Software \ Microsoft \ Windows NT \ CurrentVersion \ AeDebug \ Auto：设置为0</p>
-<p><img src="15.png" alt="15"></p>
+<p><img src="15.png" srcset="/img/loading.gif" alt="15"></p>
 <p>为了避免Windbg抱怨找不到符号文件，请在硬盘上创建一个文件夹（比方说c：\ windbgsymbols）。然后，在Windbg中，转到“文件” - “符号文件路径”并输入以下字符串：</p>
 <p><code>SRV*C:\windbgsymbols*http://msdl.microsoft.com/download/symbols</code></p>
 <p><strong>(不要在这个字符串后面加一个空行！确保此字符串是符号路径字段中唯一的字符串)</strong></p>
@@ -234,7 +271,7 @@ open($FILE,&quot;&gt;$file&quot;);
 print $FILE $junk.$junk2;
 close($FILE);
 print &quot;m3u File Created successfully\n&quot;;</code></pre><p>创建文件并在Easy RM中打开crash25000.m3u到MP3。</p>
-<p><img src="16.png" alt="16"></p>
+<p><img src="16.png" srcset="/img/loading.gif" alt="16"></p>
 <p>好的，所以eip包含42424242（BBBB），所以我们知道EIP的偏移量在25000到30000之间。这也意味着我们应该/可能会看到ESP指向的内存中剩余的B（假设EIP在结束前被覆盖）30000字符缓冲区）</p>
 <p>转储ESP的内容：</p>
 <pre><code>0:000&gt; d esp
@@ -270,291 +307,198 @@ echo &quot;source ~/peda/peda.py&quot; &gt;&gt; ~/.gdbinit </code></pre><p>下�
 <pre><code>gdb
 pattern_creat 5000 patter5000.txt #生成一个5000字节的测试字符到一个文本里</code></pre><p>原文后面就基本是例子演示，建议直接看原文</p>
 <h2 id="查找写入shellcode的内存空间"><a href="#查找写入shellcode的内存空间" class="headerlink" title="查找写入shellcode的内存空间"></a>查找写入shellcode的内存空间</h2><p>我们控制EIP。因此，我们可以将EIP指向其他地方，包含我们自己的代码（shellcode）。但是这个空间在哪里，我们如何将我们的shellcode放在那个位置？我们如何让EIP跳转到那个位置？为了使应用程序崩溃，我们已经将26094 A写入内存，我们已经在保存的EIP字段（ret）中写入了一个新值，并且我们编写了一堆C语言。当应用程序崩溃时，请查看寄存器并转储所有寄存器（d esp，d eax，d ebx，d ebp，…）。如果你可以在其中一个寄存器中看到你的缓冲区（A或C），那么你可以用shellcode替换它们并跳转到那个位置。在我们的例子中，我们可以看到ESP似乎指向我们的C（记住上面的es esp的输出），所以理想情况下我们会把我们的shellcode而不是C，我们告诉EIP去ESP地址。尽管事实上我们可以看到C，但我们并不确定第一个C（地址为000ff730，ESP指向的地方）实际上是我们放入缓冲区的第一个C.我们将更改perl脚本并提供一个字符模式（我已经占用了144个字符，但你可以花费更多或更少）而不是C：</p>
-  
-	</div>
-		<footer class="article-footer clearfix">
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/内存/">内存</a><a href="/tags/溢出/">溢出</a><a href="/tags/栈/">栈</a>
-  </div>
-
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/逆向/">逆向</a>
-</div>
-
-
-
-<div class="article-share" id="share">
-
-  <div data-url="http://L0yy.github.io/2019/05/30/内存基础/" data-title="内存基础 | CrayBlog" data-tsina="" class="share clearfix">
-  </div>
-
-</div>
-</footer>   	       
-	</article>
-	
-<nav class="article-nav clearfix">
- 
- <div class="prev" >
- <a href="/2019/06/03/silky：0x02靶机总结/" title="silky：0x02靶机总结">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  silky：0x02靶机总结</span>
-</a>
-</div>
-
-
-<div class="next">
-<a href="/2019/05/14/TCP总结/"  title="TCP总结">
- <strong>NEXT:</strong><br/> 
- <span>TCP总结
-</span>
-</a>
-</div>
-
-</nav>
-
-	
-</div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
-
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#看点好玩的东西"><span class="toc-number">1.</span> <span class="toc-text">看点好玩的东西</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在我们开始之前-一些理论"><span class="toc-number">2.</span> <span class="toc-text">在我们开始之前 - 一些理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进程内存"><span class="toc-number">3.</span> <span class="toc-text">进程内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#栈"><span class="toc-number">4.</span> <span class="toc-text">栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调试器"><span class="toc-number">5.</span> <span class="toc-text">调试器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#确定缓冲区大小以准确写入EIP"><span class="toc-number">6.</span> <span class="toc-text">确定缓冲区大小以准确写入EIP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找写入shellcode的内存空间"><span class="toc-number">7.</span> <span class="toc-text">查找写入shellcode的内存空间</span></a></li></ol>
-  </div>
-
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
-
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
-		
-			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
-		
-			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
-		
-			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
-		
-			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
-		
-			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
-		
-			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
-		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
-		
-		</ul>
-</div>
-
-
-  
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
-		
-			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
-		
-			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
-		
-			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
-		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
-		
-			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
-		
-			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
-		
-			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
-		
-			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
-		
-			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
-		
-			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-		</ul>
-</div>
-
-
-</aside>
-</div>
+            <hr>
+          </div>
+          <br>
+          <div>
+            
+              <p>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E9%80%86%E5%90%91">逆向</a>
+                  &nbsp;
+                
+              </p>
+            
+            <p>
+              <i class="iconfont icon-tag"></i>
+              
+                <a class="hover-with-bg" href="/tags/%E5%86%85%E5%AD%98">内存</a>
+              
+                <a class="hover-with-bg" href="/tags/%E6%BA%A2%E5%87%BA">溢出</a>
+              
+                <a class="hover-with-bg" href="/tags/%E6%A0%88">栈</a>
+              
+              <span id="/2019/05/30/内存基础/" class="visitors leancloud_visitors" data-flag-title="内存基础">
+                <em id="visitors-text" class="post-meta-item-text"></em>
+                <i id="visitors-count"></i>
+              </span>
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
     </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
-		
-		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
-		
-		</p>
-</div>
-</footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
+    <div class="d-none d-lg-block col-lg-2 toc-container">
       
-      $('#toc.toc-aside').css('display', 'none');
-        
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "内存基础&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      h  = $('article h2')
-      ah = $('article h2'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  if(ah.length==0){
-    t.css('display','none');
-  }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
-    $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
-    });
-  };
-});
-</script>
+    anchors.add(res.join(", "))
+  </script>
 
 
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
-  var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
-  });
-});     
-</script>
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $('#post').find('img').each(
+      function () {
+        var _this = $(this);
+        var _src = _this.attr("src");
+        _this.wrap('<a data-fancybox="images" href="' + _src + '" ></a>');
+      }
+    );
+  </script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
 
 
 
 
-
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-146435492-1', 'l0yy.github.io');  
-ga('send', 'pageview');
-</script>
-
-
-  </body>
+</body>
 </html>

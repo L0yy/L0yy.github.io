@@ -1,102 +1,138 @@
-
- <!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh-CN">
+
+
+
+
+
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
+  <meta name="author" content="Cray">
+  <meta name="keywords" content>
+  <title>课程笔记：计算机网络C程序设计 ~ CrayBlog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css">
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css">
+
+
   
-    <title>课程笔记：计算机网络C程序设计 | CrayBlog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Cray">
-    
-    <meta name="description" content="前言我对这个就真的是很感兴趣的，但是苦于不想干开发，只喜欢自己写写代码玩，不能当做工作来干。。。
-这堂课是东软的开发工程师于玉龙老师上的，于老师代码写得是真的不错，简单易懂，比网上代码有好多了，说的写的都是重点，这篇文章我也主要介绍下我的一些学习中的理解，主要的代码实现还是看看源码。
-自己的C语言当">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146435492-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
+
+
 
 </head>
-</html>
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="CrayBlog" title="CrayBlog"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="CrayBlog">CrayBlog</a></h1>
-				<h2 class="blog-motto"></h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-					<li>
-					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:L0yy.github.io">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
 
-    </header>
-    <div id="container">
-      <div id="main" class="post" itemscope itemprop="blogPost">
-	<article itemprop="articleBody"> 
-		<header class="article-info clearfix">
-  <h1 itemprop="name">
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              <p class="mt-3">星期五, 四月 26日 2019, 11:13 晚上</p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
     
-      <a href="/2019/04/26/课程笔记：计算机网络C程序设计/" title="课程笔记：计算机网络C程序设计" itemprop="url">课程笔记：计算机网络C程序设计</a>
-  </h1>
-  <p class="article-author">By
-    
-      <a href="http://L0yy.github.io" title="Cray">Cray</a>
-    </p>
-  <p class="article-time">
-    <time datetime="2019-04-26T15:13:44.000Z" itemprop="datePublished">2019-04-26</time>
-    更新日期:<time datetime="2019-08-25T11:36:43.307Z" itemprop="dateModified">2019-08-25</time>
-    
-  </p>
-</header>
-	<div class="article-content">
-		
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux与-C"><span class="toc-number">2.</span> <span class="toc-text">linux与 C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码都在github"><span class="toc-number">3.</span> <span class="toc-text">代码都在github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CH02"><span class="toc-number">3.1.</span> <span class="toc-text">CH02</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#01hello"><span class="toc-number">3.1.1.</span> <span class="toc-text">01hello</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02option"><span class="toc-number">3.1.2.</span> <span class="toc-text">02option</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#03cli"><span class="toc-number">3.1.3.</span> <span class="toc-text">03cli</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CH03"><span class="toc-number">3.2.</span> <span class="toc-text">CH03</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#01current-c"><span class="toc-number">3.2.1.</span> <span class="toc-text">01current.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02measure-c"><span class="toc-number">3.2.2.</span> <span class="toc-text">02measure.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#03lstat-c"><span class="toc-number">3.2.3.</span> <span class="toc-text">03lstat.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#04readdir-c"><span class="toc-number">3.2.4.</span> <span class="toc-text">04readdir.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#05opencnt-c"><span class="toc-number">3.2.5.</span> <span class="toc-text">05opencnt.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#06remotehello-c"><span class="toc-number">3.2.6.</span> <span class="toc-text">06remotehello.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#07listfile-c"><span class="toc-number">3.2.7.</span> <span class="toc-text">07listfile.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#08daemon-c"><span class="toc-number">3.2.8.</span> <span class="toc-text">08daemon.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#09thread-c"><span class="toc-number">3.2.9.</span> <span class="toc-text">09thread.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10signal-c"><span class="toc-number">3.2.10.</span> <span class="toc-text">10signal.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11shmem-c"><span class="toc-number">3.2.11.</span> <span class="toc-text">11shmem.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12pipe-c"><span class="toc-number">3.2.12.</span> <span class="toc-text">12pipe.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13semop-c"><span class="toc-number">3.2.13.</span> <span class="toc-text">13semop.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14vsysd"><span class="toc-number">3.2.14.</span> <span class="toc-text">14vsysd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15sqlite-test-c"><span class="toc-number">3.2.15.</span> <span class="toc-text">15sqlite_test.c</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CH4"><span class="toc-number">3.3.</span> <span class="toc-text">CH4</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#01tcpclient-c"><span class="toc-number">3.3.1.</span> <span class="toc-text">01tcpclient.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#01tcpserver-c"><span class="toc-number">3.3.2.</span> <span class="toc-text">01tcpserver.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02udpclient-c"><span class="toc-number">3.3.3.</span> <span class="toc-text">02udpclient.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02udpserver-c"><span class="toc-number">3.3.4.</span> <span class="toc-text">02udpserver.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#03ethersock-c"><span class="toc-number">3.3.5.</span> <span class="toc-text">03ethersock.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#04pcap-sniffer-c"><span class="toc-number">3.3.6.</span> <span class="toc-text">04pcap_sniffer.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#05pcap-filter-c"><span class="toc-number">3.3.7.</span> <span class="toc-text">05pcap_filter.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#06ssl"><span class="toc-number">3.3.8.</span> <span class="toc-text">06ssl</span></a></li></ol></li></ol></li></ol>
-		</div>
-		
-		<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我对这个就真的是很感兴趣的，但是苦于不想干开发，只喜欢自己写写代码玩，不能当做工作来干。。。</p>
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我对这个就真的是很感兴趣的，但是苦于不想干开发，只喜欢自己写写代码玩，不能当做工作来干。。。</p>
 <p>这堂课是东软的开发工程师于玉龙老师上的，于老师代码写得是真的不错，简单易懂，比网上代码有好多了，说的写的都是重点，这篇文章我也主要介绍下我的一些学习中的理解，主要的代码实现还是看看源码。</p>
 <p>自己的C语言当初老师教的浅显，后来就基本使用python代替日常开发了，所以也算是个复习和巩固的过程吧。。</p>
 <h2 id="linux与-C"><a href="#linux与-C" class="headerlink" title="linux与 C"></a>linux与 C</h2><p>下面这些技术都是在linux上实现的，计算机网络C程序开发嘛，也是各种网络设备4层和7层设备的底层实现，因为C接近底层，而linux内核右是一个极具开发前途的系统，可以在在上面加上可行的任何功能。。。</p>
@@ -118,291 +154,196 @@
 <h4 id="11shmem-c"><a href="#11shmem-c" class="headerlink" title="11shmem.c"></a>11shmem.c</h4><h4 id="12pipe-c"><a href="#12pipe-c" class="headerlink" title="12pipe.c"></a>12pipe.c</h4><h4 id="13semop-c"><a href="#13semop-c" class="headerlink" title="13semop.c"></a>13semop.c</h4><h4 id="14vsysd"><a href="#14vsysd" class="headerlink" title="14vsysd"></a>14vsysd</h4><h4 id="15sqlite-test-c"><a href="#15sqlite-test-c" class="headerlink" title="15sqlite_test.c"></a>15sqlite_test.c</h4><h3 id="CH4"><a href="#CH4" class="headerlink" title="CH4"></a>CH4</h3><h4 id="01tcpclient-c"><a href="#01tcpclient-c" class="headerlink" title="01tcpclient.c"></a>01tcpclient.c</h4><p>socket TCP版本客户端</p>
 <h4 id="01tcpserver-c"><a href="#01tcpserver-c" class="headerlink" title="01tcpserver.c"></a>01tcpserver.c</h4><p>docket TCP版本服务器端</p>
 <h4 id="02udpclient-c"><a href="#02udpclient-c" class="headerlink" title="02udpclient.c"></a>02udpclient.c</h4><h4 id="02udpserver-c"><a href="#02udpserver-c" class="headerlink" title="02udpserver.c"></a>02udpserver.c</h4><h4 id="03ethersock-c"><a href="#03ethersock-c" class="headerlink" title="03ethersock.c"></a>03ethersock.c</h4><h4 id="04pcap-sniffer-c"><a href="#04pcap-sniffer-c" class="headerlink" title="04pcap_sniffer.c"></a>04pcap_sniffer.c</h4><p>数据包处理</p>
-<h4 id="05pcap-filter-c"><a href="#05pcap-filter-c" class="headerlink" title="05pcap_filter.c"></a>05pcap_filter.c</h4><h4 id="06ssl"><a href="#06ssl" class="headerlink" title="06ssl"></a>06ssl</h4>  
-	</div>
-		<footer class="article-footer clearfix">
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/GCC/">GCC</a>
-  </div>
-
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/课堂笔记/">课堂笔记</a>
-</div>
-
-
-
-<div class="article-share" id="share">
-
-  <div data-url="http://L0yy.github.io/2019/04/26/课程笔记：计算机网络C程序设计/" data-title="课程笔记：计算机网络C程序设计 | CrayBlog" data-tsina="" class="share clearfix">
-  </div>
-
-</div>
-</footer>   	       
-	</article>
-	
-<nav class="article-nav clearfix">
- 
- <div class="prev" >
- <a href="/2019/04/26/课程笔记：前端页面开发/" title="课程笔记：前端页面开发">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  课程笔记：前端页面开发</span>
-</a>
-</div>
-
-
-<div class="next">
-<a href="/2019/04/26/课程笔记：云平台概述-云安全/"  title="课程笔记：云平台概述 云安全">
- <strong>NEXT:</strong><br/> 
- <span>课程笔记：云平台概述 云安全
-</span>
-</a>
-</div>
-
-</nav>
-
-	
-</div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
-
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux与-C"><span class="toc-number">2.</span> <span class="toc-text">linux与 C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码都在github"><span class="toc-number">3.</span> <span class="toc-text">代码都在github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CH02"><span class="toc-number">3.1.</span> <span class="toc-text">CH02</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#01hello"><span class="toc-number">3.1.1.</span> <span class="toc-text">01hello</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02option"><span class="toc-number">3.1.2.</span> <span class="toc-text">02option</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#03cli"><span class="toc-number">3.1.3.</span> <span class="toc-text">03cli</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CH03"><span class="toc-number">3.2.</span> <span class="toc-text">CH03</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#01current-c"><span class="toc-number">3.2.1.</span> <span class="toc-text">01current.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02measure-c"><span class="toc-number">3.2.2.</span> <span class="toc-text">02measure.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#03lstat-c"><span class="toc-number">3.2.3.</span> <span class="toc-text">03lstat.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#04readdir-c"><span class="toc-number">3.2.4.</span> <span class="toc-text">04readdir.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#05opencnt-c"><span class="toc-number">3.2.5.</span> <span class="toc-text">05opencnt.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#06remotehello-c"><span class="toc-number">3.2.6.</span> <span class="toc-text">06remotehello.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#07listfile-c"><span class="toc-number">3.2.7.</span> <span class="toc-text">07listfile.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#08daemon-c"><span class="toc-number">3.2.8.</span> <span class="toc-text">08daemon.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#09thread-c"><span class="toc-number">3.2.9.</span> <span class="toc-text">09thread.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10signal-c"><span class="toc-number">3.2.10.</span> <span class="toc-text">10signal.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11shmem-c"><span class="toc-number">3.2.11.</span> <span class="toc-text">11shmem.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12pipe-c"><span class="toc-number">3.2.12.</span> <span class="toc-text">12pipe.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13semop-c"><span class="toc-number">3.2.13.</span> <span class="toc-text">13semop.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14vsysd"><span class="toc-number">3.2.14.</span> <span class="toc-text">14vsysd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15sqlite-test-c"><span class="toc-number">3.2.15.</span> <span class="toc-text">15sqlite_test.c</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CH4"><span class="toc-number">3.3.</span> <span class="toc-text">CH4</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#01tcpclient-c"><span class="toc-number">3.3.1.</span> <span class="toc-text">01tcpclient.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#01tcpserver-c"><span class="toc-number">3.3.2.</span> <span class="toc-text">01tcpserver.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02udpclient-c"><span class="toc-number">3.3.3.</span> <span class="toc-text">02udpclient.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#02udpserver-c"><span class="toc-number">3.3.4.</span> <span class="toc-text">02udpserver.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#03ethersock-c"><span class="toc-number">3.3.5.</span> <span class="toc-text">03ethersock.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#04pcap-sniffer-c"><span class="toc-number">3.3.6.</span> <span class="toc-text">04pcap_sniffer.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#05pcap-filter-c"><span class="toc-number">3.3.7.</span> <span class="toc-text">05pcap_filter.c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#06ssl"><span class="toc-number">3.3.8.</span> <span class="toc-text">06ssl</span></a></li></ol></li></ol></li></ol>
-  </div>
-
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
-
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-			<li><a href="/categories/CTF/" title="CTF">CTF<sup>7</sup></a></li>
-		
-			<li><a href="/categories/Docker/" title="Docker">Docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
-		
-			<li><a href="/categories/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/categories/博客/" title="博客">博客<sup>2</sup></a></li>
-		
-			<li><a href="/categories/样本详细分析/" title="样本详细分析">样本详细分析<sup>5</sup></a></li>
-		
-			<li><a href="/categories/编程/" title="编程">编程<sup>3</sup></a></li>
-		
-			<li><a href="/categories/课堂学习/" title="课堂学习">课堂学习<sup>1</sup></a></li>
-		
-			<li><a href="/categories/课堂笔记/" title="课堂笔记">课堂笔记<sup>9</sup></a></li>
-		
-			<li><a href="/categories/逆向/" title="逆向">逆向<sup>13</sup></a></li>
-		
-		</ul>
-</div>
-
-
-  
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/Angr/" title="Angr">Angr<sup>1</sup></a></li>
-		
-			<li><a href="/tags/DVWA/" title="DVWA">DVWA<sup>2</sup></a></li>
-		
-			<li><a href="/tags/GCC/" title="GCC">GCC<sup>1</sup></a></li>
-		
-			<li><a href="/tags/HCIP/" title="HCIP">HCIP<sup>2</sup></a></li>
-		
-			<li><a href="/tags/IDA/" title="IDA">IDA<sup>3</sup></a></li>
-		
-			<li><a href="/tags/OD/" title="OD">OD<sup>1</sup></a></li>
-		
-			<li><a href="/tags/PE/" title="PE">PE<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Rat-H-worm/" title="Rat H-worm">Rat H-worm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/SEH/" title="SEH">SEH<sup>1</sup></a></li>
-		
-			<li><a href="/tags/SQL注入/" title="SQL注入">SQL注入<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TCP/" title="TCP">TCP<sup>1</sup></a></li>
-		
-			<li><a href="/tags/TcpDump/" title="TcpDump">TcpDump<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Win32/" title="Win32">Win32<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
-		
-			<li><a href="/tags/coding/" title="coding">coding<sup>1</sup></a></li>
-		
-			<li><a href="/tags/dll/" title="dll">dll<sup>1</sup></a></li>
-		
-			<li><a href="/tags/docker/" title="docker">docker<sup>1</sup></a></li>
-		
-			<li><a href="/tags/github/" title="github">github<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git密钥生成以及安装/" title="git密钥生成以及安装">git密钥生成以及安装<sup>1</sup></a></li>
-		
-		</ul>
-</div>
-
-
-</aside>
-</div>
+<h4 id="05pcap-filter-c"><a href="#05pcap-filter-c" class="headerlink" title="05pcap_filter.c"></a>05pcap_filter.c</h4><h4 id="06ssl"><a href="#06ssl" class="headerlink" title="06ssl"></a>06ssl</h4>
+            <hr>
+          </div>
+          <br>
+          <div>
+            
+              <p>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>
+                  &nbsp;
+                
+              </p>
+            
+            <p>
+              <i class="iconfont icon-tag"></i>
+              
+                <a class="hover-with-bg" href="/tags/linux">linux</a>
+              
+                <a class="hover-with-bg" href="/tags/GCC">GCC</a>
+              
+              <span id="/2019/04/26/课程笔记：计算机网络C程序设计/" class="visitors leancloud_visitors" data-flag-title="课程笔记：计算机网络C程序设计">
+                <em id="visitors-text" class="post-meta-item-text"></em>
+                <i id="visitors-count"></i>
+              </span>
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
     </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font clearfix">
-		
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2019 
-		
-		<a href="http://L0yy.github.io" target="_blank" title="Cray">Cray</a>
-		
-		</p>
-</div>
-</footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
+    <div class="d-none d-lg-block col-lg-2 toc-container">
       
-      $('#toc.toc-aside').css('display', 'none');
-        
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "课程笔记：计算机网络C程序设计&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      h  = $('article h2')
-      ah = $('article h2'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  if(ah.length==0){
-    t.css('display','none');
-  }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
-    $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
-    });
-  };
-});
-</script>
+    anchors.add(res.join(", "))
+  </script>
 
 
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
-  var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
-  });
-});     
-</script>
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $('#post').find('img').each(
+      function () {
+        var _this = $(this);
+        var _src = _this.attr("src");
+        _this.wrap('<a data-fancybox="images" href="' + _src + '" ></a>');
+      }
+    );
+  </script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
 
 
 
 
-
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-146435492-1', 'l0yy.github.io');  
-ga('send', 'pageview');
-</script>
-
-
-  </body>
+</body>
 </html>
