@@ -523,6 +523,46 @@ void test3()
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/onepage/2019/08/10/call的几种传参方式/">
+        <p class="h4 index-header">call的几种传参方式</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 
+cdecl 栈传参，函数外平衡堆栈
+fastcall 是通过寄存器，因为是寄存器fast嘛
+下面这种call是用在有类对象引用的时候来表示传参的thiscall 是用ecx来穿this指针的，一般都是 类似lea ecx [ebp+var_20]进入函数函数后  ecx就能会直接拿来用，不会再次赋值。
+识别参数个数1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小2.划分push 的归属3.遇到栈平衡相关指令。点亮push核对下已分配是否有误4.注意识别出某些push为下一个函数所用5.另外还要看某push归属于某个函数的最后参数却不使用的参数不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/onepage/2019/08/10/调试dll的两种方法/">
         <p class="h4 index-header">调试dll的两种方法</p>
         
@@ -567,46 +607,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E8%B0%83%E8%AF%95dll">调试dll</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/onepage/2019/08/10/call的几种传参方式/">
-        <p class="h4 index-header">call的几种传参方式</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 
-cdecl 栈传参，函数外平衡堆栈
-fastcall 是通过寄存器，因为是寄存器fast嘛
-下面这种call是用在有类对象引用的时候来表示传参的thiscall 是用ecx来穿this指针的，一般都是 类似lea ecx [ebp+var_20]进入函数函数后  ecx就能会直接拿来用，不会再次赋值。
-识别参数个数1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小2.划分push 的归属3.遇到栈平衡相关指令。点亮push核对下已分配是否有误4.注意识别出某些push为下一个函数所用5.另外还要看某push归属于某个函数的最后参数却不使用的参数不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
           
         
       </div>
@@ -663,12 +663,12 @@ fastcall 是通过寄存器，因为是寄存器fast嘛
       
       
         <li class="page-item">
-          <a class="page-link" href="/onepage/#board">上一页</a>
+          <a class="page-link" href="/onepage/onepage/#board">上一页</a>
         </li>
       
       
         <li class="page-item">
-          <a class="page-link" href="/onepage/page/3/#board">下一页</a>
+          <a class="page-link" href="/onepage/onepage/page/3/#board">下一页</a>
         </li>
       
     </ul>

@@ -439,31 +439,6 @@
   
   
   <entry>
-    <title>调试dll的两种方法</title>
-    <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
-    <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
-    
-    <content type="html"><![CDATA[<p>首先把dll调起来看看</p><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>自己写loadlibrary()和GetProcAddress()来加载dll。</p><p>编写有一个导出函数的测试 的 A.dll</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:        MessageBox(0,&quot;The DLL_PROCESS_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_ATTACH:        MessageBox(0,&quot;The DLL_THREAD_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_DETACH:        MessageBox(0,&quot;The DLL_THREAD_DETACH...&quot;,0,MB_OK);        break;    case DLL_PROCESS_DETACH:        MessageBox(0,&quot;The DLL_PROCESS_DETACH:...&quot;,0,MB_OK);        break;    }    return TRUE;}</code></pre><p>编译后到ida中看看他的导入表<br><img src="https://img-blog.csdnimg.cn/20190809131554388.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>双击看看结构<br><img src="https://img-blog.csdnimg.cn/20190809131752391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注意这里的个call的方法</p><p>我们这里编写一个load.exe来加载上面的A.dll</p><pre><code class="c">#include &quot;windows.h&quot;//定义dll中要用的函数typedef unsigned int  (*Sum)(int nArg1, char *nArgv2);int main(){    //加载dll    HMODULE Hmo = LoadLibraryA(&quot;A.dll&quot;);    //获取函数地址    Sum Abo = (Sum)GetProcAddress(Hmo,&quot;Sum&quot;);    //调用函数    Abo(1,NULL);    return 0;}</code></pre><p>我们可以使用OD或x64dbg来调试看看</p><p>调试前可以先把exe的地址随机化关了。<br>用010edit打开load.exe十六进制搜索40 81，改为 00 81，保存就OK了</p><p><img src="https://img-blog.csdnimg.cn/20190809133035515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>执行到main函数，看到了这个load dll的地方<br><img src="https://img-blog.csdnimg.cn/20190809133410193.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>loadLibrary()返回地址在eax中<br><img src="https://img-blog.csdnimg.cn/2019080913362427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取到函数地址后<br><img src="https://img-blog.csdnimg.cn/20190809133714552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>开始真正调用执行这个dll中的函数了，接着F7进去就是DLL中的代码了。</p><h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>直接拖进OD，这样只能调试dll的入口函数。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>调试dll</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>call的几种传参方式</title>
     <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
     <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
@@ -481,6 +456,31 @@
     <tags>
       
       <tag>传参方式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调试dll的两种方法</title>
+    <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
+    <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<p>首先把dll调起来看看</p><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>自己写loadlibrary()和GetProcAddress()来加载dll。</p><p>编写有一个导出函数的测试 的 A.dll</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:        MessageBox(0,&quot;The DLL_PROCESS_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_ATTACH:        MessageBox(0,&quot;The DLL_THREAD_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_DETACH:        MessageBox(0,&quot;The DLL_THREAD_DETACH...&quot;,0,MB_OK);        break;    case DLL_PROCESS_DETACH:        MessageBox(0,&quot;The DLL_PROCESS_DETACH:...&quot;,0,MB_OK);        break;    }    return TRUE;}</code></pre><p>编译后到ida中看看他的导入表<br><img src="https://img-blog.csdnimg.cn/20190809131554388.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>双击看看结构<br><img src="https://img-blog.csdnimg.cn/20190809131752391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注意这里的个call的方法</p><p>我们这里编写一个load.exe来加载上面的A.dll</p><pre><code class="c">#include &quot;windows.h&quot;//定义dll中要用的函数typedef unsigned int  (*Sum)(int nArg1, char *nArgv2);int main(){    //加载dll    HMODULE Hmo = LoadLibraryA(&quot;A.dll&quot;);    //获取函数地址    Sum Abo = (Sum)GetProcAddress(Hmo,&quot;Sum&quot;);    //调用函数    Abo(1,NULL);    return 0;}</code></pre><p>我们可以使用OD或x64dbg来调试看看</p><p>调试前可以先把exe的地址随机化关了。<br>用010edit打开load.exe十六进制搜索40 81，改为 00 81，保存就OK了</p><p><img src="https://img-blog.csdnimg.cn/20190809133035515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>执行到main函数，看到了这个load dll的地方<br><img src="https://img-blog.csdnimg.cn/20190809133410193.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>loadLibrary()返回地址在eax中<br><img src="https://img-blog.csdnimg.cn/2019080913362427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取到函数地址后<br><img src="https://img-blog.csdnimg.cn/20190809133714552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>开始真正调用执行这个dll中的函数了，接着F7进去就是DLL中的代码了。</p><h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>直接拖进OD，这样只能调试dll的入口函数。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>调试dll</tag>
       
     </tags>
     
