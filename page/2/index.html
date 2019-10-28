@@ -7,8 +7,8 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/onepage/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/onepage/img/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
@@ -43,7 +43,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
+       href="/onepage/">&nbsp;<strong>CrayBlog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -58,31 +58,31 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/onepage/">Home</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/archives/">Archives</a>
+            <a class="nav-link" href="/onepage/archives/">Archives</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/categories/">Categories</a>
+            <a class="nav-link" href="/onepage/categories/">Categories</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/tags/">Tags</a>
+            <a class="nav-link" href="/onepage/tags/">Tags</a>
           </li>
         
           
           
           <li class="nav-item">
-            <a class="nav-link" href="/about/">About</a>
+            <a class="nav-link" href="/onepage/about/">About</a>
           </li>
         
         
@@ -137,7 +137,7 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/26/SEH创建与查找/">
+      <a href="/onepage/2019/08/26/SEH创建与查找/">
         <p class="h4 index-header">SEH创建与查找</p>
         
         
@@ -193,7 +193,7 @@ EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/25/win32程序设计/">
+      <a href="/onepage/2019/08/25/win32程序设计/">
         <p class="h4 index-header">win32程序设计</p>
         
         
@@ -251,7 +251,7 @@ LRESULT CALLBACK MainWndProc(_In_ HWND hWnd,_In_ UINT uMsg,_In_ WPARAM wParam,_I
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/23/简单的加密壳/">
+      <a href="/onepage/2019/08/23/简单的加密壳/">
         <p class="h4 index-header">简单的加密壳</p>
         
         
@@ -311,7 +311,7 @@ BPHW</div>
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/22/MASH和内联MASH/">
+      <a href="/onepage/2019/08/22/MASH和内联MASH/">
         <p class="h4 index-header">MASH和内联MASH</p>
         
         
@@ -373,7 +373,7 @@ GetA proc
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/20/PE的一些结构笔记/">
+      <a href="/onepage/2019/08/20/PE的一些结构笔记/">
         <p class="h4 index-header">PE的一些结构笔记</p>
         
         
@@ -422,7 +422,7 @@ Optional header ：是必要的头介绍一下重要的属性AddressOfEntryPoint
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/20/调用dll和编写dll的几种格式/">
+      <a href="/onepage/2019/08/20/调用dll和编写dll的几种格式/">
         <p class="h4 index-header">调用dll和编写dll的几种格式</p>
         
         
@@ -480,7 +480,7 @@ void test3()
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/18/IDA制作签名/">
+      <a href="/onepage/2019/08/18/IDA制作签名/">
         <p class="h4 index-header">IDA制作签名</p>
         
         
@@ -523,47 +523,7 @@ void test3()
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/10/call的几种传参方式/">
-        <p class="h4 index-header">call的几种传参方式</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 
-cdecl 栈传参，函数外平衡堆栈
-fastcall 是通过寄存器，因为是寄存器fast嘛
-下面这种call是用在有类对象引用的时候来表示传参的thiscall 是用ecx来穿this指针的，一般都是 类似lea ecx [ebp+var_20]进入函数函数后  ecx就能会直接拿来用，不会再次赋值。
-识别参数个数1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小2.划分push 的归属3.遇到栈平衡相关指令。点亮push核对下已分配是否有误4.注意识别出某些push为下一个函数所用5.另外还要看某push归属于某个函数的最后参数却不使用的参数不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/10/调试dll的两种方法/">
+      <a href="/onepage/2019/08/10/调试dll的两种方法/">
         <p class="h4 index-header">调试dll的两种方法</p>
         
         
@@ -617,7 +577,47 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/06/15/dc-2/">
+      <a href="/onepage/2019/08/10/call的几种传参方式/">
+        <p class="h4 index-header">call的几种传参方式</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 
+cdecl 栈传参，函数外平衡堆栈
+fastcall 是通过寄存器，因为是寄存器fast嘛
+下面这种call是用在有类对象引用的时候来表示传参的thiscall 是用ecx来穿this指针的，一般都是 类似lea ecx [ebp+var_20]进入函数函数后  ecx就能会直接拿来用，不会再次赋值。
+识别参数个数1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小2.划分push 的归属3.遇到栈平衡相关指令。点亮push核对下已分配是否有误4.注意识别出某些push为下一个函数所用5.另外还要看某push归属于某个函数的最后参数却不使用的参数不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/onepage/2019/06/15/dc-2/">
         <p class="h4 index-header">vulnhub 靶机系列 dc-2</p>
         
         
@@ -663,12 +663,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
       
       
         <li class="page-item">
-          <a class="page-link" href="/#board">上一页</a>
+          <a class="page-link" href="/onepage/#board">上一页</a>
         </li>
       
       
         <li class="page-item">
-          <a class="page-link" href="/page/3/#board">下一页</a>
+          <a class="page-link" href="/onepage/page/3/#board">下一页</a>
         </li>
       
     </ul>
