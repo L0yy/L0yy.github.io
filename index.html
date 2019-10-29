@@ -138,13 +138,13 @@
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/10/10/宏病毒下载器/" target="_self">
-          <img src="https://w.wallhaven.cc/full/83/wallhaven-839kvo.jpg" srcset="/img/loading.gif" alt="文章标题" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://w.wallhaven.cc/full/83/wallhaven-839kvo.jpg" srcset="/img/loading.gif" alt="宏病毒下载器" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/10/10/宏病毒下载器/">
-        <p class="h4 index-header">文章标题</p>
+        <p class="h4 index-header">宏病毒下载器</p>
         
         
           
@@ -204,74 +204,11 @@ Downloader
   <div class="row mb-4 mx-auto">
     
     
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/10/病毒报告/">
-        <p class="h4 index-header">tesla勒索病毒分析</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">基本信息 1
-简介 2
-流程图 3
-详细分析 3
-原始程序 5
-检测虚拟机 5
-动态解密程序字符串 6
-删除ADS（数据备用流） 8
-释放文件，开启新进程 9
-删除自身 9
-新进程 9
-初始化工作 10
-创建互斥体 10
-获取一些权限 10
-获取文件校验 11
-对抗常见监控软件 12
-删除卷影 13
-生成AES需要的密钥 14
-加入开机启动 15
-生成勒索文本和图片 15
-加密文件 17
-展示勒索信息 19
-发送信息到C2服务器 19
-样本朔源 21
-查杀方案 21
-总结 21
-基本信息文件: C:\Users\john\Documents\dorjlo.exe
-大小: 240640 字节
-修改时间: 2017年11月25日, 16:57:32
-MD5: 72CCC18F3038E19273010D45AC2142CE
-SHA1: A47612524C64636C2ADB2FE01E09DFEFACB78ACA
-CRC32: DAA773C2
-简介该木马为勒索软件，对抗常见监控软件，释放文件到其他目录，删除自身躲避怀疑，动态解密访问敏感字API，加入开机启动，持久会攻击
-流程图
-详细分</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E5%8A%A0%E5%AF%86%20%E5%8B%92%E7%B4%A2">加密 勒索</a>&nbsp;
-          
-        
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/06/Lunlayloo 木马/" target="_self">
+          <img src="https://w.wallhaven.cc/full/1j/wallhaven-1j9rx1.jpg" srcset="/img/loading.gif" alt="Lunlayloo 木马" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
       </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
     
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/09/06/Lunlayloo 木马/">
@@ -338,6 +275,12 @@ rat
   <div class="row mb-4 mx-auto">
     
     
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/05/ida查找检测虚拟机代码/" target="_self">
+          <img src="https://w.wallhaven.cc/full/0p/wallhaven-0ppglp.jpg" srcset="/img/loading.gif" alt="IDA 查找检测虚拟机代码" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/09/05/ida查找检测虚拟机代码/">
         <p class="h4 index-header">IDA 查找检测虚拟机代码</p>
@@ -383,6 +326,72 @@ vbox_check =</div>
 
   <div class="row mb-4 mx-auto">
     
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/04/Com添加过滤器来检测沙箱/" target="_self">
+          <img src="https://w.wallhaven.cc/full/2k/wallhaven-2kmoxm.jpg" srcset="/img/loading.gif" alt="Com组建检测虚拟沙箱" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
+        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &quot;stdafx.h&quot;
+#include &lt;conio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;dshow.h&gt;
+#include &lt;objbase.h&gt;
+
+#pragma comment(lib, &quot;Strmiids.lib&quot;)
+
+void useCom()
+{
+    /*
+    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
+    只有安装了音频设备，此处的沙箱才会被视为真实系统。
+    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
+    */
+    CoInitialize(0);
+    wchar_t * filerName = L&quot;random_nam</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
+          <img src="https://w.wallhaven.cc/full/r7/wallhaven-r7o7pq.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
     
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/09/04/H-WORM变种远控分析/">
@@ -439,59 +448,11 @@ rat
   <div class="row mb-4 mx-auto">
     
     
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
-        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
-但经测试 any.run 和微步 都未被识别为沙箱
-这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
-#include &quot;stdafx.h&quot;
-#include &lt;conio.h&gt;
-#include &lt;windows.h&gt;
-#include &lt;dshow.h&gt;
-#include &lt;objbase.h&gt;
-
-#pragma comment(lib, &quot;Strmiids.lib&quot;)
-
-void useCom()
-{
-    /*
-    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
-    只有安装了音频设备，此处的沙箱才会被视为真实系统。
-    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
-    */
-    CoInitialize(0);
-    wchar_t * filerName = L&quot;random_nam</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
-          
-        
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/03/替换特权指令 提升权限/" target="_self">
+          <img src="https://w.wallhaven.cc/full/x1/wallhaven-x1v3lo.png" srcset="/img/loading.gif" alt="替换特权指令 提升权限" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
       </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
     
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/09/03/替换特权指令 提升权限/">
@@ -601,6 +562,12 @@ rat
   <div class="row mb-4 mx-auto">
     
     
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/输入法注入/" target="_self">
+          <img src="https://w.wallhaven.cc/full/5d/wallhaven-5dxmj9.jpg" srcset="/img/loading.gif" alt="输入法注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/08/26/输入法注入/">
         <p class="h4 index-header">输入法注入</p>
@@ -652,6 +619,12 @@ void injectD</div>
   <div class="row mb-4 mx-auto">
     
     
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/远线程注入/" target="_self">
+          <img src="https://w.wallhaven.cc/full/q6/wallhaven-q6g5zl.jpg" srcset="/img/loading.gif" alt="远线程注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/08/26/远线程注入/">
         <p class="h4 index-header">远线程注入</p>
@@ -689,6 +662,68 @@ void main()
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/SEH创建与查找/" target="_self">
+          <img src="https://w.wallhaven.cc/full/5d/wallhaven-5d2p17.jpg" srcset="/img/loading.gif" alt="SEH创建与查找" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/SEH创建与查找/">
+        <p class="h4 index-header">SEH创建与查找</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">创建一个SEH处理函数
+#include &quot;stdafx.h&quot;
+#define WIN32_LEAN_AND_MEAN
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &quot;stdlib.h&quot;
+
+DWORD scratch;
+
+EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
+                        void * EstablisherFrame,
+                        struct _CONTEXT *ContextRecord,
+                        void * DispatcherContext)
+{
+
+    unsigned i;
+
+    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);
+
+    ContextRecord-&</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/SEH">SEH</a>&nbsp;
+          
+            <a href="/tags/Windbg">Windbg</a>&nbsp;
           
         
       </div>

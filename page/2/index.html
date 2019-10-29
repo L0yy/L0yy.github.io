@@ -137,62 +137,6 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/26/SEH创建与查找/">
-        <p class="h4 index-header">SEH创建与查找</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">创建一个SEH处理函数
-#include &quot;stdafx.h&quot;
-#define WIN32_LEAN_AND_MEAN
-#include &lt;windows.h&gt;
-#include &lt;stdio.h&gt;
-#include &quot;stdlib.h&quot;
-
-DWORD scratch;
-
-EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
-                        void * EstablisherFrame,
-                        struct _CONTEXT *ContextRecord,
-                        void * DispatcherContext)
-{
-
-    unsigned i;
-
-    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);
-
-    ContextRecord-&</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/SEH">SEH</a>&nbsp;
-          
-            <a href="/tags/Windbg">Windbg</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/08/25/win32程序设计/">
         <p class="h4 index-header">win32程序设计</p>
         
@@ -373,6 +317,55 @@ GetA proc
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/20/PE的一些结构笔记/">
+        <p class="h4 index-header">PE的一些结构笔记</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">实模式开电脑一瞬间，就处于实模式，1M寻址 dos 使用实模式
+保护模式windows在保护模式
+windows me 是windows 9x系列的最后一个
+windows NT 2000以后的 现在的都是NT系列的
+不同进程使用操作系统的共享地址
+com 的特点就是没有特点
+PE格式解释有用的字段
+dos头的最后一个双字，指向PE头的起始地址
+File header的大小永远是固定的20字节，下面4个字段比较重要
+Machine：表示这个程序是什么架构的 
+NumberOfSections:表示这个程序有多少个节
+SizeofOptionalHeader：表示optionsHeader的大小 
+Characters:表示这个程序的一些特性
+
+Optional header ：是必要的头介绍一下重要的属性AddressOfEntryPoint：程序执行入口的RVABaseOfCode：代码节的起始RVAimageBase：程序的建议装载地址SectionAlignment:内存中的节的对齐粒度FileAlignment：文件中的对齐粒度MajorOperatingSystemVersi</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E5%AD%A6%E4%B9%A0">课堂学习</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/PE">PE</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/08/20/调用dll和编写dll的几种格式/">
         <p class="h4 index-header">调用dll和编写dll的几种格式</p>
         
@@ -430,54 +423,11 @@ void test3()
   <div class="row mb-4 mx-auto">
     
     
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/20/PE的一些结构笔记/">
-        <p class="h4 index-header">PE的一些结构笔记</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">实模式开电脑一瞬间，就处于实模式，1M寻址 dos 使用实模式
-保护模式windows在保护模式
-windows me 是windows 9x系列的最后一个
-windows NT 2000以后的 现在的都是NT系列的
-不同进程使用操作系统的共享地址
-com 的特点就是没有特点
-PE格式解释有用的字段
-dos头的最后一个双字，指向PE头的起始地址
-File header的大小永远是固定的20字节，下面4个字段比较重要
-Machine：表示这个程序是什么架构的 
-NumberOfSections:表示这个程序有多少个节
-SizeofOptionalHeader：表示optionsHeader的大小 
-Characters:表示这个程序的一些特性
-
-Optional header ：是必要的头介绍一下重要的属性AddressOfEntryPoint：程序执行入口的RVABaseOfCode：代码节的起始RVAimageBase：程序的建议装载地址SectionAlignment:内存中的节的对齐粒度FileAlignment：文件中的对齐粒度MajorOperatingSystemVersi</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-20&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E5%AD%A6%E4%B9%A0">课堂学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/PE">PE</a>&nbsp;
-          
-        
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/18/IDA制作签名/" target="_self">
+          <img src="https://w.wallhaven.cc/full/96/wallhaven-96z68x.jpg" srcset="/img/loading.gif" alt="IDA制作签名" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
       </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
     
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/08/18/IDA制作签名/">
@@ -650,6 +600,44 @@ BOOL APIENTRY DllMain( HMODULE hModule,
             <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
           
             <a href="/tags/%E9%9D%B6%E6%9C%BA">靶机</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/11/WEB温习第二天/">
+        <p class="h4 index-header">web渗透基础二</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">
+宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5">宽字节注入</a>&nbsp;
           
         
       </div>

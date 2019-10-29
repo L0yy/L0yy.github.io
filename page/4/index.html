@@ -137,55 +137,6 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/29/angr学习文档/">
-        <p class="h4 index-header">angr学习文档</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">安装不会建议直接上docker 大是大了点，但是是相对很简单的事
-官方文档翻译angr Documentation我们首先要了解angr的构造，开始第一步肯定是导入二进制程序
-&gt;&gt;&gt; import angr
-&gt;&gt;&gt; proj = angr.Project(&#39;/bin/true&#39;)之后我们的操作都会基于这个proj对象，
-基础属性&gt;&gt;&gt; import monkeyhex //将以十六进制格式化数值输出结果
-&gt;&gt;&gt; proj.arch //程序的
-&lt;Arch AMD64 (LE)&gt;
-&gt;&gt;&gt; proj.entry //程序入口处
-0x401670
-&gt;&gt;&gt; proj.filename //程序二进制地址
-&#39;/bin/true&#39;The loader 方法从二进制文件转变为虚拟地址空间的表现形式的过程是十分复杂的。我们有一个名为CLE的模块来处理这个过程。CLE的结果，称为loader，可通过.loader属性来进行操控。
-
-&gt;&gt;&gt</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-29&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Angr">Angr</a>&nbsp;
-          
-            <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E5%8C%96">程序自动化</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/04/28/课程笔记：安全运维平台设计/">
         <p class="h4 index-header">课程笔记：安全运维平台设计</p>
         
@@ -603,6 +554,52 @@ int sub_4011F4()
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/02/z3py使用总结/">
+        <p class="h4 index-header">z3py使用总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">遇到一个需要计算的题，逆向不出来，就想想使用正向求解，z3了解一下
+什么是z3
+Z3 is a theorem prover from Microsoft Research. It &gt;is licensed under the MIT license.
+If you are not familiar with Z3, you can start &gt;here.
+Pre-built binaries for releases are available from &gt;here, and nightly builds from here.
+Z3 can be built using Visual Studio, a Makefile or &gt;using CMake. It provides bindings for several &gt;programming languages.
+See the release notes for notes on various stable &gt;releases of Z3.
+
+就是一个约束器，可以简单理解为解方程的东西。
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-02&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/z3">z3</a>&nbsp;
+          
+            <a href="/tags/Python">Python</a>&nbsp;
           
         
       </div>
