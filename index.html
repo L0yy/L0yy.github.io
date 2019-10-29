@@ -385,6 +385,60 @@ vbox_check =</div>
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
+        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &quot;stdafx.h&quot;
+#include &lt;conio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;dshow.h&gt;
+#include &lt;objbase.h&gt;
+
+#pragma comment(lib, &quot;Strmiids.lib&quot;)
+
+void useCom()
+{
+    /*
+    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
+    只有安装了音频设备，此处的沙箱才会被视为真实系统。
+    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
+    */
+    CoInitialize(0);
+    wchar_t * filerName = L&quot;random_nam</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/09/04/H-WORM变种远控分析/">
         <p class="h4 index-header">H-WORM变种远控分析</p>
         
@@ -430,60 +484,6 @@ rat
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
-        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
-但经测试 any.run 和微步 都未被识别为沙箱
-这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
-#include &quot;stdafx.h&quot;
-#include &lt;conio.h&gt;
-#include &lt;windows.h&gt;
-#include &lt;dshow.h&gt;
-#include &lt;objbase.h&gt;
-
-#pragma comment(lib, &quot;Strmiids.lib&quot;)
-
-void useCom()
-{
-    /*
-    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
-    只有安装了音频设备，此处的沙箱才会被视为真实系统。
-    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
-    */
-    CoInitialize(0);
-    wchar_t * filerName = L&quot;random_nam</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
           
         
       </div>
