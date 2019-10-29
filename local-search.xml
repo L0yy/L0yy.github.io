@@ -100,31 +100,6 @@
   
   
   <entry>
-    <title>Com组建检测虚拟沙箱</title>
-    <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
-    <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
-    
-    <content type="html"><![CDATA[<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p><p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p><p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &lt;conio.h&gt;#include &lt;windows.h&gt;#include &lt;dshow.h&gt;#include &lt;objbase.h&gt;#pragma comment(lib, &quot;Strmiids.lib&quot;)void useCom(){    /*    这些只是一些随机检查，以确保恶意软件在真实系统上执行。    只有安装了音频设备，此处的沙箱才会被视为真实系统。    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。    */    CoInitialize(0);    wchar_t * filerName = L&quot;random_name&quot;;    IGraphBuilder * pGraph;    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))    {        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);        ExitProcess(-1);    }    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL    IBaseFilter *pBaseFile;    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。    pGraph-&gt;AddFilter(pBaseFile, filerName);    IBaseFilter *pBaseFile2;    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);    if (pBaseFile2 == NULL)    {        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);        ExitProcess(1);    }    //检查achName是不是之前添加的过滤器名    FILTER_INFO info = { 0 };    pBaseFile2-&gt;QueryFilterInfo(&amp;info);    if (wcscmp(info.achName,filerName)!=0)    {        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);        exit(0);    }    IReferenceClock *pClock;    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);        exit(0);    }    if (pClock != NULL)    {        exit(0);    }    CLSID clsID;    pBaseFile2-&gt;GetClassID(&amp;clsID);    if (clsID.Data1 == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);        exit(1);    }    if (pBaseFile2 ==NULL)    {        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);        exit(1);    }    IEnumPins *pEnum = NULL;    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);        exit(-1);    }    //AddRef返回的引用计数必须大于0    if (pBaseFile2-&gt;AddRef() == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);        exit(-1);    }}int _tmain(int argc, _TCHAR* argv[]){    useCom();    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);    return 0;}</code></pre><p>IDA反编译结果</p><p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>检测沙箱</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>H-WORM变种远控分析</title>
     <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
     <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
@@ -142,6 +117,31 @@
     <tags>
       
       <tag>Rat H-worm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Com组建检测虚拟沙箱</title>
+    <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
+    <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
+    
+    <content type="html"><![CDATA[<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p><p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p><p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &lt;conio.h&gt;#include &lt;windows.h&gt;#include &lt;dshow.h&gt;#include &lt;objbase.h&gt;#pragma comment(lib, &quot;Strmiids.lib&quot;)void useCom(){    /*    这些只是一些随机检查，以确保恶意软件在真实系统上执行。    只有安装了音频设备，此处的沙箱才会被视为真实系统。    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。    */    CoInitialize(0);    wchar_t * filerName = L&quot;random_name&quot;;    IGraphBuilder * pGraph;    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))    {        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);        ExitProcess(-1);    }    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL    IBaseFilter *pBaseFile;    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。    pGraph-&gt;AddFilter(pBaseFile, filerName);    IBaseFilter *pBaseFile2;    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);    if (pBaseFile2 == NULL)    {        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);        ExitProcess(1);    }    //检查achName是不是之前添加的过滤器名    FILTER_INFO info = { 0 };    pBaseFile2-&gt;QueryFilterInfo(&amp;info);    if (wcscmp(info.achName,filerName)!=0)    {        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);        exit(0);    }    IReferenceClock *pClock;    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);        exit(0);    }    if (pClock != NULL)    {        exit(0);    }    CLSID clsID;    pBaseFile2-&gt;GetClassID(&amp;clsID);    if (clsID.Data1 == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);        exit(1);    }    if (pBaseFile2 ==NULL)    {        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);        exit(1);    }    IEnumPins *pEnum = NULL;    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);        exit(-1);    }    //AddRef返回的引用计数必须大于0    if (pBaseFile2-&gt;AddRef() == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);        exit(-1);    }}int _tmain(int argc, _TCHAR* argv[]){    useCom();    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);    return 0;}</code></pre><p>IDA反编译结果</p><p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>检测沙箱</tag>
       
     </tags>
     
@@ -360,31 +360,6 @@
   
   
   <entry>
-    <title>调用dll和编写dll的几种格式</title>
-    <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
-    <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p><h3 id="全部写在dllmain函数内"><a href="#全部写在dllmain函数内" class="headerlink" title="全部写在dllmain函数内"></a>全部写在dllmain函数内</h3><pre><code class="c">extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}</code></pre><p><code>extern &quot;C&quot;</code> 表示使用C的编译方式编译，C++格式</p><p><code>_declspec(dllexport)</code>将一个函数申明为导出函数</p><p>就申明了一个导出函数</p><p>但是这中创建的dll的导出函数序号是连续的，我们不可控的。<br>也就是Base是1，然后符号表从1 开始。</p><h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>项目新建<br><img src="https://img-blog.csdnimg.cn/20190815120548672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br> 添加一个def文件<br>def中的代码</p><pre><code class="c">LIBRARY    &quot;def导出函数Demo&quot;EXPORTStest1 @1test2 @5test3 @8</code></pre><p>dllmain中的代码</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;void test3(){    MessageBox(0,&quot;test3&quot;,0,MB_OK);}void test2(){    MessageBox(0,&quot;test2&quot;,0,MB_OK);}void test1(){    MessageBox(0,&quot;test1&quot;,0,MB_OK);}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    case DLL_THREAD_ATTACH:    case DLL_THREAD_DETACH:    case DLL_PROCESS_DETACH:        break;    }    return TRUE;}</code></pre><p><strong>def里面定义的就是函数名和序号对应关系</strong></p><p><strong>在PE解析工具中，在AddressOfNameOrdinals 中对应的是减去Base的值，可以用这个值直接去AddressOfFunction 表中找到这个偏移，就能拿到这个函数在dll中的地址了</strong> </p><h1 id="加载dll的几种方式"><a href="#加载dll的几种方式" class="headerlink" title="加载dll的几种方式"></a>加载dll的几种方式</h1><h3 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h3><p>创建空项目</p><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.hcint main(){    typedef void (*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    func T3 = (func)(GetProcAddress(hMo,&quot;test3&quot;));    //func T3 = (func)(GetProcAddress(hMo,MAKEINTRESOURCE(8)));    T3();} </code></pre><h3 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h3><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.h&gt;int main(){    int(*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    (FARPROC*)func = GetProcAddress(hMo,&quot;test3&quot;);    //(FARPROC*)func = GetProcAddress(hMo, MAKEINTRESOURCE(8));    func();}</code></pre><p>以序号查找导出函数地址 使用关键字 <code>MAKEINTRESOURCE()</code>括号中值填序号表中对应值+Base<br>例如你要导入上面dll 序号为8的函数<br>这里假如基值为1</p><ul><li>第一步，找到序号表的VA，遍历序号表 </li><li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li><li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li></ul><h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p><p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p><p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>编程</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>dll</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>PE的一些结构笔记</title>
     <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
     <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
@@ -402,6 +377,31 @@
     <tags>
       
       <tag>PE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调用dll和编写dll的几种格式</title>
+    <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
+    <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p><h3 id="全部写在dllmain函数内"><a href="#全部写在dllmain函数内" class="headerlink" title="全部写在dllmain函数内"></a>全部写在dllmain函数内</h3><pre><code class="c">extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}</code></pre><p><code>extern &quot;C&quot;</code> 表示使用C的编译方式编译，C++格式</p><p><code>_declspec(dllexport)</code>将一个函数申明为导出函数</p><p>就申明了一个导出函数</p><p>但是这中创建的dll的导出函数序号是连续的，我们不可控的。<br>也就是Base是1，然后符号表从1 开始。</p><h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>项目新建<br><img src="https://img-blog.csdnimg.cn/20190815120548672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br> 添加一个def文件<br>def中的代码</p><pre><code class="c">LIBRARY    &quot;def导出函数Demo&quot;EXPORTStest1 @1test2 @5test3 @8</code></pre><p>dllmain中的代码</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;void test3(){    MessageBox(0,&quot;test3&quot;,0,MB_OK);}void test2(){    MessageBox(0,&quot;test2&quot;,0,MB_OK);}void test1(){    MessageBox(0,&quot;test1&quot;,0,MB_OK);}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    case DLL_THREAD_ATTACH:    case DLL_THREAD_DETACH:    case DLL_PROCESS_DETACH:        break;    }    return TRUE;}</code></pre><p><strong>def里面定义的就是函数名和序号对应关系</strong></p><p><strong>在PE解析工具中，在AddressOfNameOrdinals 中对应的是减去Base的值，可以用这个值直接去AddressOfFunction 表中找到这个偏移，就能拿到这个函数在dll中的地址了</strong> </p><h1 id="加载dll的几种方式"><a href="#加载dll的几种方式" class="headerlink" title="加载dll的几种方式"></a>加载dll的几种方式</h1><h3 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h3><p>创建空项目</p><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.hcint main(){    typedef void (*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    func T3 = (func)(GetProcAddress(hMo,&quot;test3&quot;));    //func T3 = (func)(GetProcAddress(hMo,MAKEINTRESOURCE(8)));    T3();} </code></pre><h3 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h3><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.h&gt;int main(){    int(*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    (FARPROC*)func = GetProcAddress(hMo,&quot;test3&quot;);    //(FARPROC*)func = GetProcAddress(hMo, MAKEINTRESOURCE(8));    func();}</code></pre><p>以序号查找导出函数地址 使用关键字 <code>MAKEINTRESOURCE()</code>括号中值填序号表中对应值+Base<br>例如你要导入上面dll 序号为8的函数<br>这里假如基值为1</p><ul><li>第一步，找到序号表的VA，遍历序号表 </li><li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li><li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li></ul><h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p><p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p><p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>dll</tag>
       
     </tags>
     
@@ -530,11 +530,11 @@
     
     <tags>
       
-      <tag>DVWA</tag>
-      
       <tag>php</tag>
       
       <tag>linux</tag>
+      
+      <tag>DVWA</tag>
       
       <tag>反弹shell</tag>
       

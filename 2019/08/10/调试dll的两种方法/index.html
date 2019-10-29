@@ -241,8 +241,25 @@ int main()
     
       <br><br>
       
-      
-
+      <div class="disqus" style="width:100%">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'Cray';
+    var disqus_config = function () {
+      this.page.url = 'http://l0yy.gitee.io/2019/08/10/调试dll的两种方法/';
+      this.page.identifier = '/2019/08/10/调试dll的两种方法/';
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow noopener">comments
+      powered by Disqus.</a></noscript>
+</div>
     
   </div>
 </div>
@@ -310,7 +327,7 @@ int main()
   <script src="/lib/prettify/prettify.min.js" ></script>
   <script>
     $(document).ready(function () {
-      $('pre').addClass('prettyprint  linenums');
+      $('pre').addClass('prettyprint  ');
       prettyPrint();
     })
   </script>
