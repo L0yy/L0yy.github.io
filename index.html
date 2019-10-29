@@ -328,6 +328,67 @@ vbox_check =</div>
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
+          <img src="https://w.wallhaven.cc/full/96/wallhaven-96zg71.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/H-WORM变种远控分析/">
+        <p class="h4 index-header">H-WORM变种远控分析</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+4gdrwceq60b7dbl.sct
+rat
+69B7D326575C5616D82645960B3D081A
+403845 bytes
+
+
+简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
+流程图
+详细分析这个样本母体总共会释放3个脚本
+脚本1首先我们看看4gdrwceq60b7dbl.sct，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件我们用Sublimi Text来打开它，记事本也是可以的。
+利用组数来存关键字符串，通过字符串的拼接来合成完整路径会尝试删除%APPDATA%\\taskmgr.js  这个文件文件中有很长一段密文，这里我改名为了EncodeList，通过System.IO.MemoryStream.WriteByte()方法把数据读入数据流中。最重要的是使用ADODB.Stream类方法把这个数据流保存到了被上面删除掉的%APPDATA%\\taskmgr.js文件中最后使用WScript.S</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/04/Com添加过滤器来检测沙箱/" target="_self">
           <img src="https://w.wallhaven.cc/full/2k/wallhaven-2kmoxm.jpg" srcset="/img/loading.gif" alt="Com组建检测虚拟沙箱" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -378,67 +439,6 @@ void useCom()
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
-          <img src="https://w.wallhaven.cc/full/r7/wallhaven-r7o7pq.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/04/H-WORM变种远控分析/">
-        <p class="h4 index-header">H-WORM变种远控分析</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">基本信息
-
-
-FileName
-FileType
-MD5
-Size
-
-
-
-4gdrwceq60b7dbl.sct
-rat
-69B7D326575C5616D82645960B3D081A
-403845 bytes
-
-
-简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
-流程图
-详细分析这个样本母体总共会释放3个脚本
-脚本1首先我们看看4gdrwceq60b7dbl.sct，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件我们用Sublimi Text来打开它，记事本也是可以的。
-利用组数来存关键字符串，通过字符串的拼接来合成完整路径会尝试删除%APPDATA%\\taskmgr.js  这个文件文件中有很长一段密文，这里我改名为了EncodeList，通过System.IO.MemoryStream.WriteByte()方法把数据读入数据流中。最重要的是使用ADODB.Stream类方法把这个数据流保存到了被上面删除掉的%APPDATA%\\taskmgr.js文件中最后使用WScript.S</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
           
         
       </div>
@@ -504,6 +504,12 @@ void CgPivilige()
 
   <div class="row mb-4 mx-auto">
     
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/02/利用弱口令传播横向的远控组件/" target="_self">
+          <img src="https://w.wallhaven.cc/full/13/wallhaven-1312wv.jpg" srcset="/img/loading.gif" alt="弱口令横向传播" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
     
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/09/02/利用弱口令传播横向的远控组件/">

