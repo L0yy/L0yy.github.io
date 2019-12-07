@@ -136,6 +136,177 @@
   <div class="row mb-4 mx-auto">
     
     
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/输入法注入/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_d33861f2b6.jpg" srcset="/img/loading.gif" alt="输入法注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/输入法注入/">
+        <p class="h4 index-header">输入法注入</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">特性因为输入法的本身特性，能注入任何一个程序，还可以开机启动，很是友好
+网上大都是一个版本方法，我记录下我自己过程
+思路1.编写一个正常的输入法2.将它安装到电脑上，并设置为默认输入法，这样就可以在程序打开的时候就调用它的处理函数
+因为输入是一个特殊的dll，本质就是一个dll，只是后最不同而已。
+一个最简ime文件都必须两个函数
+一个dllmain() 还有一个ImeInquire()这两个是必须的
+编写输入法主要文件创建一个dll项目,解释都在注释中（注意项目为多字节字符集）dllmain.cpp
+#include &quot;stdafx.h&quot;
+#include &quot;windows.h&quot;
+#include &quot;imm.h&quot;
+#include &quot;immdev.h&quot;
+#pragma comment(lib,&quot;imm32.lib&quot;)
+
+LPCSTR injectDllPaht = &quot;C://expDll.dll&quot;; //我们最终利用的Dll，写入自己的功能
+void injectD</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
+          
+            <a href="/tags/%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8">开机启动</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/远线程注入/" target="_self">
+          <img src="https://w.wallhaven.cc/full/q6/wallhaven-q6g5zl.jpg" srcset="/img/loading.gif" alt="远线程注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/远线程注入/">
+        <p class="h4 index-header">远线程注入</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">什么是远线程注入在一个进程中，调用CreateThread或CreateRemoteThreadEx函数，在另一个进程内创建一个线程（因为不在同一个进程中，所以叫做远程线程）。创建的线程一般为Windows API函数LoadLibrary，来加载一个动态链接库(DLL)，从而达到在另一个进程中运行自己所希望运行的代码的目的。
+代码下面例子是根据查询一打开窗口中的计算器进程，然后注释都很详细 
+#include &quot;windows.h&quot;
+#include &quot;Tlhelp32.h&quot;
+int InjectDll(DWORD dwProcessId, PTCHAR szDllName);
+int EnablePrivilege(bool isStart);
+DWORD GetProcessId(PTCHAR pszProcessName);
+
+void main()
+{
+    DWORD ProcessId = GetProcessId(&quot;calc.exe&quot;);\\目标程序
+    InjectDll(ProcessId ,&quo</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/SEH创建与查找/" target="_self">
+          <img src="https://w.wallhaven.cc/full/5d/wallhaven-5d2p17.jpg" srcset="/img/loading.gif" alt="SEH创建与查找" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/SEH创建与查找/">
+        <p class="h4 index-header">SEH创建与查找</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">创建一个SEH处理函数
+#include &quot;stdafx.h&quot;
+#define WIN32_LEAN_AND_MEAN
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &quot;stdlib.h&quot;
+
+DWORD scratch;
+
+EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
+                        void * EstablisherFrame,
+                        struct _CONTEXT *ContextRecord,
+                        void * DispatcherContext)
+{
+
+    unsigned i;
+
+    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);
+
+    ContextRecord-&</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/SEH">SEH</a>&nbsp;
+          
+            <a href="/tags/Windbg">Windbg</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
     <div class="col-12 col-md-8 m-auto">
       <a href="/2019/08/25/win32程序设计/">
         <p class="h4 index-header">win32程序设计</p>
@@ -503,162 +674,6 @@ fastcall 是通过寄存器，因为是寄存器fast嘛
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/10/调试dll的两种方法/">
-        <p class="h4 index-header">调试dll的两种方法</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">首先把dll调起来看看
-方法一自己写loadlibrary()和GetProcAddress()来加载dll。
-编写有一个导出函数的测试 的 A.dll
-// dllmain.cpp : 定义 DLL 应用程序的入口点。
-#include &quot;stdafx.h&quot;
-
-extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
-{
-    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);
-    return nArg1;
-}
-
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                     )
-{
-    switch (ul_reason_for_call)
-    {
-    case DLL_P</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E8%B0%83%E8%AF%95dll">调试dll</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/06/15/dc-2/">
-        <p class="h4 index-header">vulnhub 靶机系列 dc-2</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">靶机地址
-网络拓扑我在这里使用VM虚拟机来搭建环境
-攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24
-靶机为 dc-2 使用桥接本机无线网卡 
-开始测试主机发现扫描主机详细信息，发现有web服务和一个修改了端口的ssh根据作者的说明，需要parrot的hosts文件，才能正常访问web网站修改后记得重启网络  service netwoking restart,访问 http://dc-2 成功找到flag1发现是Wordpress框架的网站，那就直接上Wpscan,但是parrot或kali虽然自带，但是都需要update，但是会出现请求超时（搭梯子都不行），直接开始枚举用户名发现有三个用户名 admin jerry tom把他们都保存到保存到一个文本里，后面的爆破需要用到这里有点坑，用常用字典跑步不出来，然后认真读了下flag发现作者提示使用cewl来搜集密码。。。这里保存到pass.txt然后是爆破对应密码，docker wpscan使用见下文很不错，跑出来了两个，如图所示wordoress 后台地址默认是 /wp-admin，先使用tom登</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-15&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CTF">CTF</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/linux">linux</a>&nbsp;
-          
-            <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
-          
-            <a href="/tags/%E9%9D%B6%E6%9C%BA">靶机</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/06/11/WEB温习第三天/">
-        <p class="h4 index-header">web渗透基础三</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">命令执行以及反弹shell姿势还是DVWA靶机的Command Injection
-功能是在本地使用shell_exec执行ping命令
-Low&lt;?php 
-
-if( isset( $_POST[ &#39;Submit&#39; ]  ) ) { 
-    // Get input 
-    $target = $_REQUEST[ &#39;ip&#39; ]; 
-
-    // Determine OS and execute the ping command. 
-    if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) { 
-        // Windows 
-        $cmd = shell_exec( &#39;ping  &#39; . $target ); 
-    } 
-    else { 
-        // *nix 
-        $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );
-    } 
-
-    </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CTF">CTF</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/DVWA">DVWA</a>&nbsp;
-          
-            <a href="/tags/php">php</a>&nbsp;
-          
-            <a href="/tags/linux">linux</a>&nbsp;
-          
-            <a href="/tags/%E5%8F%8D%E5%BC%B9shell">反弹shell</a>&nbsp;
           
         
       </div>

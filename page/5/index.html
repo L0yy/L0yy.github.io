@@ -137,6 +137,146 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/08/docker-学习记录/">
+        <p class="h4 index-header">docker 学习记录</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">起因本文背景操作系统：Ubuntu 16.04
+今天上课就不想听老师的，就想写下自己之前没搞懂的docker，基本都是看的网上教程和官方文档
+认识docker官方文档：https://docs.docker.com/get-started/
+优秀博客：https://zhuanlan.zhihu.com/p/22403015
+我这里主要根据官方文档记录下学习过程
+什么是docker上面那篇知乎文章写的很好，详细解释了什么是docker，以及和虚拟机的区别，我这里还是给自己增强下记忆。
+虚拟机是模拟抽象出了硬件，然后在虚拟出的硬件上运行新的内核系统，所以虚拟机机开机慢（包括开机自检，启动操作系统等等）
+docker 我们可以理解成一个特别的进程，通过linux fork出来的一个进程，(fork出来的父进程和子进程都是一样的)，然后运用各种隔离形成‘独立进程’(这个可以看些知乎那篇文章)，docker不用安装其他操作系统，也不需要模拟kernel ，用的是本机的kernel 。
+总结一下docker 就是隔离了除内核资源外其应用层资源的进程，docker镜像的kernel和运行docke</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Docker">Docker</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/docker">docker</a>&nbsp;
+          
+            <a href="/tags/hub">hub</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/04/看雪刷题系列：2017/">
+        <p class="h4 index-header">看雪刷题系列：2017</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">题目链接和write up
+运行调试和结果就一个简单框题， vc6写的，而且作者也说没什么防护我的结果是 1555
+反编译F12 搜索字符串，确实有成功提示，跳转到引用出，但发现相应函数不能F5大法，说不在函数体内，其实是因为IDA没有把这段代码认识是代码OTZ，姑且这样认为吧，我们可以手动点击函数体名，右击选择Creat function 就可以反编译了
+反编译位置之前函数设定有点问题 ，我是在.text:004011F4 .text:004012AA两个位置创建了函数，反编译出来很简单了
+int sub_4011F4()
+{
+  int v0; // ecx
+  double v1; // st7
+  double v2; // st6
+  double v3; // st6
+  CHAR num1; // [esp+0h] [ebp-1Ch]
+  char num2; // [esp+1h] [ebp-1Bh]
+  char num3; // [esp+2h] [ebp-1Ah]
+  char num4; // [esp+3h] [ebp-19h]
+  int v9; // [e</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/02/z3py使用总结/">
+        <p class="h4 index-header">z3py使用总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">遇到一个需要计算的题，逆向不出来，就想想使用正向求解，z3了解一下
+什么是z3
+Z3 is a theorem prover from Microsoft Research. It &gt;is licensed under the MIT license.
+If you are not familiar with Z3, you can start &gt;here.
+Pre-built binaries for releases are available from &gt;here, and nightly builds from here.
+Z3 can be built using Visual Studio, a Makefile or &gt;using CMake. It provides bindings for several &gt;programming languages.
+See the release notes for notes on various stable &gt;releases of Z3.
+
+就是一个约束器，可以简单理解为解方程的东西。
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-02&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/z3">z3</a>&nbsp;
+          
+            <a href="/tags/Python">Python</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/04/01/coding-hexo配置/">
         <p class="h4 index-header">coding+hexo配置</p>
         

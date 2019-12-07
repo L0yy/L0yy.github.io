@@ -14,7 +14,7 @@
   <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
   <meta name="author" content="Cray">
   <meta name="keywords" content>
-  <title>替换特权指令 提升权限 ~ CrayBlog</title>
+  <title>恶意线程清理 ~ CrayBlog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
@@ -99,7 +99,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_aab63e9f07.jpg')no-repeat center center;
+         style="background: url('https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_f5f811ba9f.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -111,7 +111,7 @@
 
             
               <br>
-              <p class="mt-3">星期二, 九月 3日 2019, 7:11 晚上</p>
+              <p class="mt-3">星期四, 十一月 7日 2019, 9:28 晚上</p>
             
           </div>
 
@@ -132,154 +132,182 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p><strong><a href="https://zh.wikipedia.org/wiki/%E7%89%B9%E6%9D%83_(Windows)" target="_blank" rel="noopener">什么是特权</a></strong></p>
-<p><strong>注意，这里说的提权不是从<code>Administrator</code>提升到 <code>System</code>,只是开启一些<code>Administrator</code>组的特殊权限</strong></p>
-<h3 id="Administrator组"><a href="#Administrator组" class="headerlink" title="Administrator组"></a>Administrator组</h3><p>管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是<code>SeDebugPrivilege</code>，要是进程拥有了这个权限，就能对任意进程进行操作（包括<code>system</code>）</p>
-<p><img src="https://img-blog.csdnimg.cn/20190905184130154.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20190905190534272.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>当用户试图执行一个特权操作，系统检查用户的访问令牌以确定使用是否具有必要的特权。调用GetTokenInformation函数可以检查特权。</p>
-</blockquote>
-<p>我要做的就是找到找到一个系统中有<code>SeDebugPrivilege</code>权限的令牌，然后复制下来，把自己的令牌改为他这个，然乎自己就拥有了<code>SeDebugPrivilege</code>权限了。这也就是提升权限的核心。</p>
-<p>下图是我使用 <code>OpenProcess</code>对SID为4的系统进程进行操作，且操作权限是<code>PROCESS_ALL_ACCESS</code></p>
-<p><img src="https://img-blog.csdnimg.cn/20190905190019240.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>
-<p>下面看看具体实现</p>
-<pre><code class="c">void CgPivilige()
+            <p>这篇博客的背景是：如果很多进程都恶意程序通过远进程注入了线程，那么应该怎么清除呢？</p>
+<p>下面给出两种方法</p>
+<h2 id="PLAN-A"><a href="#PLAN-A" class="headerlink" title="PLAN A"></a>PLAN A</h2><p>来自 加号</p>
+<p>通过遍历线程后，根据获取到的线程信息，对线程地址和入口代码进行检查，这种方式适合对注入代码偏移位置固定或则入口代码固定，能准确查杀，推荐使用</p>
+<pre><code class="C">void Killing::KillMalRemoteThread()
 {
-    BOOL retn;
-    HANDLE hToken;
-    retn = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | READ_CONTROL, &amp;hToken);//修改令牌特权值
-    if (retn != TRUE)
-    {
-        printf(&quot;获取令牌句柄失败!&quot; );
-        return;
-    }
+    (FARPROC&amp;)ZwQueryInformationThread = GetProcAddress(m_hNtdll, &quot;ZwQueryInformationThread&quot;);
 
-    TOKEN_PRIVILEGES tp; //新特权结构体
-    LUID Luid;
-    retn = LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &amp;Luid);//查看具有调试权限的令牌
+    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+    THREADENTRY32 te32;
 
-    if (retn != TRUE)
-    {
-        printf(&quot;获取Luid失败&quot; );
-        return;
-    }
-    //给TP和TP里的LUID结构体赋值
-    tp.PrivilegeCount = 1;
-    tp.Privileges[0].Luid = Luid;
-    tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+    te32.dwSize = sizeof(THREADENTRY32);
+    Thread32First(hThreadSnap, &amp;te32);
+    HANDLE hThread;
+    do {
+        hThread = OpenThread(THREAD_ALL_ACCESS, false, te32.th32ThreadID);
 
-    AdjustTokenPrivileges(hToken, FALSE, &amp;tp, sizeof(TOKEN_PRIVILEGES), NULL, NULL);//调整自己Token为有调试特权的Token
-    if (GetLastError() != ERROR_SUCCESS)
-    {
-        printf(&quot;修改特权不完全或失败!&quot; );
-    }
-    else
-    {
-        printf(&quot;修改成功!&quot; );
-    }
-}</code></pre>
-<p>下面给一个病毒使用的提升权限 IDA伪代码</p>
-<pre><code>int __cdecl reloadToken_4108F0(LPCWSTR lpName)
-{
-  HANDLE v2; // eax
-  struct _LUID Luid; // [esp+0h] [ebp-24h]
-  HANDLE TokenHandle; // [esp+8h] [ebp-1Ch]
-  struct _TOKEN_PRIVILEGES NewState; // [esp+Ch] [ebp-18h]
+        setlocale(LC_ALL, &quot;.ACP&quot;);
 
-  if ( !LookupPrivilegeValueW(0, lpName, &amp;Luid) )// lpnmae SedebugPrivilege  查看拥有调试权限的令牌
-    return 0;
-  v2 = GetCurrentProcess();
-  if ( !OpenProcessToken(v2, 0x20028u, &amp;TokenHandle) )// 0x20028 = TOKEN_ADJUST_PRIVILEGES|TOKEN_QUERY|READ_CONTROL
-    return 0;
-  NewState.Privileges[0].Luid = Luid;
-  NewState.PrivilegeCount = 1;
-  NewState.Privileges[0].Attributes = 2;
-  AdjustTokenPrivileges(TokenHandle, 0, &amp;NewState, 0, 0, 0);// 将访问令牌中禁用的权限启用，来达到权限提升
-  CloseHandle(TokenHandle);
-  return 1;
-}</code></pre><h3 id="普通用户组"><a href="#普通用户组" class="headerlink" title="普通用户组"></a>普通用户组</h3><p>普通用户组本身权限就比较少<br><img src="https://img-blog.csdnimg.cn/20190905175911142.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20190905183658642.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>Crat是普通用户组成员<br><img src="https://img-blog.csdnimg.cn/20190905191224944.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>普通用户一般是没有<code>SeDebugPrivilege</code> 权限的，也就是说这个用户组根本就没这个权限，不是能不能打开的问题，而是根本没有。</p>
-<p>所以普通用户不存在什么使用令牌的权限提升，即使有，都只是很小的一些权限。</p>
-<h4 id="查看进程权限"><a href="#查看进程权限" class="headerlink" title="查看进程权限"></a>查看进程权限</h4><p>程序能运行在<code>low</code> <code>medium</code> <code>hight</code> 三个level下,那怎么在通过代码检测自己拥有什么权限呢？</p>
-<p>通过<code>GetTokenInformation</code>拿到这个进程的<code>TokenInformation</code>信息 再通过比较<code>Label.Sid,</code>的值</p>
-<pre><code class="c">void ShowProcessIntegrityLevel()
-{
-    HANDLE hToken;
-    HANDLE hProcess;
+        DWORD startAddr;
+        ZwQueryInformationThread(hThread, ThreadQuerySetWin32StartAddress, &amp;startAddr, sizeof(PVOID), NULL);
 
-    DWORD dwLengthNeeded;
-    DWORD dwError = ERROR_SUCCESS;
+        printf(&quot;进程 %d, 线程 %d, 入口地址 0x%x\n&quot;, te32.th32OwnerProcessID, te32.th32ThreadID, startAddr);
 
-    PTOKEN_MANDATORY_LABEL pTIL = NULL;
-    DWORD dwIntegrityLevel;
-
-    hProcess = GetCurrentProcess();
-    if (OpenProcessToken(hProcess, TOKEN_QUERY |
-        TOKEN_QUERY_SOURCE, &amp;hToken))
-    {
-        // Get the Integrity level.
-        if (!GetTokenInformation(hToken, TokenIntegrityLevel,
-            NULL, 0, &amp;dwLengthNeeded))
+        if (startAddr &gt; 0x400000 &amp;&amp; startAddr &lt; 0x80000000)
         {
-            dwError = GetLastError();
-            if (dwError == ERROR_INSUFFICIENT_BUFFER)
+            if ((startAddr &amp; 0xFFFF) == 0x3A72 || (startAddr &amp; 0xFFFF) == 0x36F4)//判断进程入口地址2字节
             {
-                pTIL = (PTOKEN_MANDATORY_LABEL)LocalAlloc(0,
-                    dwLengthNeeded);
-                if (pTIL != NULL)
-                {
-                    if (GetTokenInformation(hToken, TokenIntegrityLevel,
-                        pTIL, dwLengthNeeded, &amp;dwLengthNeeded))
-                    {
-                        dwIntegrityLevel = *GetSidSubAuthority(pTIL-&gt;Label.Sid,
-                            (DWORD)(UCHAR)(*GetSidSubAuthorityCount(pTIL-&gt;Label.Sid) - 1));
+                PBYTE pbMapBase = (PBYTE)((startAddr &amp; 0xFFFF) == 0x3A72 ? startAddr - 0x3A72 : startAddr - 0x36F4);
+                HANDLE hOwnerProc = OpenProcess(PROCESS_VM_READ, false, te32.th32OwnerProcessID);
 
-                        if (dwIntegrityLevel &lt; SECURITY_MANDATORY_MEDIUM_RID)
-                        {
-                            // Low Integrity
-                            wprintf(L&quot;Low Integrity Process&quot;);
-                        }
-                        else if (dwIntegrityLevel &gt;= SECURITY_MANDATORY_MEDIUM_RID &amp;&amp;
-                            dwIntegrityLevel &lt; SECURITY_MANDATORY_HIGH_RID)
-                        {
-                            // Medium Integrity
-                            wprintf(L&quot;Medium Integrity Process&quot;);
-                        }
-                        else if (dwIntegrityLevel &gt;= SECURITY_MANDATORY_HIGH_RID)
-                        {
-                            // High Integrity
-                            wprintf(L&quot;High Integrity Process&quot;);
-                        }
+                BYTE sectionOff_0[4] = { 0 };
+                BYTE sectionOff_2F8[5] = { 0 };
+                ReadProcessMemory(hOwnerProc, pbMapBase, sectionOff_0, 4, NULL);
+                ReadProcessMemory(hOwnerProc, pbMapBase + 0x2F8, sectionOff_2F8, 5, NULL);
+
+                if (*(DWORD*)&amp; sectionOff_0 == 0xFF243C83 &amp;&amp;
+                    *(DWORD*)&amp; sectionOff_2F8 == 0x00012DE9 &amp;&amp;
+                    sectionOff_2F8[4] == 0x00)//进一步检查入口代码是否为特定值
+                {
+                    printf(&quot;########\n恶意线程，在进程 %d, 线程 %d, 入口地址 0x%x\n&quot;, te32.th32OwnerProcessID, te32.th32ThreadID, startAddr);
+                    if (TerminateThread(hThread, -1))
+                    {
+                        printf(&quot;已终止该线程\n&quot;);
                     }
-                    LocalFree(pTIL);
+                    printf(&quot;########\n&quot;);
                 }
             }
         }
-        CloseHandle(hToken);
+        CloseHandle(hThread);
+
+    } while (Thread32Next(hThreadSnap, &amp;te32));
+
+    CloseHandle(hThreadSnap);
+}
+</code></pre>
+<h2 id="PLAN-B"><a href="#PLAN-B" class="headerlink" title="PLAN B"></a>PLAN B</h2><p>而这个方案就比较猛一些，可以直接干掉所有不在模块中的线程，要小心一点</p>
+<p>因为普通线程创建都会在进程的已知模块中，而恶意代码创建的就是不属于任何模块，也可以用过指定模块名来关闭线程</p>
+<pre><code class="C">void WINAPI ClearThread()
+{
+    int Flag = 3;
+
+    while (Flag)
+    {
+        Sleep(1000);
+        HANDLE hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);    // 进程快照句柄
+        PROCESSENTRY32 process = { sizeof(PROCESSENTRY32) };                        // 进程快照信息
+
+        // 遍历进程
+        while (Process32Next(hProcessSnap, &amp;process))
+        th32ProcessID{
+            HANDLE hThreadSnap = INVALID_HANDLE_VALUE;            // 线程快照句柄 
+            THREADENTRY32 te32;                                    // 线程快照信息
+            // 创建线程快照
+            hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+            if (hThreadSnap == INVALID_HANDLE_VALUE) { printf(&quot;创建线程快照失败&quot;); }
+
+            // 为快照分派内存空间
+            te32.dwSize = sizeof(THREADENTRY32);
+
+            // 获取第一个线程的信息
+            if (!Thread32First(hThreadSnap, &amp;te32)) { printf(&quot;线程信息获取失败&quot;); }
+
+            // 遍历线程
+            while (Thread32Next(hThreadSnap, &amp;te32))
+            {
+                if (te32.th32OwnerProcessID == process.th32ProcessID)
+                {
+                    // 打开线程
+                    //printf(&quot;PID=%d, TID=%d\n&quot;,te32.th32OwnerProcessID,te32.th32ThreadID);
+
+                    HANDLE hThread = ::OpenThread(
+                        THREAD_ALL_ACCESS,        // 访问权限，THREAD_ALL_ACCESS ：所有权限
+                        FALSE,                    // 由此线程创建的进程不继承线程的句柄
+                        te32.th32ThreadID        // 线程 ID
+                        );
+                    if (hThread == NULL) 
+                    { 
+                        //printf(&quot;线程打开失败%x\n&quot;, GetLastError()); 
+                        continue; 
+                    }
+
+                    // 将区域设置设置为从操作系统获取的ANSI代码页
+                    setlocale(LC_ALL, &quot;.ACP&quot;);
+
+                    // 获取 ntdll.dll 的模块句柄
+                    HINSTANCE hNTDLL = ::GetModuleHandleA(&quot;ntdll&quot;);
+
+                    // 从 ntdll.dll 中取出 ZwQueryInformationThread
+                    (FARPROC&amp;)ZwQueryInformationThread = ::GetProcAddress(hNTDLL, &quot;ZwQueryInformationThread&quot;);
+
+                    // 获取线程入口地址
+                    PVOID startaddr;                        // 用来接收线程入口地址
+                    ZwQueryInformationThread(
+                        hThread,                            // 线程句柄
+                        ThreadQuerySetWin32StartAddress,    // 线程信息类型，ThreadQuerySetWin32StartAddress ：线程入口地址
+                        &amp;startaddr,                            // 指向缓冲区的指针
+                        sizeof(startaddr),                    // 缓冲区的大小
+                        NULL
+                        );
+
+                    // 获取线程所在模块
+                    THREAD_BASIC_INFORMATION tbi;            // _THREAD_BASIC_INFORMATION 结构体对象
+                    TCHAR modname[MAX_PATH];                // 用来接收模块全路径
+                    ZwQueryInformationThread(
+                        hThread,                            // 线程句柄
+                        ThreadBasicInformation,                // 线程信息类型，ThreadBasicInformation ：线程基本信息
+                        &amp;tbi,                                // 指向缓冲区的指针
+                        sizeof(tbi),                        // 缓冲区的大小
+                        NULL
+                        );
+
+                    // 检查入口地址是否位于某模块中
+                    GetMappedFileName(
+                        ::OpenProcess(                        // 进程句柄
+                        PROCESS_ALL_ACCESS,                                    // 访问权限，THREAD_ALL_ACCESS ：所有权限
+                        FALSE,                                                // 由此线程创建的进程不继承线程的句柄
+                        (DWORD)tbi.ClientId.UniqueProcess                    // 唯一进程 ID
+                        ),
+                        startaddr,                            // 要检查的地址
+                        modname,                            // 用来接收模块名的指针
+                        MAX_PATH                            // 缓冲区大小
+                        );
+
+                    // 判断线程是否在模块中
+
+                    if (modname[0] == NULL)
+                    {            
+                        //modname是模块名的指针，可以比较是否是恶意模块名
+                        printf(&quot;线程不在模块中: th32ProcessID=%d, TID=%d  \n&quot;, process.th32ProcessID, te32.th32ThreadID);
+                        if (TerminateThread(hThread, -1))
+                        {
+                            printf(&quot;线程已被清理\n&quot;);
+                        }
+                    }
+                    modname[0] = NULL;
+                }
+            }
+        }
+        Flag -= 1;
     }
 }</code></pre>
-<p>参考  <a href="https://www.cnblogs.chom/hqu-ye/articles/4838381.html" target="_blank" rel="noopener">https://www.cnblogs.chom/hqu-ye/articles/4838381.html</a></p>
+<p>如果病毒还有提权操作的话，我们也需要提高权限去对抗</p>
+<p>常见的提权方式为调整令牌 详见</p>
 
             <hr>
           </div>
           <br>
           <div>
             
-              <p>
-                <i class="iconfont icon-inbox"></i>
-                
-                  <a class="hover-with-bg" href="/categories/%E9%80%86%E5%90%91">逆向</a>
-                  &nbsp;
-                
-              </p>
-            
             <p>
               <i class="iconfont icon-tag"></i>
               
-                <a class="hover-with-bg" href="/tags/%E6%8F%90%E6%9D%83">提权</a>
+                <a class="hover-with-bg" href="/tags/%E9%80%86%E5%90%91">逆向</a>
               
-              <span id="/2019/09/03/替换特权指令 提升权限/" class="visitors leancloud_visitors" data-flag-title="替换特权指令 提升权限">
+              <span id="/2019/11/07/监控线程/" class="visitors leancloud_visitors" data-flag-title="恶意线程清理">
                 <em id="visitors-text" class="post-meta-item-text"></em>
                 <i id="visitors-count"></i>
               </span>
@@ -316,8 +344,8 @@
   <script>
     var disqus_shortname = 'https-l0yy-github-io';
     var disqus_config = function () {
-      this.page.url = 'http://l0yy.gitee.io/2019/09/03/替换特权指令 提升权限/';
-      this.page.identifier = '/2019/09/03/替换特权指令 提升权限/';
+      this.page.url = 'http://l0yy.gitee.io/2019/11/07/监控线程/';
+      this.page.identifier = '/2019/11/07/监控线程/';
     };
     (function () {
       var d = document, s = d.createElement('script');
@@ -409,7 +437,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "替换特权指令 提升权限&nbsp;",
+        "恶意线程清理&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

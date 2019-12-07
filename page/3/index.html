@@ -137,6 +137,162 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/10/调试dll的两种方法/">
+        <p class="h4 index-header">调试dll的两种方法</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">首先把dll调起来看看
+方法一自己写loadlibrary()和GetProcAddress()来加载dll。
+编写有一个导出函数的测试 的 A.dll
+// dllmain.cpp : 定义 DLL 应用程序的入口点。
+#include &quot;stdafx.h&quot;
+
+extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
+{
+    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);
+    return nArg1;
+}
+
+BOOL APIENTRY DllMain( HMODULE hModule,
+                       DWORD  ul_reason_for_call,
+                       LPVOID lpReserved
+                     )
+{
+    switch (ul_reason_for_call)
+    {
+    case DLL_P</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E8%B0%83%E8%AF%95dll">调试dll</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/15/dc-2/">
+        <p class="h4 index-header">vulnhub 靶机系列 dc-2</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">靶机地址
+网络拓扑我在这里使用VM虚拟机来搭建环境
+攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24
+靶机为 dc-2 使用桥接本机无线网卡 
+开始测试主机发现扫描主机详细信息，发现有web服务和一个修改了端口的ssh根据作者的说明，需要parrot的hosts文件，才能正常访问web网站修改后记得重启网络  service netwoking restart,访问 http://dc-2 成功找到flag1发现是Wordpress框架的网站，那就直接上Wpscan,但是parrot或kali虽然自带，但是都需要update，但是会出现请求超时（搭梯子都不行），直接开始枚举用户名发现有三个用户名 admin jerry tom把他们都保存到保存到一个文本里，后面的爆破需要用到这里有点坑，用常用字典跑步不出来，然后认真读了下flag发现作者提示使用cewl来搜集密码。。。这里保存到pass.txt然后是爆破对应密码，docker wpscan使用见下文很不错，跑出来了两个，如图所示wordoress 后台地址默认是 /wp-admin，先使用tom登</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-15&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
+          
+            <a href="/tags/%E9%9D%B6%E6%9C%BA">靶机</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/11/WEB温习第三天/">
+        <p class="h4 index-header">web渗透基础三</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">命令执行以及反弹shell姿势还是DVWA靶机的Command Injection
+功能是在本地使用shell_exec执行ping命令
+Low&lt;?php 
+
+if( isset( $_POST[ &#39;Submit&#39; ]  ) ) { 
+    // Get input 
+    $target = $_REQUEST[ &#39;ip&#39; ]; 
+
+    // Determine OS and execute the ping command. 
+    if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) { 
+        // Windows 
+        $cmd = shell_exec( &#39;ping  &#39; . $target ); 
+    } 
+    else { 
+        // *nix 
+        $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );
+    } 
+
+    </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/DVWA">DVWA</a>&nbsp;
+          
+            <a href="/tags/php">php</a>&nbsp;
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/%E5%8F%8D%E5%BC%B9shell">反弹shell</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/06/11/WEB温习第二天/">
         <p class="h4 index-header">web渗透基础二</p>
         
@@ -452,180 +608,6 @@ ssl原理解释
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/TcpDump">TcpDump</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/05/12/HWTACACS和RADIUS的区别/">
-        <p class="h4 index-header">HWTACACS和RADIUS的区别</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">一 HWTACACS和RADIUS的区别
-1 传输层协议两者使用的传输层协议不同，HWTACACS使用的是TCP，而RADIUS采用的是UDP；
-2 认证、授权方式HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证。而RADIUS的认证和授权是捆在一起的；
-3 加密方式HWTACACS对用户报文会进行整个加密，而RADIUS仅对用户密码进行加密。
-二 HWTACACS和RADIUS使用场合当用户需从本地网络与NAS建立连接从而取得访问其他网络的权利或取得使用某些网络资源时，一般都需对此类用户接入请求进行认证、授权和计费等。认证为合法用户将被分配网络资源，同时可对用户上线时间统计计时，并拒绝非法用户的请求。电信运营商和一些院校及企事业单位一般都采用HWTACACS或RADIUS服务器对接入用户进行有效控制，保证网络安全性和计时（方便计费）。
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-12&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/HCIP">HCIP</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/05/11/HCIP-security了解/">
-        <p class="h4 index-header">HCIP-security了解</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">HCIP-Security 知识架构HCP1 HCIP-Security CISN构建安全网络架构 * 网络安全设备管理
-
-     *   网络安全设备介绍
-
-     *   网络安全设备管理
-
-     *   网络安全设备日志分析
-
-     *   网络安全设备统一运维
-
- * 防火墙带宽管理
-
-     *   防火墙带宽管理概述
-
-     *   防火墙带宽管理实现原理
-
-     *   防火墙带宽管理配置部署
-
-     *   防火墙带宽管理故障排除
-
- * 防火墙负载均衡
-
-     *   服务器负载均衡概述
-
-     *   服务器负载均衡实现原理
-
-     *   服务器负载均衡配置部署
-
- * 防火墙高可靠性
-
-     *   BFD技术
-
-     *   IP-Link技术
-
-     *   Link-Group技术
-
-     *   Eth-Trunk技术
-
-     *   Bypass技术
-
-     *   双机热备技术
-
-     *   双机热备故障排除
-
- * 防火墙虚拟系统
-
-     *   虚拟系统概述
-
-     * </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-11&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/HCIP">HCIP</a>&nbsp;
-          
-            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C">计算机网络</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/29/angr学习文档/">
-        <p class="h4 index-header">angr学习文档</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">安装不会建议直接上docker 大是大了点，但是是相对很简单的事
-官方文档翻译angr Documentation我们首先要了解angr的构造，开始第一步肯定是导入二进制程序
-&gt;&gt;&gt; import angr
-&gt;&gt;&gt; proj = angr.Project(&#39;/bin/true&#39;)之后我们的操作都会基于这个proj对象，
-基础属性&gt;&gt;&gt; import monkeyhex //将以十六进制格式化数值输出结果
-&gt;&gt;&gt; proj.arch //程序的
-&lt;Arch AMD64 (LE)&gt;
-&gt;&gt;&gt; proj.entry //程序入口处
-0x401670
-&gt;&gt;&gt; proj.filename //程序二进制地址
-&#39;/bin/true&#39;The loader 方法从二进制文件转变为虚拟地址空间的表现形式的过程是十分复杂的。我们有一个名为CLE的模块来处理这个过程。CLE的结果，称为loader，可通过.loader属性来进行操控。
-
-&gt;&gt;&gt</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-29&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Angr">Angr</a>&nbsp;
-          
-            <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E5%8C%96">程序自动化</a>&nbsp;
           
         
       </div>
