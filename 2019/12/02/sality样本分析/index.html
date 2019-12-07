@@ -193,47 +193,47 @@
 <td>2019.11.23</td>
 </tr>
 </tbody></table>
-<h2 id="1-2-流程图"><a href="#1-2-流程图" class="headerlink" title="1.2. 流程图"></a>1.2. 流程图</h2><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g97y36as4aj30rp0imab0.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<h2 id="1-2-流程图"><a href="#1-2-流程图" class="headerlink" title="1.2. 流程图"></a>1.2. 流程图</h2><p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g97y36as4aj30rp0imab0.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <h2 id="1-3-静态分析"><a href="#1-3-静态分析" class="headerlink" title="1.3. 静态分析"></a>1.3. 静态分析</h2><p>程序OEP处已被修改为被混淆的跳转指令，目的就是跳转到最后一个藏好的shellcode执行</p>
 <h3 id="1-3-1-shellcode分析"><a href="#1-3-1-shellcode分析" class="headerlink" title="1.3.1. shellcode分析"></a>1.3.1. shellcode分析</h3><p>先获取<code>GetProcessAddr()</code>,<code>LoadLibrary()</code>等关键API,然后将自己映射到共享内存中，创建互斥体，等等</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g8yid53dfhj310t0jc414.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g8yid53dfhj310t0jc414.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>创建一个新线程去恢复OEP和加载恶意程序</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g8yiirfce0j310q0nzgon.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g8yiirfce0j310q0nzgon.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>恢复OEP</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g97xbkvcv6j30x80lhjug.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g97xbkvcv6j30x80lhjug.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>同样防止重复操作，互斥体安排上名为<code>Ap1mutx7</code>(这个不能为家族特征，这是随机生成的)</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94k5hbejxj30yp0fxwg9.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94k5hbejxj30yp0fxwg9.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>申请可执行空间，展开已经解密的PE文件，然后修复IAT，重定位，完了后就是<code>jmp eax</code>执行到这个PE中去</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g8yipk9keoj310v0iidih.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g8yipk9keoj310v0iidih.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>下面分析这个PE的主要功能</p>
 <h3 id="1-3-2-Dump出的PE"><a href="#1-3-2-Dump出的PE" class="headerlink" title="1.3.2. Dump出的PE"></a>1.3.2. Dump出的PE</h3><p>查壳是UPX，直接一把梭，接着就是IDA 伪代码分析</p>
 <p>这个病毒创建了共33个线程，下面介绍几个重要的线程分析</p>
 <p><code>start</code>部分都是创建重要的功能性线程</p>
 <h3 id="1-3-3-初始化函数"><a href="#1-3-3-初始化函数" class="headerlink" title="1.3.3. 初始化函数"></a>1.3.3. 初始化函数</h3><p><strong>概述：准备工作，了解计算机状态</strong></p>
 <p>检测系统的联网状态</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96yic5zhfj30vg05p74q.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96yic5zhfj30vg05p74q.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>关闭UAC，防火墙，禁用通知，将自己加入白名单，下面会构造一个随机的驱动名</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g8w8r3mbfbj30uv0j2goj.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g8w8r3mbfbj30uv0j2goj.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>这里会把当这个病毒母体映射到共享内存 名字为<code>purity_control_90833</code> 方便后面注入进程时使用</p>
 <h3 id="1-3-4-createvirusservice-4053B2"><a href="#1-3-4-createvirusservice-4053B2" class="headerlink" title="1.3.4. createvirusservice_4053B2"></a>1.3.4. createvirusservice_4053B2</h3><p><strong>概述：进程注入</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96wz0n0ejj30s90cs3z4.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96wz0n0ejj30s90cs3z4.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>尝试注入每个进程（不注入<code>system</code>，<code>local service</code>,<code>network service</code>）</p>
 <p>通过互斥体来检测是否注入(被注入的进程会创建一个名为<code>M_PID_</code>的互斥体) </p>
 <p>注入方式为远进程注入，创建两个线程，一个负责检测，另一个负责执行母体代码</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96x2r5sjvj30w60kzgos.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96x2r5sjvj30w60kzgos.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <h3 id="1-3-5-createvirusservice-4053B2"><a href="#1-3-5-createvirusservice-4053B2" class="headerlink" title="1.3.5. createvirusservice_4053B2"></a>1.3.5. createvirusservice_4053B2</h3><p><strong>概述：内核级关闭杀软服务,关闭杀软进程, 删除杀软文件</strong></p>
 <p>枚举和删除位于以下注册表子项中的所有条目来阻止受感染的计算机进入安全模式</p>
 <p><code>HKEY_CURRENT_USER\System\CurrentControlSet\Control\SafeBoot</code><br><code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SafeBoot</code></p>
 <p>卸载常见安全软件驱动</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96xko2j0dj31850h6aey.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96xko2j0dj31850h6aey.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>释放恶意驱动文件并命名为<code>c:\windows\system32\drivers\ipfltdrv.sys</code></p>
 <p>创建了两个服务去加载这个驱动，名字分别为<code>IPFILTERDRIVER</code>和<code>amsint32</code></p>
 <p>对抗杀软，加载自己的驱动</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g8xcuueniwj30uk0c875r.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g8xcuueniwj30uk0c875r.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>遍历已知的安全软件驱动，进行卸载</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g8xd091qp0j30ul09wq3q.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g8xd091qp0j30ul09wq3q.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>以及关闭正在运行的安全软件进程</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g8xe89d2y4j318s0o5443.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g8xe89d2y4j318s0o5443.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <h3 id="1-3-6-infectfile40E507"><a href="#1-3-6-infectfile40E507" class="headerlink" title="1.3.6. infectfile40E507"></a>1.3.6. infectfile40E507</h3><p><strong>摘要：感染全盘文件</strong></p>
 <h4 id="1-3-6-1-感染各个盘的antorrun-inf文件"><a href="#1-3-6-1-感染各个盘的antorrun-inf文件" class="headerlink" title="1.3.6.1. 感染各个盘的antorrun.inf文件"></a>1.3.6.1. 感染各个盘的antorrun.inf文件</h4><blockquote>
 <p>这个文件会在双击磁盘时自动运行</p>
@@ -241,25 +241,25 @@
 <p>这里会遍历<code>B-Y</code>盘的感染每个盘的<code>antorrun.inf</code>文件</p>
 <p>先检查是否含有<code>autorun.inf</code>文件，没有就创建，有就检测是否是自己创建的，不是就删除</p>
 <p>判断条件<code>SystemTime.wSecond == SystemTime.wHour + 7</code> 则是已被感染文件</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94jh8qaqvj30ur091jse.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94jh8qaqvj30ur091jse.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>然后的内容根据随机数添加垃圾数据，如下</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94jjppfttj30ue07fq30.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94jjppfttj30ue07fq30.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>硬编码的数据，使用自身的感染函数进行感染，返回一个被感染后的文件的数据结构</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94jqxexokj30us06s0tg.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94jqxexokj30us06s0tg.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>这里将将他写入<code>C:\\isti.exe</code>配合<code>autorun.inf</code>使用</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94jo20ui1j30ur055aaf.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94jo20ui1j30ur055aaf.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>最后还检测是否写入成功，不成功就重写</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94kzhtol4j30uy0fqq4p.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94kzhtol4j30uy0fqq4p.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <h4 id="1-3-6-2-感染普通文件（EXE和SCR）"><a href="#1-3-6-2-感染普通文件（EXE和SCR）" class="headerlink" title="1.3.6.2. 感染普通文件（EXE和SCR）"></a>1.3.6.2. 感染普通文件（EXE和SCR）</h4><p>被感染后的文件一览</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96tweate0j30pe0jldgj.jpg" srcset="/img/loading.gif" alt="image.png"></p>
-<p>遍历B-Y盘进行遍历<br><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94l5cs51zj30v5048jro.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96tweate0j30pe0jldgj.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p>遍历B-Y盘进行遍历<br><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94l5cs51zj30v5048jro.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>每个盘通过递归的方式检测是否感染，以及进行感染的模式</p>
 <p>比如 反病毒软件的文件就是用感染模式2，普通文件就使用感染模式0</p>
 <p>不感染<code>SYSTEM</code>文件夹 防止系统崩溃</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g94l6yk2svj30v00cc75w.jpg" srcset="/img/loading.gif" alt="image.png"></p>
-<p>具体加密函数，传入参数如图<br><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96u9wlyopj30vd03st8v.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g94l6yk2svj30v00cc75w.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p>具体加密函数，传入参数如图<br><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96u9wlyopj30vd03st8v.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>具体加密过程比较复杂，主要总结如下</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96urc5q5nj30ug0kqmz3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96urc5q5nj30ug0kqmz3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>前面看到有三种感染模式 <code>0</code> 对应普通文件  <code>1</code> 对应自己生成的tmp文件  <code>2</code> 对应杀软文件</p>
 <h5 id="1-3-6-2-1-当模式为0时："><a href="#1-3-6-2-1-当模式为0时：" class="headerlink" title="1.3.6.2.1. 当模式为0时："></a>1.3.6.2.1. 当模式为0时：</h5><p><strong>不感染条件总结(满住任意一条即可)</strong></p>
 <p>1.文件名包含<code>DAEMON.</code></p>
@@ -270,20 +270,20 @@
 <p>5.有重定位表</p>
 <p>当以上条件都不满住后，就开始感染</p>
 <h5 id="1-3-6-2-2-总体感染思路"><a href="#1-3-6-2-2-总体感染思路" class="headerlink" title="1.3.6.2.2. 总体感染思路"></a>1.3.6.2.2. 总体感染思路</h5><p>感染的思路很简单,如下图</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96vkkgkeyj30pf0kojs6.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96vkkgkeyj30pf0kojs6.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>其中的<code>OEP</code>代码和<code>lab1</code>都加了混淆（具体过程详见idb文件）</p>
 <h5 id="1-3-6-2-3-当模式为1时："><a href="#1-3-6-2-3-当模式为1时：" class="headerlink" title="1.3.6.2.3. 当模式为1时："></a>1.3.6.2.3. 当模式为1时：</h5><p>这个模式下文件不会被保留，感染后会删除，主要是通过参数3传回他的数据结构</p>
 <h5 id="1-3-6-2-4-当模式为2时："><a href="#1-3-6-2-4-当模式为2时：" class="headerlink" title="1.3.6.2.4. 当模式为2时："></a>1.3.6.2.4. 当模式为2时：</h5><p>对杀软很直接</p>
 <p>将杀软文件前8直接改为 <code>0xC3</code> (ret),主要这里没有备份这8字节数据，也就是不能恢复</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96v7501cij30vd03paad.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96v7501cij30vd03paad.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <h4 id="1-3-6-3-感染启动项文件"><a href="#1-3-6-3-感染启动项文件" class="headerlink" title="1.3.6.3. 感染启动项文件"></a>1.3.6.3. 感染启动项文件</h4><p>通过感染开机启动项文件来达到持久化</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g96xuf9lgkj30uy0d1jsp.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g96xuf9lgkj30uy0d1jsp.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <h3 id="1-3-7-网络链接"><a href="#1-3-7-网络链接" class="headerlink" title="1.3.7. 网络链接"></a>1.3.7. 网络链接</h3><p><strong>摘要：链接C2下载解密文件，本地解密后执行</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g971lc9cjxj30s40bnglz.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g971lc9cjxj30s40bnglz.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>关键代码如下</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g971s587kwj30ul0i1ac8.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g971s587kwj30ul0i1ac8.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>最后执行读到内存后删除tmp文件</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g971v9xad1j30vq0863z7.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g971v9xad1j30vq0863z7.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <table>
 <thead>
 <tr>
@@ -326,15 +326,15 @@
 </tbody></table>
 <h3 id="1-3-8-deletetempFile-4057A0"><a href="#1-3-8-deletetempFile-4057A0" class="headerlink" title="1.3.8. deletetempFile_4057A0"></a>1.3.8. deletetempFile_4057A0</h3><p><strong>摘要：删除Tmp文件夹下的.EXE和_Rar文件或目录</strong></p>
 <p>这个线程就时简单的删除这些文件，也是为了擦除一些运行痕迹</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g97237538mj30uk0g6tak.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g97237538mj30uk0g6tak.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <h3 id="1-3-9-Peer2PeerNet-403911"><a href="#1-3-9-Peer2PeerNet-403911" class="headerlink" title="1.3.9. Peer2PeerNet_403911"></a>1.3.9. Peer2PeerNet_403911</h3><p><strong>摘要：创建一个基于UDP协议的的p2p，更新C2地址</strong></p>
 <blockquote>
 <p>因为使用了基于UDP的P2P模型，所以无论如何内网穿透都需要一台创世节点，来连接两个不同内网之间的主机，但是该病毒没有使用连接创世节点的操作（我没找到），也就导致如果是非公网主机就不能加入这个P2P网络。</p>
 </blockquote>
 <p>这里如果连接上了P2P的任意一个成员就能加入到这个网络中，会开放自己的<code>8202</code>端口接收数据，数据被加密传输，且头部加入hash校验值来检测数据的完整性</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g97tx5tj0sj30us08ndgl.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g97tx5tj0sj30us08ndgl.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>将自己的C2地址发送给别人，然后对比接收到的数据</p>
-<p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g97wejeh0mj30us0b7aay.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://ww1.sinaimg.cn/large/006vdr71gy1g97wejeh0mj30us0b7aay.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>总的来说就是防止所有C2地址都失效后不能实现他的功能</p>
 <h2 id="1-4-IOC"><a href="#1-4-IOC" class="headerlink" title="1.4. IOC"></a>1.4. IOC</h2><table>
 <thead>
