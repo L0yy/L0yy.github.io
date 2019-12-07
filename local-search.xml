@@ -546,31 +546,6 @@
   
   
   <entry>
-    <title>web渗透基础二</title>
-    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/"/>
-    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/</url>
-    
-    <content type="html"><![CDATA[<blockquote><p>宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。</p></blockquote>]]></content>
-    
-    
-    <categories>
-      
-      <category>CTF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>宽字节注入</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>web渗透基础三</title>
     <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/"/>
     <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</url>
@@ -594,6 +569,31 @@
       <tag>DVWA</tag>
       
       <tag>反弹shell</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>web渗透基础二</title>
+    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/"/>
+    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。</p></blockquote>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>宽字节注入</tag>
       
     </tags>
     
