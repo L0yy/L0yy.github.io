@@ -137,6 +137,69 @@
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/02/利用弱口令传播横向的远控组件/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_06ce32b998.jpg" srcset="/img/loading.gif" alt="弱口令横向传播" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/02/利用弱口令传播横向的远控组件/">
+        <p class="h4 index-header">弱口令横向传播</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">@[toc]
+基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+sample.exe
+rat
+4D049BC19B03572EF8A00980050BAFFF
+28160 bytes
+
+
+简介此木马拥有横向传播能力扫描局域网主机，利用弱口令尝试登陆，上传运行自身，这样来传播。该木马会获取并上传被害者系统配置，方便进一步攻击，木马中有接收命令，执行命令的模块，也是这个木马的核心，达到执行作者发过来的命令该木马主要使用壳伪装自己，让安全软件不能找到敏感关键字符串，从而躲避安全软件的查杀。
+流程图
+详细分析程序加了两个壳，一个压缩壳UPX，一个Armadillo 都能用PEID插件脱掉
+点击脱壳之后修复下导入表就好了，修复之后查壳效果
+静态分析导入函数还有很多字符串就不列了，格式都是这种。从字符串中能看出，该样本有命令执行，联网，创建服务，处理资源数据，操作注册表的功能基本也就能猜测是释放资源段文件到新文件，然后加入服务启动，来达到启动的目的，下面看啊可能具体操作。
+动态加IDA该样本定义大量局部变量，使用硬编码方式存储数据移动到ascii上，右键char就可以看到字</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-02&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/malware%20Rat">malware Rat</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/08/26/输入法注入/" target="_self">
           <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_d33861f2b6.jpg" srcset="/img/loading.gif" alt="输入法注入" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -634,60 +697,6 @@ Optional header ：是必要的头介绍一下重要的属性AddressOfEntryPoint
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/IDA">IDA</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/10/调试dll的两种方法/">
-        <p class="h4 index-header">调试dll的两种方法</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">首先把dll调起来看看
-方法一自己写loadlibrary()和GetProcAddress()来加载dll。
-编写有一个导出函数的测试 的 A.dll
-// dllmain.cpp : 定义 DLL 应用程序的入口点。
-#include &quot;stdafx.h&quot;
-
-extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
-{
-    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);
-    return nArg1;
-}
-
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                     )
-{
-    switch (ul_reason_for_call)
-    {
-    case DLL_P</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E8%B0%83%E8%AF%95dll">调试dll</a>&nbsp;
           
         
       </div>

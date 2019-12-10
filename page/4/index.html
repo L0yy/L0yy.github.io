@@ -137,6 +137,51 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/13/tcpdump-记录/">
+        <p class="h4 index-header">tcpdump 记录</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">tcpdump一些常用的选项。-s number：tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容，就需要使用这个选项，其中number是需要截取的报文字节数，如果是0的话，表示截取报文全部内容；
+-nn：表示不解析域名，直接显示IP，在netstat命令中，也有这个选项；
+-X：同时使用hex和ascii显示报文内容；
+-S：显示绝对的序列号（sequence number），而不是相对编号；
+-i：指定监听的网卡，如果为-i any则表示监听所有的网卡；
+-v，-vv，-vvv：显示更多的详细信息；
+-c number：表示截取number个报文，然后结束；
+-w：将监听到的数据包写入文件中保存，而并不分析和打印出来；
+-A：只使用ascii打印报文的全部数据，不要和-X选项一起使用。截取HTTP请求的时候可以用sudo tcpdump -nSA port 80
+过滤器先进行使用实例详解时，有必要先掌握tcpdump一些基本的使用理论知识，先来说说过滤器。
+在服务器上的网络报文是异常的多，很多时候我们只关注和具体问题有关的数据报文，而这些有用的报文只占到很小的一部</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-13&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/TcpDump">TcpDump</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/05/12/HWTACACS和RADIUS的区别/">
         <p class="h4 index-header">HWTACACS和RADIUS的区别</p>
         
@@ -583,57 +628,6 @@ github项目
             <a href="/tags/retdec">retdec</a>&nbsp;
           
             <a href="/tags/%E5%8F%8D%E7%BC%96%E8%AF%91">反编译</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/10/溢出到花指令去除，外加z3解决/">
-        <p class="h4 index-header">溢出到花指令去除，外加z3解决</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">题目看雪.TSRC 2017CTF秋季赛
-地址：https://ctf.pediy.com/game-fight-47.htm
-入坑初始程序打开国际惯例，查看字符串，找到引用，
-#main函数
-
-.text:00401000 ; int __cdecl main(int argc, const char **argv, const char **envp)
-.text:00401000 _main           proc near               ; CODE XREF: start+AF↓p
-.text:00401000
-.text:00401000 argc            = dword ptr  4
-.text:00401000 argv            = dword ptr  8
-.text:00401000 envp            = dword ptr  0Ch
-.text:00401000
-.text:00401000                 push    offset aCrackmeForCtf2 ; &quot;\</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CTF">CTF</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/z3">z3</a>&nbsp;
-          
-            <a href="/tags/%E8%8A%B1%E6%8C%87%E4%BB%A4">花指令</a>&nbsp;
-          
-            <a href="/tags/OD">OD</a>&nbsp;
           
         
       </div>
