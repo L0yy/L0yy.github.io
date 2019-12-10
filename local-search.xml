@@ -394,31 +394,6 @@
   
   
   <entry>
-    <title>PE的一些结构笔记</title>
-    <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
-    <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
-    
-    <content type="html"><![CDATA[<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p><h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p><p>windows me 是windows 9x系列的最后一个</p><p>windows NT 2000以后的 现在的都是NT系列的</p><p>不同进程使用操作系统的共享地址</p><p>com 的特点就是没有特点</p><h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul><li>Machine：表示这个程序是什么架构的 </li><li>NumberOfSections:表示这个程序有多少个节</li><li>SizeofOptionalHeader：表示optionsHeader的大小 </li><li>Characters:表示这个程序的一些特性</li></ul><h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p><p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>]]></content>
-    
-    
-    <categories>
-      
-      <category>课堂学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>PE</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>调用dll和编写dll的几种格式</title>
     <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
     <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
@@ -436,6 +411,31 @@
     <tags>
       
       <tag>dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>PE的一些结构笔记</title>
+    <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
+    <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p><h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p><p>windows me 是windows 9x系列的最后一个</p><p>windows NT 2000以后的 现在的都是NT系列的</p><p>不同进程使用操作系统的共享地址</p><p>com 的特点就是没有特点</p><h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul><li>Machine：表示这个程序是什么架构的 </li><li>NumberOfSections:表示这个程序有多少个节</li><li>SizeofOptionalHeader：表示optionsHeader的大小 </li><li>Characters:表示这个程序的一些特性</li></ul><h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p><p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PE</tag>
       
     </tags>
     
@@ -589,11 +589,11 @@
     
     <tags>
       
+      <tag>DVWA</tag>
+      
       <tag>php</tag>
       
       <tag>linux</tag>
-      
-      <tag>DVWA</tag>
       
       <tag>反弹shell</tag>
       
