@@ -137,6 +137,185 @@
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
+          <img src="https://dc.snscz.com/s2/img/1200/2019/04/01/14/14004_4c746d4df0.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/H-WORM变种远控分析/">
+        <p class="h4 index-header">H-WORM变种远控分析</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">基本信息
+
+
+FileName
+FileType
+MD5
+Size
+
+
+
+4gdrwceq60b7dbl.sct
+rat
+69B7D326575C5616D82645960B3D081A
+403845 bytes
+
+
+简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
+流程图
+详细分析这个样本母体总共会释放3个脚本
+脚本1首先我们看看4gdrwceq60b7dbl.sct，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件我们用Sublimi Text来打开它，记事本也是可以的。
+利用组数来存关键字符串，通过字符串的拼接来合成完整路径会尝试删除%APPDATA%\\taskmgr.js  这个文件文件中有很长一段密文，这里我改名为了EncodeList，通过System.IO.MemoryStream.WriteByte()方法把数据读入数据流中。最重要的是使用ADODB.Stream类方法把这个数据流保存到了被上面删除掉的%APPDATA%\\taskmgr.js文件中最后使用WScript.S</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/04/Com添加过滤器来检测沙箱/" target="_self">
+          <img src="https://w.wallhaven.cc/full/2k/wallhaven-2kmoxm.jpg" srcset="/img/loading.gif" alt="Com组建检测虚拟沙箱" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
+        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &quot;stdafx.h&quot;
+#include &lt;conio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;dshow.h&gt;
+#include &lt;objbase.h&gt;
+
+#pragma comment(lib, &quot;Strmiids.lib&quot;)
+
+void useCom()
+{
+    /*
+    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
+    只有安装了音频设备，此处的沙箱才会被视为真实系统。
+    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
+    */
+    CoInitialize(0);
+    wchar_t * filerName = L&quot;random_nam</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/03/替换特权指令 提升权限/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217102250.png" srcset="/img/loading.gif" alt="替换特权指令 提升权限" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/03/替换特权指令 提升权限/">
+        <p class="h4 index-header">替换特权指令 提升权限</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">什么是特权
+注意，这里说的提权不是从Administrator提升到 System,只是开启一些Administrator组的特殊权限
+查看用户组信息使用命令 whoami /all
+Administrator组管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是SeDebugPrivilege，要是进程拥有了这个权限，就能对任意进程进行操作（包括system）
+
+
+
+当用户试图执行一个特权操作，系统检查用户的访问令牌以确定使用是否具有必要的特权。调用GetTokenInformation函数可以检查特权。
+
+我要做的就是找到找到一个系统中有SeDebugPrivilege权限的令牌，然后复制下来，把自己的令牌改为他这个，然乎自己就拥有了SeDebugPrivilege权限了。这也就是提升权限的核心。
+下图是我使用 OpenProcess对SID为4的系统进程进行操作，且操作权限是PROCESS_ALL_ACCESS
+
+下面看看具体实现
+void CgPivilige()
+{
+    BOOL retn;
+    HANDLE hToken;
+    retn = OpenPro</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-03&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%8F%90%E6%9D%83">提权</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/02/利用弱口令传播横向的远控组件/" target="_self">
           <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_06ce32b998.jpg" srcset="/img/loading.gif" alt="弱口令横向传播" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -201,7 +380,7 @@ rat
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/08/26/输入法注入/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_d33861f2b6.jpg" srcset="/img/loading.gif" alt="输入法注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217102119.png" srcset="/img/loading.gif" alt="输入法注入" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -258,7 +437,7 @@ void injectD</div>
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/08/26/远线程注入/" target="_self">
-          <img src="https://w.wallhaven.cc/full/q6/wallhaven-q6g5zl.jpg" srcset="/img/loading.gif" alt="远线程注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217102203.png" srcset="/img/loading.gif" alt="远线程注入" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -541,162 +720,6 @@ GetA proc
             <a href="/tags/%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96">内联汇编</a>&nbsp;
           
             <a href="/tags/mash">mash</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/20/调用dll和编写dll的几种格式/">
-        <p class="h4 index-header">调用dll和编写dll的几种格式</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">dll的写法一共两种
-全部写在dllmain函数内extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2)
-{
-    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);
-    return nArg1;
-}
-extern &quot;C&quot; 表示使用C的编译方式编译，C++格式
-_declspec(dllexport)将一个函数申明为导出函数
-就申明了一个导出函数
-但是这中创建的dll的导出函数序号是连续的，我们不可控的。也就是Base是1，然后符号表从1 开始。
-2项目新建 添加一个def文件def中的代码
-LIBRARY    &quot;def导出函数Demo&quot;
-EXPORTS
-
-test1 @1
-test2 @5
-test3 @8
-dllmain中的代码
-// dllmain.cpp : 定义 DLL 应用程序的入口点。
-#include &quot;stdafx.h&quot;
-
-void test3()
-{
-    M</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-20&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%BC%96%E7%A8%8B">编程</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/dll">dll</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/20/PE的一些结构笔记/">
-        <p class="h4 index-header">PE的一些结构笔记</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">实模式开电脑一瞬间，就处于实模式，1M寻址 dos 使用实模式
-保护模式windows在保护模式
-windows me 是windows 9x系列的最后一个
-windows NT 2000以后的 现在的都是NT系列的
-不同进程使用操作系统的共享地址
-com 的特点就是没有特点
-PE格式解释有用的字段
-dos头的最后一个双字，指向PE头的起始地址
-File header的大小永远是固定的20字节，下面4个字段比较重要
-Machine：表示这个程序是什么架构的 
-NumberOfSections:表示这个程序有多少个节
-SizeofOptionalHeader：表示optionsHeader的大小 
-Characters:表示这个程序的一些特性
-
-Optional header ：是必要的头介绍一下重要的属性AddressOfEntryPoint：程序执行入口的RVABaseOfCode：代码节的起始RVAimageBase：程序的建议装载地址SectionAlignment:内存中的节的对齐粒度FileAlignment：文件中的对齐粒度MajorOperatingSystemVersi</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-20&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E5%AD%A6%E4%B9%A0">课堂学习</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/PE">PE</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/08/18/IDA制作签名/" target="_self">
-          <img src="https://w.wallhaven.cc/full/96/wallhaven-96z68x.jpg" srcset="/img/loading.gif" alt="IDA制作签名" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/18/IDA制作签名/">
-        <p class="h4 index-header">IDA制作签名</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">我这里使用的是IDA6.8的制作签名包如果我们知道是什么语言 的，但是没有签名包，就自己做一个
-手工方式：1.pcf.exe source.lib XXXX.pcf
-2.sigmake.exe XXXX.pcf YYYY.sig
-这里一般会生成一个XXXX.exc的文件，打开它，删除以；开始的几行，保存退出
-3.再次执行sigmake.exe XXXX.pcf YYYY.sig，就会看到有YYYY.sig的签名文件了然后把这个文件拷贝到IDA目录下的sig文件夹下面接着重启IDA，拖入自己的项目，按shift + F5 打开签名文件管理器，右键添加就可以了
-脚本网上有脚本，但是运行不了，我小改了一下，效果还不错
-如果要制作单个sig的话，可以直接使用脚本中的lib2sig.bat用法：    lib2sig.bat vclibxxx.lib直接生成一个sig文件
-链接: https://pan.baidu.com/s/16vuDXs298KBNT7LzRJnwLw 提取码: f2by 
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/IDA">IDA</a>&nbsp;
           
         
       </div>

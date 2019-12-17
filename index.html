@@ -136,39 +136,88 @@
   <div class="row mb-4 mx-auto">
     
     
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/12/10/测试Demo/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_4fc6282a45.jpg" srcset="/img/loading.gif" alt="一个数据统计公司" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/10/测试Demo/">
-        <p class="h4 index-header">一个数据统计公司</p>
+      <a href="/2019/12/17/现场木马清理建议/">
+        <p class="h4 index-header"></p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">数据是无价的，这里给一个可以查看目前操作系统，浏览器，搜索引擎等等的使用比例
-最受欢迎的操作系统
-windows 毫不意外的以87%的份额获得了第一
-最受欢迎的搜索引擎
-百度能这么多也基本都是国内的资源
-以上数据全来源netmarketshare
-</div>
+          <div class="index-text mb-1">注册表文件隐藏[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]CheckedValue = 0 //此时无法通过文件夹选项设置成功CheckedValue = 1 //Windows默认值把CheckedValue修改成Windows默认值1后，系统恢复正常。
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]这个对隐藏文件有用
+关闭杀软[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]
+网络相关[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]
+safe</div>
         </div>
       </a>
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-10&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-17&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/12/14/Android第一个CrakeMe/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216120851.png" srcset="/img/loading.gif" alt="Android逆向第一个CrakeMe" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/14/Android第一个CrakeMe/">
+        <p class="h4 index-header">Android逆向第一个CrakeMe</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">自己写的第一个Android CrakeMe 也是为了练手
+随意输入参数为错误，始入正确flag能打印Success
+
+配合使用上一篇的流程破解
+解包使用apktool解包
+
+拿到了Smali文件
+反编译这里使用jadx发编译
+知道了成功会打印Success,直接搜索关键字就好了
+
+双击进去后就可以看到关键的代码，可以使用引用查看函数调用情况
+这里看到的JAVA代码是Smali反编译得到的，所以中文都是使用的Unicode表示,这也表示以后搜索代码中的关键字需要转化为Unicode字符集去搜索
+
+很简单的逻辑就是改跳转，把 ==改为!=这类的相反的比较
+我们不能直接修改JAVA代码，要修改JVM虚拟机读的Smali语句
+这和你要破解windows程序，不能在IDA中直接改F5出来伪代码，要修改汇编一个道理
+我们要修改的代码位置如下
+
+找到相应的文件，使用编辑器打开，直接修改Smali语句就好了
+
+这里将if-eqz修改为if-nez
+然后保存退出
+回编译APK这里需要将修改后的文件重新编译为APK，才能安装
+使用命令
+apktool b [Folder_Paht]
+
+成功后会在Fold</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-14&nbsp;&nbsp;
         
         
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/Demo">Demo</a>&nbsp;
+            <a href="/tags/Android%E9%80%86%E5%90%91">Android逆向</a>&nbsp;
           
         
       </div>
@@ -179,47 +228,45 @@ windows 毫不意外的以87%的份额获得了第一
     
     
       <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/12/07/监控线程/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_f5f811ba9f.jpg" srcset="/img/loading.gif" alt="恶意线程清理" class="img-fluid rounded z-depth-3 index-thumbnails">
+        <a href="/2019/12/14/android逆向一/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216120724.png" srcset="/img/loading.gif" alt="Android逆向原理 一" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/07/监控线程/">
-        <p class="h4 index-header">恶意线程清理</p>
+      <a href="/2019/12/14/android逆向一/">
+        <p class="h4 index-header">Android逆向原理 一</p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">这篇博客的背景是：如果很多进程都恶意程序通过远进程注入了线程，那么应该怎么清除呢？
-下面给出两种方法
-PLAN A来自 加号
-通过遍历线程后，根据获取到的线程信息，对线程地址和入口代码进行检查，这种方式适合对注入代码偏移位置固定或则入口代码固定，能准确查杀，推荐使用
-void Killing::KillMalRemoteThread()
-{
-    (FARPROC&amp;)ZwQueryInformationThread = GetProcAddress(m_hNtdll, &quot;ZwQueryInformationThread&quot;);
+          <div class="index-text mb-1">一套流程概述使用jadx反编译后找到修改的文件，通过apktool反编apk文件后，在文件中找到对应的smail文件，修改后使用apktool回编，然后再用jarsigner 签名生成的apk
+开始apk本身可以使用压缩软件打开，打开后的目录
 
-    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-    THREADENTRY32 te32;
-
-    te32.dwSize = sizeof(THREADENTRY32);
-    Thread32First(hThreadSnap, &amp;te32);
-    HANDLE hThread;
-    do {
-       </div>
+这样打开的文件结构肯定是查看不完整的，很多二进制文件也不能解析
+反编译APKapktool:逆向apk工具集
+jadx：用于从Android Dex和Apk文件生成Java源代码的命令行和GUI工具
+AndroidKiller：和jadx一样，还可以直接修改smail语句后回编APK以及添加签名
+使用apk反编译工具apktool,这里不推荐用AndroidKiller了
+虽然他的反编很方便，但是连我的Android studio的Hello world程序都反编译不了，表示劝退好吧，而且也存在很多Bug
+这里不得不安利一个超级好用的软件jadx，具体优点如下，使用方法也比较简单，去混淆的设置是真的好
+jadx介绍
+第一步jadx反编译我用jadx的目的是找到需要修改的具体文本，以及修改思路
+修改后的值apktool 反编出smali使用命令
+</div>
         </div>
       </a>
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-07&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-14&nbsp;&nbsp;
         
         
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+            <a href="/tags/Android%E9%80%86%E5%90%91">Android逆向</a>&nbsp;
           
         
       </div>
@@ -231,7 +278,7 @@ void Killing::KillMalRemoteThread()
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/12/05/简单PE加载器/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_a8cd741d61.jpg" srcset="/img/loading.gif" alt="简单PE加载器" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121346.png" srcset="/img/loading.gif" alt="简单PE加载器" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -280,7 +327,7 @@ LPBYTE LoadFileToMem(LPCSTR lpFilePath)
     
       <div class="col-12 col-md-4 m-auto">
         <a href="/2019/11/18/DDK与WDK WDM的区别/" target="_self">
-          <img src="https://wx1.sinaimg.cn/mw1024/6b8c14f8gy1fxfzve75m8j20qo0qo0y0.jpg" srcset="/img/loading.gif" alt="DDK与WDK WDM的区别" class="img-fluid rounded z-depth-3 index-thumbnails">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216120944.png" srcset="/img/loading.gif" alt="DDK与WDK WDM的区别" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
@@ -320,6 +367,102 @@ WDM驱动无非是微软在NT式驱动之上进行了扩充，过滤驱动也不
             <a href="/tags/%E5%86%85%E6%A0%B8">内核</a>&nbsp;
           
             <a href="/tags/%E9%A9%B1%E5%8A%A8%E5%AD%A6%E4%B9%A0">驱动学习</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/11/09/梯子/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121303.png" srcset="/img/loading.gif" alt="PC及安卓翻墙" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/09/梯子/">
+        <p class="h4 index-header">PC及安卓翻墙</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前写过一篇，但是效果不太理想，现在再总结一下使用中的常见问题
+这是我随意打开的Youtube，连接速度达到了 1M/s  1080是没什么问题了
+PC端
+
+手机端
+各版本下载链接(这些在github上都是开源的，不放心可以自己去找源码编译)
+http://files.huaduo.icu/shadowsocksr/
+PC安装与使用</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-09&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>&nbsp;
+          
+            <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/11/07/监控线程/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121437.png" srcset="/img/loading.gif" alt="恶意线程清理" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/07/监控线程/">
+        <p class="h4 index-header">恶意线程清理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这篇博客的背景是：如果很多进程都恶意程序通过远进程注入了线程，那么应该怎么清除呢？
+下面给出两种方法
+PLAN A来自 加号
+通过遍历线程后，根据获取到的线程信息，对线程地址和入口代码进行检查，这种方式适合对注入代码偏移位置固定或则入口代码固定，能准确查杀，推荐使用
+void Killing::KillMalRemoteThread()
+{
+    (FARPROC&amp;)ZwQueryInformationThread = GetProcAddress(m_hNtdll, &quot;ZwQueryInformationThread&quot;);
+
+    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+    THREADENTRY32 te32;
+
+    te32.dwSize = sizeof(THREADENTRY32);
+    Thread32First(hThreadSnap, &amp;te32);
+    HANDLE hThread;
+    do {
+       </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-07&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
           
         
       </div>
@@ -489,184 +632,6 @@ vbox_check =</div>
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/IDA">IDA</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/1200/2019/04/01/14/14004_4c746d4df0.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/04/H-WORM变种远控分析/">
-        <p class="h4 index-header">H-WORM变种远控分析</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">基本信息
-
-
-FileName
-FileType
-MD5
-Size
-
-
-
-4gdrwceq60b7dbl.sct
-rat
-69B7D326575C5616D82645960B3D081A
-403845 bytes
-
-
-简介该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
-流程图
-详细分析这个样本母体总共会释放3个脚本
-脚本1首先我们看看4gdrwceq60b7dbl.sct，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件我们用Sublimi Text来打开它，记事本也是可以的。
-利用组数来存关键字符串，通过字符串的拼接来合成完整路径会尝试删除%APPDATA%\\taskmgr.js  这个文件文件中有很长一段密文，这里我改名为了EncodeList，通过System.IO.MemoryStream.WriteByte()方法把数据读入数据流中。最重要的是使用ADODB.Stream类方法把这个数据流保存到了被上面删除掉的%APPDATA%\\taskmgr.js文件中最后使用WScript.S</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/09/04/Com添加过滤器来检测沙箱/" target="_self">
-          <img src="https://w.wallhaven.cc/full/2k/wallhaven-2kmoxm.jpg" srcset="/img/loading.gif" alt="Com组建检测虚拟沙箱" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
-        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
-但经测试 any.run 和微步 都未被识别为沙箱
-这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
-#include &quot;stdafx.h&quot;
-#include &lt;conio.h&gt;
-#include &lt;windows.h&gt;
-#include &lt;dshow.h&gt;
-#include &lt;objbase.h&gt;
-
-#pragma comment(lib, &quot;Strmiids.lib&quot;)
-
-void useCom()
-{
-    /*
-    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
-    只有安装了音频设备，此处的沙箱才会被视为真实系统。
-    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
-    */
-    CoInitialize(0);
-    wchar_t * filerName = L&quot;random_nam</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/09/03/替换特权指令 提升权限/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_aab63e9f07.jpg" srcset="/img/loading.gif" alt="替换特权指令 提升权限" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/03/替换特权指令 提升权限/">
-        <p class="h4 index-header">替换特权指令 提升权限</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">什么是特权
-注意，这里说的提权不是从Administrator提升到 System,只是开启一些Administrator组的特殊权限
-Administrator组管理员组一般权限比较多，但是很多都禁用了,我们这里需要的是SeDebugPrivilege，要是进程拥有了这个权限，就能对任意进程进行操作（包括system）
-
-
-
-当用户试图执行一个特权操作，系统检查用户的访问令牌以确定使用是否具有必要的特权。调用GetTokenInformation函数可以检查特权。
-
-我要做的就是找到找到一个系统中有SeDebugPrivilege权限的令牌，然后复制下来，把自己的令牌改为他这个，然乎自己就拥有了SeDebugPrivilege权限了。这也就是提升权限的核心。
-下图是我使用 OpenProcess对SID为4的系统进程进行操作，且操作权限是PROCESS_ALL_ACCESS
-
-下面看看具体实现
-void CgPivilige()
-{
-    BOOL retn;
-    HANDLE hToken;
-    retn = OpenProcessToken(GetCurrentProc</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-03&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%8F%90%E6%9D%83">提权</a>&nbsp;
           
         
       </div>

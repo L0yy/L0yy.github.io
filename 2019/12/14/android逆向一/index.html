@@ -14,7 +14,7 @@
   <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
   <meta name="author" content="Cray">
   <meta name="keywords" content>
-  <title>远线程注入 ~ CrayBlog</title>
+  <title>Android逆向原理 一 ~ CrayBlog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
@@ -99,7 +99,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217102203.png')no-repeat center center;
+         style="background: url('https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216120724.png')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -111,7 +111,7 @@
 
             
               <br>
-              <p class="mt-3">星期一, 八月 26日 2019, 10:11 上午</p>
+              <p class="mt-3">星期六, 十二月 14日 2019, 9:28 晚上</p>
             
           </div>
 
@@ -132,177 +132,73 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <h3 id="什么是远线程注入"><a href="#什么是远线程注入" class="headerlink" title="什么是远线程注入"></a>什么是远线程注入</h3><p>在一个进程中，调用CreateThread或CreateRemoteThreadEx函数，在另一个进程内创建一个线程（因为不在同一个进程中，所以叫做远程线程）。创建的线程一般为Windows API函数LoadLibrary，来加载一个动态链接库(DLL)，从而达到在另一个进程中运行自己所希望运行的代码的目的。</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>下面例子是根据查询一打开窗口中的计算器进程，然后<br><img src="https://img-blog.csdnimg.cn/20190826100826723.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注释都很详细 </p>
-<pre><code class="c">#include &quot;windows.h&quot;
-#include &quot;Tlhelp32.h&quot;
-int InjectDll(DWORD dwProcessId, PTCHAR szDllName);
-int EnablePrivilege(bool isStart);
-DWORD GetProcessId(PTCHAR pszProcessName);
+            <h2 id="一套流程概述"><a href="#一套流程概述" class="headerlink" title="一套流程概述"></a>一套流程概述</h2><p>使用<code>jadx</code>反编译后找到修改的文件，通过<code>apktool</code>反编<code>apk</code>文件后，在文件中找到对应的<code>smail文件</code>，修改后使用<code>apktool</code>回编，然后再用<code>jarsigner</code> 签名生成的apk</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>apk本身可以使用压缩软件打开，打开后的目录</p>
+<p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191214115813.png" srcset="/img/loading.gif" alt="20191214115813.png"></p>
+<p>这样打开的文件结构肯定是查看不完整的，很多二进制文件也不能解析</p>
+<h2 id="反编译APK"><a href="#反编译APK" class="headerlink" title="反编译APK"></a>反编译APK</h2><p><strong>apktool:逆向apk工具集</strong></p>
+<p><strong>jadx：用于从Android Dex和Apk文件生成Java源代码的命令行和GUI工具</strong></p>
+<p><strong>AndroidKiller：和jadx一样，还可以直接修改smail语句后回编APK以及添加签名</strong></p>
+<p>使用apk反编译工具<code>apktool</code>,这里不推荐用<code>AndroidKiller</code>了</p>
+<p>虽然他的反编很方便，但是连我的<code>Android studio</code>的Hello world程序都反编译不了，表示劝退好吧，而且也存在很多Bug</p>
+<p>这里不得不安利一个超级好用的软件<code>jadx</code>，具体优点如下，使用方法也比较简单，去混淆的设置是真的好</p>
+<p><a href="https://segmentfault.com/a/1190000012180752" target="_blank" rel="noopener">jadx介绍</a></p>
+<h3 id="第一步jadx反编译"><a href="#第一步jadx反编译" class="headerlink" title="第一步jadx反编译"></a>第一步jadx反编译</h3><p>我用jadx的目的是找到需要修改的具体文本，以及修改思路</p>
+<h3 id="修改后的值"><a href="#修改后的值" class="headerlink" title="修改后的值"></a>修改后的值</h3><p>apktool 反编出smali<br>使用命令</p>
+<p><code>apktool d [apk_path]</code></p>
+<p>就可以在apk目录下创建一个文件夹</p>
+<p>对apk的所有修改都是对这个文件夹中内容进行修改</p>
+<h3 id="重新回编译"><a href="#重新回编译" class="headerlink" title="重新回编译"></a>重新回编译</h3><p>apktool 回编成apk</p>
+<p>使用命令</p>
+<p><code>apktool b [apk_folder_path]</code></p>
+<p><strong>将会在这个文件夹下生成一个dist夹，其中就有回编的apk文件</strong></p>
+<p>apktool回编的时候经常出现文件夹占用，可以使用<br><code>apktool empty-framework-dir --force</code>  清空一下历史文件夹</p>
+<h3 id="文件重签名"><a href="#文件重签名" class="headerlink" title="文件重签名"></a>文件重签名</h3><p>注意上面生成的文件还不能安装，没有签名信息，安装会失败</p>
+<p>如果是第一次使用签名，需要先生成一个,<code>keytool</code>一般的<code>JAVA</code>环境都自带</p>
+<pre><code>格式
+keytool -genkeypair -keystore 密钥库名 -alias 密钥别名 -validity 天数 -keyalg RSA
 
-void main()
-{
-    DWORD ProcessId = GetProcessId(&quot;calc.exe&quot;);\\目标程序
-    InjectDll(ProcessId ,&quot;C:\\Users\\sam\\Desktop\\A.dll&quot;);\\注入dll的地址
-}
+参数:
+    -genkeypair  生成一条密钥对(由私钥和公钥组成)
+    -keystore    密钥库名字以及存储位置(默认当前目录)
+    -alias       密钥对的别名(密钥库可以存在多个密钥对,用于区分不同密钥对)
+    -validity    密钥对的有效期(单位: 天)
+    -keyalg      生成密钥对的算法(常用RSA/DSA,DSA只用于签名,默认采用DSA)
+    -delete      删除一条密钥
 
+提示: 可重复使用此条命令,在同一密钥库中创建多条密钥对
 
-int InjectDll(DWORD dwProcessId, PTCHAR szDllName)
-{
-    if (szDllName[0] == NULL)
-        return -1;
-    //提高权限相关操作
-    EnablePrivilege(TRUE);
-    //1. 打开进程
-    HANDLE hProcess = OpenProcess(  PROCESS_ALL_ACCESS,   //打开进程权限
-        FALSE,                                              //是否可继承 
-        dwProcessId);                                       //进程ID
+例如:     
+    在debug.keystore中新增一对密钥,别名是release
+    keytool -genkeypair -keystore debug.keystore -alias release -validity 30000</code></pre><p>生成好后就可以使用这个签名文件进行签名了</p>
+<pre><code>jarsigner -keystore 密钥库名 xxx.apk 密钥别名
 
-    if (hProcess == INVALID_HANDLE_VALUE)
-        return -1;
+参数:
+    -digestalg  摘要算法
+    -sigalg     签名算法
 
-    //2. 在远程进程中申请空间
-    LPVOID pszDllName = VirtualAllocEx(hProcess, //远程进程句柄
-        NULL,                                  //建议开始地址
-        4096,                                  //分配空间大小
-        MEM_COMMIT,                            //空间初始化全0
-        PAGE_EXECUTE_READWRITE);               //空间权限
+例如:
+    用JDK7及以上jarsigner签名,不支持Android 4.2 以下
+    jarsigner -keystore debug.keystore MyApp.apk release
 
-    if (NULL == pszDllName)
-    {
-        return -1;
-    }
-
-    //3. 向远程进程中写入数据
-    BOOL bRet = WriteProcessMemory( hProcess, pszDllName, 
-        szDllName, MAX_PATH, NULL);
-
-    if (NULL == bRet)
-    {
-        return -1;
-    }
-
-    //4. 在远程进程中创建远程线程
-    HANDLE m_hInjecthread = CreateRemoteThread(hProcess,      //远程进程句柄
-    NULL,                                            //安全属性
-    0,                                               //栈大小
-    (LPTHREAD_START_ROUTINE)LoadLibrary,             //进程处理函数    
-    pszDllName,                                      //传入参数
-    NULL,                                            //默认创建后的状态
-    NULL);                                           //线程ID
-
-    if (NULL == m_hInjecthread)
-    {
-        DWORD dwErr = GetLastError();
-        return -1;
-    }
-
-    //5. 等待线程结束返回
-    DWORD dw = WaitForSingleObject(m_hInjecthread, -1);
-    //6. 获取线程退出码,即LoadLibrary的返回值，即dll的首地址
-    DWORD dwExitCode;
-    GetExitCodeThread(m_hInjecthread, &amp;dwExitCode);
-    HMODULE m_hMod = (HMODULE)dwExitCode;
-
-    //7. 释放空间
-    BOOL bReturn = VirtualFreeEx(hProcess, pszDllName, 
-        4096, MEM_DECOMMIT);
-
-    if (NULL == bReturn)
-    {
-        return -1;
-    }
-
-    CloseHandle(hProcess);
-    hProcess = NULL;
-    //恢复权限相关操作
-    EnablePrivilege(FALSE);
-
-    return 0;
-}
-int EnablePrivilege(bool isStart)
-{        
-    //1. 得到令牌句柄
-    HANDLE  hToken = NULL;      //令牌句柄  
-    if (!OpenProcessToken( GetCurrentProcess(), 
-        TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | TOKEN_READ, 
-        &amp;hToken))
-    {   
-        return FALSE;
-    }
-
-    //2. 得到特权值
-    LUID    luid = {0};         //特权值
-    if (!LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &amp;luid))
-    {
-        return FALSE;
-    }
-    //3. 提升令牌句柄权限
-    TOKEN_PRIVILEGES tp = {0};  //令牌新权限
-    tp.PrivilegeCount = 1; 
-    tp.Privileges[0].Luid = luid;
-    tp.Privileges[0].Attributes = isStart ? SE_PRIVILEGE_ENABLED : 0;
-    if (!AdjustTokenPrivileges(hToken, FALSE, &amp;tp, 0, NULL, NULL))
-    {
-        return FALSE;
-    }
-    //4. 关闭令牌句柄
-    CloseHandle(hToken);
-    return 0;
-}
-DWORD GetProcessId(PTCHAR pszProcessName)
-{
-    HANDLE hProcess = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);//获取当前系统的快照，这种方法能拿到想要的进程ID
-
-    if (INVALID_HANDLE_VALUE == hProcess)
-    {
-        return 0;
-    }
-
-    DWORD dwProcessId = 0;
-
-    PROCESSENTRY32 process32 = {0};
-    process32.dwSize = sizeof(PROCESSENTRY32);
-
-    BOOL bRetProcess = FALSE;
-    bRetProcess = Process32First(hProcess, &amp;process32);
-
-    do
-    {
-        if (strcmp(pszProcessName, process32.szExeFile) == 0)//名称对上，获取其进程ID
-        {
-            dwProcessId = process32.th32ProcessID;
-            break;
-        }
-
-        bRetProcess = Process32Next(hProcess, &amp;process32);
-    }while (bRetProcess);
-    CloseHandle(hProcess);
-
-    return dwProcessId;
-}
-
-</code></pre>
+    用JDK7及以上jarsigner签名,兼容Android 4.2 以下            
+    jarsigner -keystore debug.keystore -digestalg SHA1 -sigalg SHA1withRSA MyApp.apk androiddebugkey</code></pre><p>签名就OK，剩下安装测试就行了</p>
+<p>参考</p>
+<p><a href="https://www.jianshu.com/p/53078d03c9bf" target="_blank" rel="noopener">https://www.jianshu.com/p/53078d03c9bf</a></p>
+<p><a href="https://blog.csdn.net/dreamer2020/article/details/52761606" target="_blank" rel="noopener">https://blog.csdn.net/dreamer2020/article/details/52761606</a></p>
+<p><a href="https://ibotpeaches.github.io/Apktool/" target="_blank" rel="noopener">https://ibotpeaches.github.io/Apktool/</a></p>
 
             <hr>
           </div>
           <br>
           <div>
             
-              <p>
-                <i class="iconfont icon-inbox"></i>
-                
-                  <a class="hover-with-bg" href="/categories/%E9%80%86%E5%90%91">逆向</a>
-                  &nbsp;
-                
-              </p>
-            
             <p>
               <i class="iconfont icon-tag"></i>
               
-                <a class="hover-with-bg" href="/tags/%E6%B3%A8%E5%85%A5">注入</a>
+                <a class="hover-with-bg" href="/tags/Android%E9%80%86%E5%90%91">Android逆向</a>
               
-              <span id="/2019/08/26/远线程注入/" class="visitors leancloud_visitors" data-flag-title="远线程注入">
+              <span id="/2019/12/14/android逆向一/" class="visitors leancloud_visitors" data-flag-title="Android逆向原理 一">
                 <em id="visitors-text" class="post-meta-item-text"></em>
                 <i id="visitors-count"></i>
               </span>
@@ -339,8 +235,8 @@ DWORD GetProcessId(PTCHAR pszProcessName)
   <script>
     var disqus_shortname = 'https-l0yy-github-io';
     var disqus_config = function () {
-      this.page.url = 'http://l0yy.gitee.io/2019/08/26/远线程注入/';
-      this.page.identifier = '/2019/08/26/远线程注入/';
+      this.page.url = 'http://l0yy.gitee.io/2019/12/14/android逆向一/';
+      this.page.identifier = '/2019/12/14/android逆向一/';
     };
     (function () {
       var d = document, s = d.createElement('script');
@@ -432,7 +328,7 @@ DWORD GetProcessId(PTCHAR pszProcessName)
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "远线程注入&nbsp;",
+        "Android逆向原理 一&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

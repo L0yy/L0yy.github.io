@@ -137,6 +137,140 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/30/内存基础/">
+        <p class="h4 index-header">内存基础</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 原文地址
+看点好玩的东西显然，并非每次应用程序崩溃都会导致漏洞利用。在许多情况下，应用程序崩溃不会导致利用…但有时它会。对于“exploitation”，我的意思是你希望应用程序做一些不打算做的事情……例如运行你自己的代码。使应用程序执行不应该执行的操作的最简单方法是控制其应用程序流（并将其重定向到其他位置）。这可以通过控制指令指针（或程序计数器）来完成，指令指针是一个CPU寄存器，它包含一个指针，指向需要执行的下一条指令所在的位置。假设应用程序使用参数调用函数。在转到函数之前，它将当前位置保存在指令指针中（因此它知道函数完成时返回的位置）。如果您可以修改此指针中的值，并将其指向内存中包含您自己的代码段的位置，那么您可以更改应用程序流并使其执行不同的操作（除了返回到原始位置）。您希望在控制流后执行的代码通常称为“shellcode”。因此，如果我们让应用程序运行我们的shellcode，我们可以将其称为有效的漏洞。在大多数情况下，此指针由术语EIP引用。该寄存器大小为4个字节。因此，如果您可以修改这4个字节，那么您拥有应用程序（以及运行应用程序的计算机）
+在我们开始之前 - 一些理论</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-30&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%86%85%E5%AD%98">内存</a>&nbsp;
+          
+            <a href="/tags/%E6%BA%A2%E5%87%BA">溢出</a>&nbsp;
+          
+            <a href="/tags/%E6%A0%88">栈</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/14/TCP总结/">
+        <p class="h4 index-header">TCP总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这里总结下TCP的三次握手，数据传输和四次分手过程
+pdf文件地址TCP图解
+TCP头部
+
+来源连接端口（16位长）－识别发送连接端口
+目的连接端口（16位长）－识别接收连接端口
+序列号（seq，32位长）
+如果含有同步化旗标（SYN），则此为最初的序列号；第一个数据比特的序列码为本序列号加一。
+如果没有同步化旗标（SYN），则此为第一个数据比特的序列码。
+确认号（ack，32位长）—期望收到的数据的开始序列号。也即已经收到的数据的字节长度加1。
+数据偏移（4位长）—以4字节为单位计算出的数据段开始地址的偏移值。
+保留（3比特长）—须置0
+标志符（9比特长）
+NS—ECN-nonce。
+CWR—Congestion Window Reduced。
+ECE—ECN-Echo有两种意思，取决于SYN标志的值。
+URG—为1表示高优先级数据包，紧急指针字段有效。
+ACK—为1表示确认号字段有效
+PSH—为1表示是带有PUSH标志的数据，指示接收方应该尽快将这个报文段交给应用层而不用等待缓冲区装满。
+RST—为1表示出现严重差错。可能需要重现创建TCP连接。还可以用于拒绝非法的报文段和拒绝连接</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-14&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/TCP">TCP</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/05/13/https工作原理/">
+        <p class="h4 index-header">https 工作原理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">https学习资料
+https基本原理1
+https基本原理2
+ssl原理解释
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-13&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/https">https</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/05/13/tcpdump-记录/">
         <p class="h4 index-header">tcpdump 记录</p>
         
@@ -478,156 +612,6 @@ CH0201hello依旧是最喜欢的hello world
             <a href="/tags/linux">linux</a>&nbsp;
           
             <a href="/tags/GCC">GCC</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/26/课程笔记：云平台概述-云安全/">
-        <p class="h4 index-header">课程笔记：云平台概述 云安全</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">记录上课的一些东西，这些都很浅显，完全是为了记一笔这个技术
-云平台
-云技术是指在广域网或局域网内将硬件、软件、网络等系列资源统一起来，实现数据的计算、储存、处理和共享的一种托管技术。
-
-可以看看维基百科的解释
-下面是云技术的三种常见技术
-VMware ESX
-
-ESXi专为运行虚拟机、最大限度降低配置要求和简化部署而设计。只需几分钟时间，客户便可完成从安装到运行虚拟机的全过程，特别是在下载并安装预配置虚拟设备的时候。
-
-拓扑
-主要两个部件在裸机服务器装的ESXi 服务  和 在管理员电脑上用来访问 ESXi 服务并安装和管理上面的虚拟机的软件
-服务器上安装ESXI是为了提供虚拟化服务
-如果在小型拓扑环境下管理员可以使用vSphere client ,小巧，方柏霓管理ESXI服务器，但是如果在大型拓扑环境下，就要使用vCenter server，
-
-vCenter server和 vSphere client 很像，但是它和功能更加强大。vCenter server 是安装在 Window 服务器或 Linux 服务器里面。VMware vCenter server 是一个中心化的管理应</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E4%BA%91">云</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/23/git迁移后第一次恢复/">
-        <p class="h4 index-header">git迁移后第一次恢复</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">下载安装git下载好后直接安装就是了，都是傻瓜操作，都点下一步就是了，git软件不大，安C盘不影响什么的安好后鼠标右键可以出现git Gui选项就好了
-生成自己的ssh密钥对在你本地和需要git的服务器进行数据交互需要身份认证，总不至于每次都输账号名和密码吧。。。
-这里我们使用非对称加密密钥对来识别身份。
-非对称加密
-非对称加密算法需要两个密钥：公开密钥（publickey:简称公钥）和私有密钥（privatekey:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。
-
-去自己的用户目录下 ~/ 看看有没有/.ssh文件（是隐藏文件，需要打开查看里面的隐藏文件）没有就自己生成一个使用 
-ssh-keygen -t rsa -C &quot;youemail@163.com&quot;
-然后连续回车就好了
-安装到你github上登陆上你的github 打开个人设置里面的 SSH and GPG keys 新建一个，名字随意，key 就填刚才生成的.pub结尾的文件用记事本打开里面的全部内容
-概念
-配置一个git目录好了之后在我们要上传的文件夹内打开git </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/Git">Git</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/git%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90%E4%BB%A5%E5%8F%8A%E5%AE%89%E8%A3%85">git密钥生成以及安装</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/20/IDA插件retdec安装详解/">
-        <p class="h4 index-header">IDA插件retdec安装详解</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">先看看效果这是解码base64的汇编分别通过idaF5和retdec反编译的伪代码
-IDAF5效果
-retdec效果
-官方指导
-The decompiler is not limited to any particular target architecture, operating system, or executable file format:
-Supported file formats: ELF, PE, Mach-O, COFF, AR (archive), Intel HEX, and raw machine codeSupported architectures:
-32-bit: Intel x86, ARM, MIPS, PIC32, and PowerPC
-64-bit: x86-64
-
-就是说支持的反编译的种类
-这里贴一下它的官方地址
-retdec官网
-github项目
-本地安装目的：我们先本地安装好他的环境，再通过IDA插件调用它
-根据指导我们开始吧
-1.下载并解压缩预先构建的软件包进入https://github.com/avast/retdec/relea</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-20&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/IDA">IDA</a>&nbsp;
-          
-            <a href="/tags/retdec">retdec</a>&nbsp;
-          
-            <a href="/tags/%E5%8F%8D%E7%BC%96%E8%AF%91">反编译</a>&nbsp;
           
         
       </div>

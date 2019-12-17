@@ -137,6 +137,156 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/26/课程笔记：云平台概述-云安全/">
+        <p class="h4 index-header">课程笔记：云平台概述 云安全</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">记录上课的一些东西，这些都很浅显，完全是为了记一笔这个技术
+云平台
+云技术是指在广域网或局域网内将硬件、软件、网络等系列资源统一起来，实现数据的计算、储存、处理和共享的一种托管技术。
+
+可以看看维基百科的解释
+下面是云技术的三种常见技术
+VMware ESX
+
+ESXi专为运行虚拟机、最大限度降低配置要求和简化部署而设计。只需几分钟时间，客户便可完成从安装到运行虚拟机的全过程，特别是在下载并安装预配置虚拟设备的时候。
+
+拓扑
+主要两个部件在裸机服务器装的ESXi 服务  和 在管理员电脑上用来访问 ESXi 服务并安装和管理上面的虚拟机的软件
+服务器上安装ESXI是为了提供虚拟化服务
+如果在小型拓扑环境下管理员可以使用vSphere client ,小巧，方柏霓管理ESXI服务器，但是如果在大型拓扑环境下，就要使用vCenter server，
+
+vCenter server和 vSphere client 很像，但是它和功能更加强大。vCenter server 是安装在 Window 服务器或 Linux 服务器里面。VMware vCenter server 是一个中心化的管理应</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%BA%91">云</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/23/git迁移后第一次恢复/">
+        <p class="h4 index-header">git迁移后第一次恢复</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">下载安装git下载好后直接安装就是了，都是傻瓜操作，都点下一步就是了，git软件不大，安C盘不影响什么的安好后鼠标右键可以出现git Gui选项就好了
+生成自己的ssh密钥对在你本地和需要git的服务器进行数据交互需要身份认证，总不至于每次都输账号名和密码吧。。。
+这里我们使用非对称加密密钥对来识别身份。
+非对称加密
+非对称加密算法需要两个密钥：公开密钥（publickey:简称公钥）和私有密钥（privatekey:简称私钥）。公钥与私钥是一对，如果用公钥对数据进行加密，只有用对应的私钥才能解密。
+
+去自己的用户目录下 ~/ 看看有没有/.ssh文件（是隐藏文件，需要打开查看里面的隐藏文件）没有就自己生成一个使用 
+ssh-keygen -t rsa -C &quot;youemail@163.com&quot;
+然后连续回车就好了
+安装到你github上登陆上你的github 打开个人设置里面的 SSH and GPG keys 新建一个，名字随意，key 就填刚才生成的.pub结尾的文件用记事本打开里面的全部内容
+概念
+配置一个git目录好了之后在我们要上传的文件夹内打开git </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Git">Git</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/git%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90%E4%BB%A5%E5%8F%8A%E5%AE%89%E8%A3%85">git密钥生成以及安装</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/20/IDA插件retdec安装详解/">
+        <p class="h4 index-header">IDA插件retdec安装详解</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">先看看效果这是解码base64的汇编分别通过idaF5和retdec反编译的伪代码
+IDAF5效果
+retdec效果
+官方指导
+The decompiler is not limited to any particular target architecture, operating system, or executable file format:
+Supported file formats: ELF, PE, Mach-O, COFF, AR (archive), Intel HEX, and raw machine codeSupported architectures:
+32-bit: Intel x86, ARM, MIPS, PIC32, and PowerPC
+64-bit: x86-64
+
+就是说支持的反编译的种类
+这里贴一下它的官方地址
+retdec官网
+github项目
+本地安装目的：我们先本地安装好他的环境，再通过IDA插件调用它
+根据指导我们开始吧
+1.下载并解压缩预先构建的软件包进入https://github.com/avast/retdec/relea</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/IDA">IDA</a>&nbsp;
+          
+            <a href="/tags/retdec">retdec</a>&nbsp;
+          
+            <a href="/tags/%E5%8F%8D%E7%BC%96%E8%AF%91">反编译</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/04/10/溢出到花指令去除，外加z3解决/">
         <p class="h4 index-header">溢出到花指令去除，外加z3解决</p>
         

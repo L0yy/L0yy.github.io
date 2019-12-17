@@ -14,7 +14,7 @@
   <meta name="description" content="个人学习生活博客,寻志同道合朋友相互学习,共同进步.">
   <meta name="author" content="Cray">
   <meta name="keywords" content>
-  <title>归档 ~ CrayBlog</title>
+  <title>CrayBlog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -99,7 +99,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_5927f564d4.jpg')no-repeat center center;
+         style="background: url('http://ww1.sinaimg.cn/large/006vdr71ly1g9o0q0aubhj31z4140qgb.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -109,6 +109,9 @@
               
             </span>
 
+            
+              <br>
+              <p class="mt-3">星期二, 十二月 17日 2019, 10:18 上午</p>
             
           </div>
 
@@ -120,105 +123,85 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
+      
 
-<div class="list-group">
-  <p class="h4">共计 49 篇文章</p>
-  <hr>
-  
-    
-      
-      <p class="h5">2019</p>
-    
-    <a href="/2019/05/30/内存基础/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">内存基础</span>
-      <span style="float: right;">05-30</span>
-    </a>
-  
-    
-    <a href="/2019/05/14/TCP总结/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">TCP总结</span>
-      <span style="float: right;">05-14</span>
-    </a>
-  
-    
-    <a href="/2019/05/13/https工作原理/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">https 工作原理</span>
-      <span style="float: right;">05-13</span>
-    </a>
-  
-    
-    <a href="/2019/05/13/tcpdump-记录/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">tcpdump 记录</span>
-      <span style="float: right;">05-13</span>
-    </a>
-  
-    
-    <a href="/2019/05/12/HWTACACS和RADIUS的区别/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">HWTACACS和RADIUS的区别</span>
-      <span style="float: right;">05-12</span>
-    </a>
-  
-    
-    <a href="/2019/05/11/HCIP-security了解/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">HCIP-security了解</span>
-      <span style="float: right;">05-11</span>
-    </a>
-  
-    
-    <a href="/2019/04/29/angr学习文档/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">angr学习文档</span>
-      <span style="float: right;">04-29</span>
-    </a>
-  
-    
-    <a href="/2019/04/28/课程笔记：安全运维平台设计/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">课程笔记：安全运维平台设计</span>
-      <span style="float: right;">04-28</span>
-    </a>
-  
-    
-    <a href="/2019/04/26/课程笔记：前端页面开发/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">课程笔记：前端页面开发</span>
-      <span style="float: right;">04-26</span>
-    </a>
-  
-    
-    <a href="/2019/04/26/课程笔记：计算机网络C程序设计/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">课程笔记：计算机网络C程序设计</span>
-      <span style="float: right;">04-26</span>
-    </a>
-  
-</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="注册表"><a href="#注册表" class="headerlink" title="注册表"></a>注册表</h2><h3 id="文件隐藏"><a href="#文件隐藏" class="headerlink" title="文件隐藏"></a>文件隐藏</h3><p>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]<br>CheckedValue = 0 //此时无法通过文件夹选项设置成功<br>CheckedValue = 1 //Windows默认值<br>把CheckedValue修改成Windows默认值1后，系统恢复正常。</p>
+<p>[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]<br>这个对隐藏文件有用</p>
+<h3 id="关闭杀软"><a href="#关闭杀软" class="headerlink" title="关闭杀软"></a>关闭杀软</h3><p>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]<br><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121113.png" srcset="/img/loading.gif" alt="20191216121113.png"></p>
+<h3 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h3><p>[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]</p>
+<h3 id="safeBoot"><a href="#safeBoot" class="headerlink" title="safeBoot"></a>safeBoot</h3><p>[HKEY_CURRENT_USER\System\CurrentControlSet\Control\SafeBoot”]<br>[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SafeBoot”]</p>
+<p>可递归删除，就不能进入安全模式</p>
 
-  <nav aria-label="index posts navigation">
-    <ul class="pagination pg-blue justify-content-center mt-5">
-      
-      
-        <li class="page-item">
-          <a class="page-link" href="/archives/page/3/#board">上一页</a>
-        </li>
-      
-      
-        <li class="page-item">
-          <a class="page-link" href="/archives/page/5/#board">下一页</a>
-        </li>
-      
-    </ul>
-  </nav>
-
-
-              </div>
-            </div>
+            <hr>
+          </div>
+          <br>
+          <div>
+            
+            <p>
+              <i class="iconfont icon-tag"></i>
+              
+              <span id="/2019/12/17/现场木马清理建议/" class="visitors leancloud_visitors" data-flag-title="">
+                <em id="visitors-text" class="post-meta-item-text"></em>
+                <i id="visitors-count"></i>
+              </span>
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      <div class="disqus" style="width:100%">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'https-l0yy-github-io';
+    var disqus_config = function () {
+      this.page.url = 'http://l0yy.gitee.io/2019/12/17/现场木马清理建议/';
+      this.page.identifier = '/2019/12/17/现场木马清理建议/';
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow noopener">comments
+      powered by Disqus.</a></noscript>
+</div>
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -273,6 +256,11 @@
   <script src="/js/lazyload.js" ></script>
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
   <script src="/lib/prettify/prettify.min.js" ></script>
   <script>
@@ -289,7 +277,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
