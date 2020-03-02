@@ -137,6 +137,46 @@
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/11/03/现场木马清理建议/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217105901.png" srcset="/img/loading.gif" alt="Shellcode基础" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/03/现场木马清理建议/">
+        <p class="h4 index-header">Shellcode基础</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">注册表文件隐藏[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]CheckedValue = 0 //此时无法通过文件夹选项设置成功CheckedValue = 1 //Windows默认值把CheckedValue修改成Windows默认值1后，系统恢复正常。
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]这个对隐藏文件有用
+关闭杀软[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]
+网络相关[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]
+safe</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-03&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%9C%A8%E9%A9%AC">木马</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/10/10/宏病毒下载器/" target="_self">
           <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_4fc6282a45.jpg" srcset="/img/loading.gif" alt="利用宏-DownLoder" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -647,68 +687,6 @@ void main()
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/08/26/SEH创建与查找/" target="_self">
-          <img src="https://w.wallhaven.cc/full/5d/wallhaven-5d2p17.jpg" srcset="/img/loading.gif" alt="SEH创建与查找" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/08/26/SEH创建与查找/">
-        <p class="h4 index-header">SEH创建与查找</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">创建一个SEH处理函数
-#include &quot;stdafx.h&quot;
-#define WIN32_LEAN_AND_MEAN
-#include &lt;windows.h&gt;
-#include &lt;stdio.h&gt;
-#include &quot;stdlib.h&quot;
-
-DWORD scratch;
-
-EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
-                        void * EstablisherFrame,
-                        struct _CONTEXT *ContextRecord,
-                        void * DispatcherContext)
-{
-
-    unsigned i;
-
-    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);
-
-    ContextRecord-&</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/SEH">SEH</a>&nbsp;
-          
-            <a href="/tags/Windbg">Windbg</a>&nbsp;
           
         
       </div>

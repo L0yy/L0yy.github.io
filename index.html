@@ -137,20 +137,70 @@
     
     
       <div class="col-12 col-md-4 m-auto">
-        <a href="/2020/03/01/shellcode基础/" target="_self">
+        <a href="/2020/03/02/powershell例子/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200302232152.png" srcset="/img/loading.gif" alt="Powershell 官方例子" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/03/02/powershell例子/">
+        <p class="h4 index-header">Powershell 官方例子</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">[TOC]
+powershell 官方例子说明​    全部例子来源自示例脚本
+使用对象查看对象结构 (Get-Member)
+ Get-Process | Get-Member | Out-Host -Paging
+
+获取进程列表，再获取他们各自的成员信息，最后按页输出
+
+ Get-Process | Get-Member -MemberType Properties 
+MemberType 的允许值有 AliasProperty、CodeProperty、Property、NoteProperty、ScriptProperty、Properties、PropertySet、Method、CodeMethod、ScriptMethod、Methods、ParameterizedProperty、MemberSet 以及 All。 
+
+选择对象部件 (Select-Object)
+Get-CimInstance -Class Win32_LogicalDisk | Select-Object -Property Name,FreeSpace
+
+利用WMI win32-logicaldi</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-02&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/Shell">Shell</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2020/03/02/shellcode基础/" target="_self">
           <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200302103202.png" srcset="/img/loading.gif" alt="Shellcode基础" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/03/01/shellcode基础/">
+      <a href="/2020/03/02/shellcode基础/">
         <p class="h4 index-header">Shellcode基础</p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">shellcode 基础参考微软官方文档
+          <div class="index-text mb-1">[TOC]
+shellcode 基础参考微软官方文档
 几个特性：
 
 
@@ -177,19 +227,19 @@ PowerShell 使用某些 C# 语法
 
 了解powershell的名称 1. Cmdlet 使用谓词-名词的名称来减少命令记忆
  - [PowerShell 批准的谓词]( https://docs.microsoft.com/zh-cn/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7 )
- 2. Cmdlet 使</div>
+ 2. Cm</div>
         </div>
       </a>
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-01&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-02&nbsp;&nbsp;
         
         
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/shellcode">shellcode</a>&nbsp;
+            <a href="/tags/Shell">Shell</a>&nbsp;
           
         
       </div>
@@ -583,46 +633,6 @@ void Killing::KillMalRemoteThread()
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/11/03/现场木马清理建议/" target="_self">
-          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217105901.png" srcset="/img/loading.gif" alt="Shellcode基础" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/03/现场木马清理建议/">
-        <p class="h4 index-header">Shellcode基础</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">注册表文件隐藏[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]CheckedValue = 0 //此时无法通过文件夹选项设置成功CheckedValue = 1 //Windows默认值把CheckedValue修改成Windows默认值1后，系统恢复正常。
-[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]这个对隐藏文件有用
-关闭杀软[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]
-网络相关[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]
-safe</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-03&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%9C%A8%E9%A9%AC">木马</a>&nbsp;
           
         
       </div>

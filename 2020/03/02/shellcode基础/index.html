@@ -111,7 +111,7 @@
 
             
               <br>
-              <p class="mt-3">星期日, 三月 1日 2020, 10:30 晚上</p>
+              <p class="mt-3">星期一, 三月 2日 2020, 10:22 上午</p>
             
           </div>
 
@@ -132,7 +132,8 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <h3 id="shellcode-基础"><a href="#shellcode-基础" class="headerlink" title="shellcode 基础"></a>shellcode 基础</h3><p>参考微软<a href="https://docs.microsoft.com/zh-cn/powershell/scripting/how-to-use-docs?view=powershell-7" target="_blank" rel="noopener">官方文档</a></p>
+            <p>[TOC]</p>
+<h3 id="shellcode-基础"><a href="#shellcode-基础" class="headerlink" title="shellcode 基础"></a>shellcode 基础</h3><p>参考微软<a href="https://docs.microsoft.com/zh-cn/powershell/scripting/how-to-use-docs?view=powershell-7" target="_blank" rel="noopener">官方文档</a></p>
 <p>几个特性：</p>
 <blockquote>
 <ol>
@@ -235,9 +236,11 @@
 </li>
 </ol>
 <h4 id="使用变量存储对象"><a href="#使用变量存储对象" class="headerlink" title="使用变量存储对象"></a>使用变量存储对象</h4><ol>
-<li><p>使用<strong>$</strong>表示变量</p>
-<pre><code>2. Get-Member $env:获取变量的信息
-- 可以创建设置键值对，例：` $env:LIB_PATH=&#39;/usr/local/lib&#39; `</code></pre></li>
+<li>使用<strong>$</strong>表示变量</li>
+<li>Get-Member $env:获取变量的信息<ul>
+<li>可以创建设置键值对，例：<code>$env:LIB_PATH=&#39;/usr/local/lib&#39;</code></li>
+</ul>
+</li>
 </ol>
 <h4 id="了解-PowerShell-管道"><a href="#了解-PowerShell-管道" class="headerlink" title="了解 PowerShell 管道"></a>了解 PowerShell 管道</h4><p>​    主要是方法和属性的使用，下面举个例子</p>
 <p>​    <code>Get-Location</code> 获取一个pathInfo</p>
@@ -258,9 +261,9 @@
             <p>
               <i class="iconfont icon-tag"></i>
               
-                <a class="hover-with-bg" href="/tags/shellcode">shellcode</a>
+                <a class="hover-with-bg" href="/tags/Shell">Shell</a>
               
-              <span id="/2020/03/01/shellcode基础/" class="visitors leancloud_visitors" data-flag-title="Shellcode基础">
+              <span id="/2020/03/02/shellcode基础/" class="visitors leancloud_visitors" data-flag-title="Shellcode基础">
                 <em id="visitors-text" class="post-meta-item-text"></em>
                 <i id="visitors-count"></i>
               </span>
@@ -297,8 +300,8 @@
   <script>
     var disqus_shortname = 'https-l0yy-github-io';
     var disqus_config = function () {
-      this.page.url = 'http://l0yy.gitee.io/2020/03/01/shellcode基础/';
-      this.page.identifier = '/2020/03/01/shellcode基础/';
+      this.page.url = 'http://l0yy.gitee.io/2020/03/02/shellcode基础/';
+      this.page.identifier = '/2020/03/02/shellcode基础/';
     };
     (function () {
       var d = document, s = d.createElement('script');
