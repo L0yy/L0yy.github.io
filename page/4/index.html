@@ -137,6 +137,238 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/10/call的几种传参方式/">
+        <p class="h4 index-header">call的几种传参方式</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 
+cdecl 栈传参，函数外平衡堆栈
+fastcall 是通过寄存器，因为是寄存器fast嘛
+下面这种call是用在有类对象引用的时候来表示传参的thiscall 是用ecx来穿this指针的，一般都是 类似lea ecx [ebp+var_20]进入函数函数后  ecx就能会直接拿来用，不会再次赋值。
+识别参数个数1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小2.划分push 的归属3.遇到栈平衡相关指令。点亮push核对下已分配是否有误4.注意识别出某些push为下一个函数所用5.另外还要看某push归属于某个函数的最后参数却不使用的参数不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F">传参方式</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/15/dc-2/">
+        <p class="h4 index-header">vulnhub 靶机系列 dc-2</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">靶机地址
+网络拓扑我在这里使用VM虚拟机来搭建环境
+攻击机为 Parrot 使用桥接本机无线网卡 IP：192.168.43.230/24
+靶机为 dc-2 使用桥接本机无线网卡 
+开始测试主机发现扫描主机详细信息，发现有web服务和一个修改了端口的ssh根据作者的说明，需要parrot的hosts文件，才能正常访问web网站修改后记得重启网络  service netwoking restart,访问 http://dc-2 成功找到flag1发现是Wordpress框架的网站，那就直接上Wpscan,但是parrot或kali虽然自带，但是都需要update，但是会出现请求超时（搭梯子都不行），直接开始枚举用户名发现有三个用户名 admin jerry tom把他们都保存到保存到一个文本里，后面的爆破需要用到这里有点坑，用常用字典跑步不出来，然后认真读了下flag发现作者提示使用cewl来搜集密码。。。这里保存到pass.txt然后是爆破对应密码，docker wpscan使用见下文很不错，跑出来了两个，如图所示wordoress 后台地址默认是 /wp-admin，先使用tom登</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-15&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/web%E6%B8%97%E9%80%8F">web渗透</a>&nbsp;
+          
+            <a href="/tags/%E9%9D%B6%E6%9C%BA">靶机</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/11/WEB温习第三天/">
+        <p class="h4 index-header">web渗透基础三</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">命令执行以及反弹shell姿势还是DVWA靶机的Command Injection
+功能是在本地使用shell_exec执行ping命令
+Low&lt;?php 
+
+if( isset( $_POST[ &#39;Submit&#39; ]  ) ) { 
+    // Get input 
+    $target = $_REQUEST[ &#39;ip&#39; ]; 
+
+    // Determine OS and execute the ping command. 
+    if( stristr( php_uname( &#39;s&#39; ), &#39;Windows NT&#39; ) ) { 
+        // Windows 
+        $cmd = shell_exec( &#39;ping  &#39; . $target ); 
+    } 
+    else { 
+        // *nix 
+        $cmd = shell_exec( &#39;ping  -c 4 &#39; . $target );
+    } 
+
+    </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/DVWA">DVWA</a>&nbsp;
+          
+            <a href="/tags/php">php</a>&nbsp;
+          
+            <a href="/tags/linux">linux</a>&nbsp;
+          
+            <a href="/tags/%E5%8F%8D%E5%BC%B9shell">反弹shell</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/11/WEB温习第二天/">
+        <p class="h4 index-header">web渗透基础二</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">
+宽字节注入是利用mysql的一个特性，mysql在使用GBK编码（GBK就是常说的宽字节之一，实际上只有两字节）的时候，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字的范围），而当我们输入有单引号时会自动加入\进行转义而变为\’（在PHP配置文件中magic_quotes_gpc=On的情况下或者使用addslashes函数，icov函数，mysql_real_escape_string函数、mysql_escape_string函数等，提交的参数中如果带有单引号’，就会被自动转义\’，使得多数注入攻击无效），由于宽字节带来的安全问题主要是吃ASCII字符(一字节)的现象，将后面的一个字节与前一个大于128的ascii码进行组合成为一个完整的字符（mysql判断一个字符是不是汉字，首先两个字符时一个汉字，另外根据gbk编码，第一个字节ascii码大于128，基本上就可以了），此时’前的\就被吃了，我们就可以使用’了，利用这个特性从而可实施SQL注入的利用。
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5">宽字节注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/06/10/WEB温习第一天/">
+        <p class="h4 index-header">web渗透基础一</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这之后都会是巩固的笔记，把以前留下的坑填一下。
+DVWA Brute Force通过这个靶机来温习下sql注入的一下要点和防御。
+low源码
+&lt;?php 
+
+if( isset( $_GET[ &#39;Login&#39; ] ) ) { 
+    // Get username 
+    $user = $_GET[ &#39;username&#39; ]; 
+
+    // Get password 
+    $pass = $_GET[ &#39;password&#39; ]; 
+    $pass = md5( $pass ); 
+
+    // Check the database 
+    $query  = &quot;SELECT * FROM `users` WHERE user = &#39;$user&#39; AND password = &#39;$pass&#39;;&quot;; 
+    $result = mysql_query( $query ) or die( &#39;&lt;pre&gt;&#39; . mysql_error() </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-06-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/DVWA">DVWA</a>&nbsp;
+          
+            <a href="/tags/SQL%E6%B3%A8%E5%85%A5">SQL注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/06/03/silky：0x02靶机总结/">
         <p class="h4 index-header">silky：0x02靶机总结</p>
         
@@ -362,266 +594,6 @@ ssl原理解释
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/TcpDump">TcpDump</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/05/12/HWTACACS和RADIUS的区别/">
-        <p class="h4 index-header">HWTACACS和RADIUS的区别</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">一 HWTACACS和RADIUS的区别
-1 传输层协议两者使用的传输层协议不同，HWTACACS使用的是TCP，而RADIUS采用的是UDP；
-2 认证、授权方式HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证。而RADIUS的认证和授权是捆在一起的；
-3 加密方式HWTACACS对用户报文会进行整个加密，而RADIUS仅对用户密码进行加密。
-二 HWTACACS和RADIUS使用场合当用户需从本地网络与NAS建立连接从而取得访问其他网络的权利或取得使用某些网络资源时，一般都需对此类用户接入请求进行认证、授权和计费等。认证为合法用户将被分配网络资源，同时可对用户上线时间统计计时，并拒绝非法用户的请求。电信运营商和一些院校及企事业单位一般都采用HWTACACS或RADIUS服务器对接入用户进行有效控制，保证网络安全性和计时（方便计费）。
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-12&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/HCIP">HCIP</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/05/11/HCIP-security了解/">
-        <p class="h4 index-header">HCIP-security了解</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">HCIP-Security 知识架构HCP1 HCIP-Security CISN构建安全网络架构 * 网络安全设备管理
-
-     *   网络安全设备介绍
-
-     *   网络安全设备管理
-
-     *   网络安全设备日志分析
-
-     *   网络安全设备统一运维
-
- * 防火墙带宽管理
-
-     *   防火墙带宽管理概述
-
-     *   防火墙带宽管理实现原理
-
-     *   防火墙带宽管理配置部署
-
-     *   防火墙带宽管理故障排除
-
- * 防火墙负载均衡
-
-     *   服务器负载均衡概述
-
-     *   服务器负载均衡实现原理
-
-     *   服务器负载均衡配置部署
-
- * 防火墙高可靠性
-
-     *   BFD技术
-
-     *   IP-Link技术
-
-     *   Link-Group技术
-
-     *   Eth-Trunk技术
-
-     *   Bypass技术
-
-     *   双机热备技术
-
-     *   双机热备故障排除
-
- * 防火墙虚拟系统
-
-     *   虚拟系统概述
-
-     * </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-11&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/HCIP">HCIP</a>&nbsp;
-          
-            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C">计算机网络</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/29/angr学习文档/">
-        <p class="h4 index-header">angr学习文档</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">安装不会建议直接上docker 大是大了点，但是是相对很简单的事
-官方文档翻译angr Documentation我们首先要了解angr的构造，开始第一步肯定是导入二进制程序
-&gt;&gt;&gt; import angr
-&gt;&gt;&gt; proj = angr.Project(&#39;/bin/true&#39;)之后我们的操作都会基于这个proj对象，
-基础属性&gt;&gt;&gt; import monkeyhex //将以十六进制格式化数值输出结果
-&gt;&gt;&gt; proj.arch //程序的
-&lt;Arch AMD64 (LE)&gt;
-&gt;&gt;&gt; proj.entry //程序入口处
-0x401670
-&gt;&gt;&gt; proj.filename //程序二进制地址
-&#39;/bin/true&#39;The loader 方法从二进制文件转变为虚拟地址空间的表现形式的过程是十分复杂的。我们有一个名为CLE的模块来处理这个过程。CLE的结果，称为loader，可通过.loader属性来进行操控。
-
-&gt;&gt;&gt</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-29&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Angr">Angr</a>&nbsp;
-          
-            <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E5%8C%96">程序自动化</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/28/课程笔记：安全运维平台设计/">
-        <p class="h4 index-header">课程笔记：安全运维平台设计</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">
-基于大数据技术，集中采集、存储和分析全面的网络安全要素，利用风险计算模型、人机交互分析、智能分析引擎、可视化、工作流引擎、设备协同等手段，结合领先的威胁情报，对关键信息基础设施的运行状态、面临的外部攻击、内部违规行为进行深度检测，建立快速有效的威胁检测、分析、处置能力和全网安全风险感知与协同响应能力，以达到“摸清家底，认清风险，找出漏洞，通报结果，督促整改”的效果，真正实现聚焦业务稳定运行的安全运维。
-
-安全运维参评的了解我的宏观概念：
-安全运维产品都是为我们为网络管理员和企业资源服务，包括但不限于：防火墙（NISG），入侵防御（IDS），上网行为管理系统（NIBC），漏洞扫描（NASM），防病毒，数据风控… 由他们相互合作，达到就好的服务效果。
-安全运维产品为安全和简洁为生，使网络结构化，高度安全化，以及便于管理员管理。
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-28&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E5%AE%89%E5%85%A8%E8%BF%90%E7%BB%B4">安全运维</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/26/课程笔记：前端页面开发/">
-        <p class="h4 index-header">课程笔记：前端页面开发</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">不是写HTML基础，只记录一些框架和技术,我本人不是很喜欢前端，觉得枯燥。。。
-什么是JavaScript
-JavaScript是一种属于网络的脚本语言,已经被广泛用于Web应用开发,常用来为网页添加各式各样的动态功能,为用户提供更流畅美观的浏览效果。通常JavaScript脚本是通过嵌入在HTML中来实现自身的功能的。
-1.是一种解释性脚本语言（代码不进行预编译）。
-2.主要用来向HTML（标准通用标记语言下的一个应用）页面添加交互行为。
-3.可以直接嵌入HTML页面，但写成单独的js文件有利于结构和行为的分离。
-4.跨平台特性，在绝大多数浏览器的支持下，可以在多种平台下运行（如Windows、Linux、Mac、Android、iOS等）。
-Javascript脚本语言同其他语言一样，有它自身的基本数据类型，表达式和算术运算符及程序的基本程序框架。Javascript提供了四种基本的数据类型和两种特殊数据类型用来处理数据和文字。而变量提供存放信息的地方，表达式则可以完成较复杂的信息处理。 
-
-什么是ajax
-Ajax 即“Asynchronous Javascript And XM</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-26&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E5%89%8D%E7%AB%AF">前端</a>&nbsp;
           
         
       </div>

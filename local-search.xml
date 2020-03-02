@@ -4,11 +4,69 @@
   
   
   <entry>
-    <title></title>
-    <link href="undefined2019/12/17/%E7%8E%B0%E5%9C%BA%E6%9C%A8%E9%A9%AC%E6%B8%85%E7%90%86%E5%BB%BA%E8%AE%AE/"/>
-    <url>2019/12/17/%E7%8E%B0%E5%9C%BA%E6%9C%A8%E9%A9%AC%E6%B8%85%E7%90%86%E5%BB%BA%E8%AE%AE/</url>
+    <title>Shellcode基础</title>
+    <link href="undefined2020/03/01/shellcode%E5%9F%BA%E7%A1%80/"/>
+    <url>2020/03/01/shellcode%E5%9F%BA%E7%A1%80/</url>
     
-    <content type="html"><![CDATA[<h2 id="注册表"><a href="#注册表" class="headerlink" title="注册表"></a>注册表</h2><h3 id="文件隐藏"><a href="#文件隐藏" class="headerlink" title="文件隐藏"></a>文件隐藏</h3><p>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]<br>CheckedValue = 0 //此时无法通过文件夹选项设置成功<br>CheckedValue = 1 //Windows默认值<br>把CheckedValue修改成Windows默认值1后，系统恢复正常。</p><p>[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]<br>这个对隐藏文件有用</p><h3 id="关闭杀软"><a href="#关闭杀软" class="headerlink" title="关闭杀软"></a>关闭杀软</h3><p>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]<br><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121113.png" srcset="/img/loading.gif" alt="20191216121113.png"></p><h3 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h3><p>[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]</p><h3 id="safeBoot"><a href="#safeBoot" class="headerlink" title="safeBoot"></a>safeBoot</h3><p>[HKEY_CURRENT_USER\System\CurrentControlSet\Control\SafeBoot”]<br>[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SafeBoot”]</p><p>可递归删除，就不能进入安全模式</p>]]></content>
+    <content type="html"><![CDATA[<h3 id="shellcode-基础"><a href="#shellcode-基础" class="headerlink" title="shellcode 基础"></a>shellcode 基础</h3><p>参考微软<a href="https://docs.microsoft.com/zh-cn/powershell/scripting/how-to-use-docs?view=powershell-7" target="_blank" rel="noopener">官方文档</a></p><p>几个特性：</p><blockquote><ol><li>.NET Core可跨平台，powershell6可在Mac Linux平台使用，大气</li><li>Win10自带组建，功能强大</li></ol></blockquote><h4 id="了解Powershell"><a href="#了解Powershell" class="headerlink" title="了解Powershell"></a>了解Powershell</h4><ol><li>输出基于对象<ul><li>PowerShell cmdlet 旨在处理对象</li><li>在大多数情况下，可以使用标准 PowerShell 对象语法直接访问数据的各部分</li></ul></li><li>命令系列是可扩展的<ul><li>可以自己实现函数</li><li>支持批处理文件的脚本</li></ul></li><li>PowerShell 处理控制台输入和显示<ul><li>在cmdlet 后使用 <strong>-？</strong>可显示关于此命令的帮助</li></ul></li><li>PowerShell 使用某些 C# 语法</li></ol><h4 id="了解powershell的名称"><a href="#了解powershell的名称" class="headerlink" title="了解powershell的名称"></a>了解powershell的名称</h4><pre><code> 1. Cmdlet 使用谓词-名词的名称来减少命令记忆 - [PowerShell 批准的谓词]( https://docs.microsoft.com/zh-cn/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7 ) 2. Cmdlet 使用标准参数 - 参数主要通过**-？**获取，还有通用参数如 WhatIf、Confirm、Verbose、Debug、Warn、ErrorAction、ErrorVariable、OutVariable 和 OutBuffer3. 建议的参数名称-   加上方便人理解： Force 、Exclude 、Include 、PassThru 、Path 和 CaseSensitive </code></pre><h4 id="使用熟悉的命令名称"><a href="#使用熟悉的命令名称" class="headerlink" title="使用熟悉的命令名称"></a>使用熟悉的命令名称</h4><p>​    <strong>1. Powershell 支持常见的Unix 和cmd.exe 的命令</strong></p><p>​    </p><table><thead><tr><th align="left"></th><th align="left"></th><th align="left"></th><th align="left"></th></tr></thead><tbody><tr><td align="left">cat</td><td align="left">dir</td><td align="left">mount</td><td align="left">rm</td></tr><tr><td align="left">cd</td><td align="left">echo</td><td align="left">move</td><td align="left">rmdir</td></tr><tr><td align="left">chdir</td><td align="left">erase</td><td align="left">popd</td><td align="left">sleep</td></tr><tr><td align="left">clear</td><td align="left">h</td><td align="left">ps</td><td align="left">sort</td></tr><tr><td align="left">cls</td><td align="left">history</td><td align="left">pushd</td><td align="left">tee</td></tr><tr><td align="left">copy</td><td align="left">kill</td><td align="left">pwd</td><td align="left">type</td></tr><tr><td align="left">del</td><td align="left">lp</td><td align="left">r</td><td align="left">write</td></tr><tr><td align="left">diff</td><td align="left">ls</td><td align="left">ren</td><td align="left"></td></tr></tbody></table><ol start="2"><li><p>别名相关操作</p><p> <code>Get-Command -Noun Alias</code></p></li></ol><h4 id="获取详细的帮助信息"><a href="#获取详细的帮助信息" class="headerlink" title="获取详细的帮助信息"></a>获取详细的帮助信息</h4><ol><li>获取有关 cmdlet 的帮助<ul><li>常规帮助 <strong>Get-Help cmdlet</strong>、<strong>man cmdlet</strong> 、<strong>cmdlet   -?</strong> </li><li>获取到参数的帮助  <strong>Get-Help cmdlet -Full</strong> </li></ul></li></ol><h4 id="使用变量存储对象"><a href="#使用变量存储对象" class="headerlink" title="使用变量存储对象"></a>使用变量存储对象</h4><ol><li><p>使用<strong>$</strong>表示变量</p><pre><code>2. Get-Member $env:获取变量的信息- 可以创建设置键值对，例：` $env:LIB_PATH=&#39;/usr/local/lib&#39; `</code></pre></li></ol><h4 id="了解-PowerShell-管道"><a href="#了解-PowerShell-管道" class="headerlink" title="了解 PowerShell 管道"></a>了解 PowerShell 管道</h4><p>​    主要是方法和属性的使用，下面举个例子</p><p>​    <code>Get-Location</code> 获取一个pathInfo</p><p>​    <code>Get-Location | Get-Member</code>获取这个类的方法和属性</p><p>​    想要使用必须先实例化，传给一个变量</p><p>​    <code>$myLocal = Get-Location</code>实例化，这个<code>$myLocal</code>拥有<code>Get-Location</code>的全部方法和属性</p><p>​    比如<code>$myloc.Drive.Used</code>获取所在驱动内存使用大小，通过<code>Get-Member</code>获取详情</p><h4 id="术语表"><a href="#术语表" class="headerlink" title="术语表"></a>术语表</h4><p>powershell的常用术语</p><p>建议中英对照看，翻译的有些不易理解</p><p><a href="https://docs.microsoft.com/zh-cn/powershell/scripting/learn/windows-powershell-glossary?view=powershell-7" target="_blank" rel="noopener">中文</a></p><p><a href="https://docs.microsoft.com/en-us/powershell/scripting/learn/windows-powershell-glossary?view=powershell-77" target="_blank" rel="noopener">英文</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>shellcode</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="undefined2020/02/19/sality%E6%84%9F%E6%9F%93%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88/"/>
+    <url>2020/02/19/sality%E6%84%9F%E6%9F%93%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88/</url>
+    
+    <content type="html"><![CDATA[<p><strong>整体结构</strong></p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g5nq7x29j30nu0iwt9g.jpg" srcset="/img/loading.gif" alt="image.png"></p><p><strong>修复逻辑为：</strong></p><p>首先模拟执行被感染后的OEP，拿到解密代码处的地址</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4ekr1mcj30ma05d3yp.jpg" srcset="/img/loading.gif" alt="image.png"></p><p><strong>一直往下，到达第一个ret就会跳往加密代码处</strong></p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4gnmxxjj30vm08s0tk.jpg" srcset="/img/loading.gif" alt="image.png"></p><p>解密代码部分</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4ioj6n4j30md06fq37.jpg" srcset="/img/loading.gif" alt="image.png"></p><p>解密代码约为0x1000字节左右,因为是有随机产生的指令，长度就不确定，但是有一个结束标记<br>特征码为：81F9E2FE00000F8C????FFFFC3</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4l1fng2j30q70a4wff.jpg" srcset="/img/loading.gif" alt="image.png"></p><p>到这就可以修复文件了</p><p>原始OEP保存在shellcode后的0x1774处</p><p>sizoOfImage也能找到，就能恢复了</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g5w3fapuj313c0iqabt.jpg" srcset="/img/loading.gif" alt="image.png"></p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g5y4kijhj31810n40v5.jpg" srcset="/img/loading.gif" alt="image.png"></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="undefined2020/02/14/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E6%B1%87%E7%BC%96/"/>
+    <url>2020/02/14/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E6%B1%87%E7%BC%96/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://bbs.pediy.com/thread-77508.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-77508.htm</a><br><a href="https://blog.csdn.net/Apollon_krj/article/details/77524601" target="_blank" rel="noopener">https://blog.csdn.net/Apollon_krj/article/details/77524601</a><br>x86指令集设计上就只允许是寄存器和寄存器或寄存器和内存间移动</p><p>x86 profix:<br>26：在指令序列里是：prefix部分，作用是调整内存操作数的段选择子<br>66：在指令序列里是：prefix 部分，作用是调整操作数的缺省大小<br>2E: CS<br>3E: DS<br>26: ES<br>64: FS<br>65: GS<br>36: SS<br>F0: locl指令<br>F2: repne<br>F3: rep repz</p><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200214220708.png" srcset="/img/loading.gif" alt="20200214220708.png"></p><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200214221252.png" srcset="/img/loading.gif" alt="20200214221252.png"></p><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200214221520.png" srcset="/img/loading.gif" alt="20200214221520.png"></p><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200215175201.png" srcset="/img/loading.gif" alt="20200215175201.png"></p><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200215174932.png" srcset="/img/loading.gif" alt="20200215174932.png"></p><p><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200215175337.png" srcset="/img/loading.gif" alt="20200215175337.png"></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="undefined2020/01/09/ARM%20ARM64%20x86/"/>
+    <url>2020/01/09/ARM%20ARM64%20x86/</url>
+    
+    <content type="html"><![CDATA[<p>几种不同CPU架构的区别</p><p>inter  复杂指令集 CISC<br>ARM 精简指令集 RISC </p><table><thead><tr><th>类型</th><th>Inter</th><th>ARM</th></tr></thead><tbody><tr><td>效率</td><td>完成复杂指令效率高，有独立的高级指令</td><td>高级指令全靠多条指令拼凑</td></tr><tr><td>功耗</td><td>超高性能</td><td>低功耗</td></tr></tbody></table><p>docker run -it -p 443:443 -v ~/.msf4:/root/.msf4 -v /tmp/msf:/tmp/data remnux/metasploit</p><p>mates Break<br>172.17.0.2</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="undefined2019/12/23/%E8%B0%83%E8%AF%95androidLua%E7%9A%84so%E6%96%87%E4%BB%B6/"/>
+    <url>2019/12/23/%E8%B0%83%E8%AF%95androidLua%E7%9A%84so%E6%96%87%E4%BB%B6/</url>
+    
+    <content type="html"><![CDATA[]]></content>
     
     
     
@@ -75,8 +133,8 @@
   
   <entry>
     <title>简单PE加载器</title>
-    <link href="undefined2019/12/05/%E7%AE%80%E5%8D%95PE%E5%8A%A0%E8%BD%BD%E5%99%A8/"/>
-    <url>2019/12/05/%E7%AE%80%E5%8D%95PE%E5%8A%A0%E8%BD%BD%E5%99%A8/</url>
+    <link href="undefined2019/12/07/%E7%AE%80%E5%8D%95PE%E5%8A%A0%E8%BD%BD%E5%99%A8/"/>
+    <url>2019/12/07/%E7%AE%80%E5%8D%95PE%E5%8A%A0%E8%BD%BD%E5%99%A8/</url>
     
     <content type="html"><![CDATA[<p>思路来源写<code>Sality</code>感染型病毒专杀时指令被严重混淆，通过加载PE 修改内存 跑一下解密算法效率是最高的。</p><p>很多病毒在运行的时候都会加载另一个主映像文件去执行，而不是创建进程，就很有意思</p><p>下面就是如何加载一个PE，再展开，最后修复执行的过程 </p><p>该函数主要是为了将文件映射到内存中，保证源程序安全</p><p>返回值是未展开文件在内存中的位置</p><pre><code class="C">LPBYTE LoadFileToMem(LPCSTR lpFilePath){    //////////////////////////////////////////////////////////////////////////    ////将源文件读到内存中                                                  ///    //////////////////////////////////////////////////////////////////////////    DWORD FileSize = 0;    LPBYTE Buff = NULL;    HANDLE hFile = CreateFileA(lpFilePath, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);    if (hFile == INVALID_HANDLE_VALUE)    {        printf(&quot;打开文件句柄错误！[%x]&quot;, GetLastError());        return -1;    }    FileSize = GetFileSize(hFile, NULL);    Buff = (LPBYTE)malloc(FileSize);    if (Buff == NULL)    {        printf(&quot;空间申请失败![%x]&quot;, GetLastError());        return -1;    }    if (!ReadFile(hFile, Buff, FileSize, &amp;FileSize, NULL))    {        printf(&quot;ReadFile![%x]&quot;, GetLastError());        return -1;    }    return Buff;}</code></pre><p>接下来按照各个节的对齐粒度展开<br>返回值是展开后什么都没修复的buff指针</p><pre><code class="C">LPBYTE Extension(LPBYTE lpFileBuffer){    //////////////////////////////////////////////////////////////////////////    ////将文件在内存中展开                                                  ///    //////////////////////////////////////////////////////////////////////////    int i = 0;     PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpFileBuffer;    PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(lpFileBuffer + pDos-&gt;e_lfanew);    PIMAGE_SECTION_HEADER pSec = (PIMAGE_SECTION_HEADER)((LPBYTE)pNt + sizeof(IMAGE_NT_HEADERS));    DWORD ImageSize = pNt-&gt;OptionalHeader.SizeOfImage;    //LPBYTE lpMemBuffer = (LPBYTE)malloc(ImageSize);    LPVOID lpMemBuffer = VirtualAlloc(NULL, ImageSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);    VirtualProtect(lpMemBuffer, ImageSize, PAGE_EXECUTE_READWRITE, NULL);//这一句可以不要，上面申请的就是可读可写可执行的空间。    ZeroMemory(lpMemBuffer, ImageSize);    //文件头的大小    DWORD dwSizeOfHeader = pNt-&gt;OptionalHeader.SizeOfHeaders;    //将头部拷贝过去    CopyMemory(lpMemBuffer, lpFileBuffer, dwSizeOfHeader);    for (;i &lt; pNt-&gt;FileHeader.NumberOfSections;i++)    {        if (pSec-&gt;VirtualAddress == 0 || pSec-&gt;PointerToRawData == 0)        {            pSec++;            continue;        }        CopyMemory((LPBYTE)lpMemBuffer + pSec-&gt;VirtualAddress, lpFileBuffer + pSec-&gt;PointerToRawData, pSec-&gt;SizeOfRawData);        pSec++;    }    //已经完全映射，可以把之前的内存释放掉了    free(lpFileBuffer);    return lpMemBuffer;}</code></pre><p>修复重定位信息</p><p>这一步容易出错，核心原理是重定位表中存的是这个程序需要修复的数据，每个数据都是<code>DWORD</code>类型的<br>可以参考如下地址，主要要注意 <code>pReloca-&gt;VirtualAddress</code>存的是页基质 , <code>pReloca-&gt;SizeOfBlock</code> 包含了<code>IMAGE_BASE_RELOCATION</code> 结构的大小<br><a href="https://blog.csdn.net/Apollon_krj/article/details/77370452" target="_blank" rel="noopener">https://blog.csdn.net/Apollon_krj/article/details/77370452</a></p><pre><code class="C">BOOL ReRloc(LPBYTE lpMemBuffer){    //////////////////////////////////////////////////////////////////////////    ////修复重定位表                                                       ///    ////原理：遍历重定位表，计算需要重定位数据的地址：重定位后的地址 = 需要重定位的地址 - 默认加载基址 + 当前加载基址    //////////////////////////////////////////////////////////////////////////    PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpMemBuffer;    PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(lpMemBuffer + pDos-&gt;e_lfanew);    //获得重定位表    PIMAGE_BASE_RELOCATION pReloca = (PIMAGE_BASE_RELOCATION)(lpMemBuffer + pNt-&gt;OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress);    //如果重定位表为空，上述表达式为pDos+0    if ((LPBYTE)pReloca == lpMemBuffer)    {        printf(&quot;没有重定位表！\n&quot;);        return TRUE;    }    while (pReloca-&gt;VirtualAddress !=0 &amp;&amp; pReloca-&gt;SizeOfBlock !=0 )    {        LPWORD pRelData =  (LPBYTE)pReloca + sizeof(IMAGE_BASE_RELOCATION);        int nNumRel = (pReloca-&gt;SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(WORD);        for (int i = 0; i &lt; nNumRel; i++)        {            // 每个WORD由两部分组成。高4位指出了重定位的类型，WINNT.H中的一系列IMAGE_REL_BASED_xxx定义了重定位类型的取值。            // 低12位是相对于VirtualAddress域的偏移，指出了必须进行重定位的位置。            if ((WORD)(pRelData[i] &amp; 0xF000) == 0x3000) //这是一个需要修正的地址            {                //pReloca-&gt;VirtualAddress存的是页基质，(一个页4K，所以是0xFFF，刚好12位)                LPDWORD pAddress = (LPDWORD)(lpMemBuffer + pReloca-&gt;VirtualAddress + (pRelData[i] &amp; 0x0FFF));                *pAddress = *pAddress - pNt-&gt;OptionalHeader.ImageBase + (DWORD)pDos;                printf(&quot;Check!&quot;);                //DWORD dwDelta = (DWORD)pDos - pNt-&gt;OptionalHeader.ImageBase;                //*pAddress += dwDelta;            }        }        pReloca = (LPBYTE)pReloca + pReloca-&gt;SizeOfBlock;    }    printf(&quot;重定位表修复完成！\n&quot;);    return TRUE;}</code></pre><p>修复IAT 这一步也是必须的，在很多壳中是对IAT表进行了Hook，了解一下结构</p><p><code>WinNt.h</code>中定义的<code>IMAGE_IMPORT_DESCRIPTOR</code>结构</p><pre><code class="C">typedef struct _IMAGE_IMPORT_DESCRIPTOR {    union {                                 //注意这是union        DWORD   Characteristics;            // 0 for terminating null import descriptor        DWORD   OriginalFirstThunk;         // RVA to original unbound IAT (PIMAGE_THUNK_DATA)    } DUMMYUNIONNAME;    DWORD   TimeDateStamp;                  // 0 if not bound,                                            // -1 if bound, and real date\time stamp                                            //     in IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT (new BIND)                                            // O.W. date/time stamp of DLL bound to (Old BIND)    DWORD   ForwarderChain;                 // -1 if no forwarders    DWORD   Name;    DWORD   FirstThunk;                     // RVA to IAT (if bound this IAT has actual addresses)} IMAGE_IMPORT_DESCRIPTOR;typedef IMAGE_IMPORT_DESCRIPTOR UNALIGNED *PIMAGE_IMPORT_DESCRIPTOR;</code></pre><p><code>OriginalFirstThunk</code> 和 <code>FirstThunk</code> 都指向一个 <code>IMAGE_THUNK_DATA32</code> 结构，该结构是以<code>0</code> 结尾</p><p><code>OriginalFirstThunk</code> 是一直不会被修改，程序构建好后就固定 INT<br><code>FirstThunk</code> 在程序加载时动态修改为具体的函数地址，也就是我们常说的IAT</p><pre><code class="C">typedef struct _IMAGE_THUNK_DATA32 {    union {        DWORD ForwarderString;      // PBYTE         DWORD Function;             // PDWORD        DWORD Ordinal;        DWORD AddressOfData;        // PIMAGE_IMPORT_BY_NAME    } u1;} IMAGE_THUNK_DATA32;typedef IMAGE_THUNK_DATA32 * PIMAGE_THUNK_DATA32;</code></pre><p>根据Ordinal的值，判断是按序号导入还是按名称导入，如果是按名称导入则需要去<code>AddressOfData</code>指向的<code>IMAGE_IMPORT_BY_NAME</code>结构中去拿到导入函数名</p><pre><code class="C">typedef struct _IMAGE_IMPORT_BY_NAME {    WORD    Hint;    CHAR   Name[1];                 //保存具体导入函数的名称} IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;</code></pre><p>如果是序号导入就根据<code>Ordinal</code>的<code>低16</code>位决定</p><p><a href="https://www.cnblogs.com/night-ride-depart/p/5776107.html" target="_blank" rel="noopener">https://www.cnblogs.com/night-ride-depart/p/5776107.html</a></p><pre><code class="C">BOOL InitIAT(LPBYTE lpMemBuffer){    //////////////////////////////////////////////////////////////////////////    ////修复IAT                                                                //////////////////////////////////////////////////////////////////////////    PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpMemBuffer;    PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(lpMemBuffer + pDos-&gt;e_lfanew);    PIMAGE_IMPORT_DESCRIPTOR pImportTalbe = (PIMAGE_IMPORT_DESCRIPTOR)(lpMemBuffer + pNt-&gt;OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress);    LPCSTR szDllname = NULL;    PIMAGE_THUNK_DATA lpOrgNameArry = NULL;    PIMAGE_THUNK_DATA lpFirNameArry = NULL;    PIMAGE_IMPORT_BY_NAME lpImportByNameTable = NULL;    HMODULE hMou;    FARPROC Funaddr;    int i = 0;    while (pImportTalbe-&gt;OriginalFirstThunk)    {        szDllname = lpMemBuffer + pImportTalbe-&gt;Name;        hMou = GetModuleHandleA(szDllname);        if (hMou == NULL)        {            hMou = LoadLibraryA(szDllname);            if (hMou == NULL)            {                printf(&quot;加载%s失败！[%x]\n &quot;, szDllname, GetLastError());                return FALSE;            }        }        //dll加载成功，开始导入需要的函数        lpOrgNameArry = (PIMAGE_THUNK_DATA)(lpMemBuffer + pImportTalbe-&gt;OriginalFirstThunk);        lpFirNameArry = (PIMAGE_THUNK_DATA)(lpMemBuffer + pImportTalbe-&gt;FirstThunk);        i = 0;        while (lpOrgNameArry[i].u1.AddressOfData)        {            lpImportByNameTable = (PIMAGE_IMPORT_BY_NAME)(lpMemBuffer + lpOrgNameArry[i].u1.AddressOfData);            if (lpOrgNameArry[i].u1.Ordinal &amp; 0x80000000 == 1)            {                //序号导入                Funaddr = GetProcAddress(hMou, (LPSTR)(lpOrgNameArry[i].u1.Ordinal &amp; 0xFFFF));            }            else            {                //名称导入                Funaddr = GetProcAddress(hMou, lpImportByNameTable-&gt;Name);            }            lpFirNameArry[i].u1.Function = Funaddr;            i++;        }        pImportTalbe++;    }    return TRUE;}</code></pre><p>最后就是修复<code>ImageBase</code></p><pre><code class="C">FARPROC InitEnv(LPBYTE lpMemBuffer){    //////////////////////////////////////////////////////////////////////////    ////修改ImageBase，返回入口点                                           ///    //////////////////////////////////////////////////////////////////////////    PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpMemBuffer;    PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(lpMemBuffer + pDos-&gt;e_lfanew);    pNt-&gt;OptionalHeader.ImageBase = lpMemBuffer;    return lpMemBuffer + pNt-&gt;OptionalHeader.AddressOfEntryPoint;}</code></pre><p>返回这个被加载程序的入口地址，直接调用就好</p><p>吃水不忘挖井人 参考来源<br><a href="https://bbs.pediy.com/thread-249133.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-249133.htm</a></p>]]></content>
     
@@ -146,6 +204,25 @@
     <tags>
       
       <tag>逆向</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Shellcode基础</title>
+    <link href="undefined2019/11/03/%E7%8E%B0%E5%9C%BA%E6%9C%A8%E9%A9%AC%E6%B8%85%E7%90%86%E5%BB%BA%E8%AE%AE/"/>
+    <url>2019/11/03/%E7%8E%B0%E5%9C%BA%E6%9C%A8%E9%A9%AC%E6%B8%85%E7%90%86%E5%BB%BA%E8%AE%AE/</url>
+    
+    <content type="html"><![CDATA[<h2 id="注册表"><a href="#注册表" class="headerlink" title="注册表"></a>注册表</h2><h3 id="文件隐藏"><a href="#文件隐藏" class="headerlink" title="文件隐藏"></a>文件隐藏</h3><p>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]<br>CheckedValue = 0 //此时无法通过文件夹选项设置成功<br>CheckedValue = 1 //Windows默认值<br>把CheckedValue修改成Windows默认值1后，系统恢复正常。</p><p>[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]<br>这个对隐藏文件有用</p><h3 id="关闭杀软"><a href="#关闭杀软" class="headerlink" title="关闭杀软"></a>关闭杀软</h3><p>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]<br><img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121113.png" srcset="/img/loading.gif" alt="20191216121113.png"></p><h3 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h3><p>[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]</p><h3 id="safeBoot"><a href="#safeBoot" class="headerlink" title="safeBoot"></a>safeBoot</h3><p>[HKEY_CURRENT_USER\System\CurrentControlSet\Control\SafeBoot”]<br>[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SafeBoot”]</p><p>可递归删除，就不能进入安全模式</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>木马</tag>
       
     </tags>
     
@@ -485,31 +562,6 @@
   
   
   <entry>
-    <title>PE的一些结构笔记</title>
-    <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
-    <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
-    
-    <content type="html"><![CDATA[<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p><h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p><p>windows me 是windows 9x系列的最后一个</p><p>windows NT 2000以后的 现在的都是NT系列的</p><p>不同进程使用操作系统的共享地址</p><p>com 的特点就是没有特点</p><h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul><li>Machine：表示这个程序是什么架构的 </li><li>NumberOfSections:表示这个程序有多少个节</li><li>SizeofOptionalHeader：表示optionsHeader的大小 </li><li>Characters:表示这个程序的一些特性</li></ul><h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p><p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>]]></content>
-    
-    
-    <categories>
-      
-      <category>课堂学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>PE</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>调用dll和编写dll的几种格式</title>
     <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
     <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
@@ -527,6 +579,31 @@
     <tags>
       
       <tag>dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>PE的一些结构笔记</title>
+    <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
+    <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<h3 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h3><p>开电脑一瞬间，就处于实模式，1M寻址<br> dos 使用实模式</p><h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>windows在保护模式</p><p>windows me 是windows 9x系列的最后一个</p><p>windows NT 2000以后的 现在的都是NT系列的</p><p>不同进程使用操作系统的共享地址</p><p>com 的特点就是没有特点</p><h3 id="PE格式解释"><a href="#PE格式解释" class="headerlink" title="PE格式解释"></a>PE格式解释</h3><p>有用的字段<br><img src="https://img-blog.csdnimg.cn/20190729164137634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="dos头的最后一个双字，指向PE头的起始地址"><a href="#dos头的最后一个双字，指向PE头的起始地址" class="headerlink" title="dos头的最后一个双字，指向PE头的起始地址"></a>dos头的最后一个双字，指向PE头的起始地址</h4><p><img src="https://img-blog.csdnimg.cn/20190729152522199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="File-header的大小永远是固定的20字节，下面4个字段比较重要"><a href="#File-header的大小永远是固定的20字节，下面4个字段比较重要" class="headerlink" title="File header的大小永远是固定的20字节，下面4个字段比较重要"></a>File header的大小永远是固定的20字节，下面4个字段比较重要</h4><ul><li>Machine：表示这个程序是什么架构的 </li><li>NumberOfSections:表示这个程序有多少个节</li><li>SizeofOptionalHeader：表示optionsHeader的大小 </li><li>Characters:表示这个程序的一些特性</li></ul><h4 id="Optional-header-：是必要的头"><a href="#Optional-header-：是必要的头" class="headerlink" title="Optional header ：是必要的头"></a>Optional header ：是必要的头</h4><p><img src="https://img-blog.csdnimg.cn/20190729165143140.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>介绍一下重要的属性<br>AddressOfEntryPoint：程序执行入口的RVA<br>BaseOfCode：代码节的起始RVA<br>imageBase：程序的建议装载地址<br>SectionAlignment:内存中的节的对齐粒度<br>FileAlignment：文件中的对齐粒度<br>MajorOperatingSystemVersion:要求操作系统最低版本号的主版本号（Windows XP是5.1）主版本为5 ，次版本为1</p><p>Subsystem：文件的子系统<br>DllCharacteristics：dll的属性<br>Sizeofimage:这个地方的大小可以不和文件一致，但原始文件一般是相符的，所以程序被篡改后添加新节后，这个地方就会不同<br><img src="https://img-blog.csdnimg.cn/20190729142156504.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h4 id="Section-Headers-这里填写了各个节的文件偏移和内存偏移。"><a href="#Section-Headers-这里填写了各个节的文件偏移和内存偏移。" class="headerlink" title="Section Headers:这里填写了各个节的文件偏移和内存偏移。"></a>Section Headers:这里填写了各个节的文件偏移和内存偏移。</h4>]]></content>
+    
+    
+    <categories>
+      
+      <category>课堂学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PE</tag>
       
     </tags>
     
@@ -560,31 +637,6 @@
   
   
   <entry>
-    <title>call的几种传参方式</title>
-    <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
-    <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<p>stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 </p><p>cdecl 栈传参，函数外平衡堆栈</p><p>fastcall 是通过寄存器，因为是寄存器fast嘛</p><p><strong>下面这种call是用在有类对象引用的时候来表示传参的</strong><br>thiscall 是用ecx来穿this指针的，一般都是 类似<code>lea ecx [ebp+var_20]</code><br>进入函数函数后  ecx就能会直接拿来用，不会再次赋值。</p><p><strong>识别参数个数</strong><br>1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小<br>2.划分push 的归属<br>3.遇到栈平衡相关指令。点亮push核对下已分配是否有误<br>4.注意识别出某些push为下一个函数所用<br>5.另外还要看某push归属于某个函数的最后参数却不使用的参数<br>不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>传参方式</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>调试dll的两种方法</title>
     <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
     <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
@@ -602,6 +654,31 @@
     <tags>
       
       <tag>调试dll</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>call的几种传参方式</title>
+    <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
+    <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<p>stdcall 参数使用栈，平衡是在函数内，通过函数内的最后一个retn X来平衡，这个X用来指定pop几个字来平衡堆栈 </p><p>cdecl 栈传参，函数外平衡堆栈</p><p>fastcall 是通过寄存器，因为是寄存器fast嘛</p><p><strong>下面这种call是用在有类对象引用的时候来表示传参的</strong><br>thiscall 是用ecx来穿this指针的，一般都是 类似<code>lea ecx [ebp+var_20]</code><br>进入函数函数后  ecx就能会直接拿来用，不会再次赋值。</p><p><strong>识别参数个数</strong><br>1.点亮call后依次进去看调用的方式，非stdcall则再看参数的中占用大小<br>2.划分push 的归属<br>3.遇到栈平衡相关指令。点亮push核对下已分配是否有误<br>4.注意识别出某些push为下一个函数所用<br>5.另外还要看某push归属于某个函数的最后参数却不使用的参数<br>不确定的可以call进函数里，看看最后函数返回的时候堆栈平衡的参数大小，来确定传入参数</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>传参方式</tag>
       
     </tags>
     

