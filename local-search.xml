@@ -23,20 +23,7 @@
   
   
   <entry>
-    <title></title>
-    <link href="undefined2020/02/19/sality%E6%84%9F%E6%9F%93%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88/"/>
-    <url>2020/02/19/sality%E6%84%9F%E6%9F%93%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88/</url>
-    
-    <content type="html"><![CDATA[<p><strong>整体结构</strong></p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g5nq7x29j30nu0iwt9g.jpg" srcset="/img/loading.gif" alt="image.png"></p><p><strong>修复逻辑为：</strong></p><p>首先模拟执行被感染后的OEP，拿到解密代码处的地址</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4ekr1mcj30ma05d3yp.jpg" srcset="/img/loading.gif" alt="image.png"></p><p><strong>一直往下，到达第一个ret就会跳往加密代码处</strong></p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4gnmxxjj30vm08s0tk.jpg" srcset="/img/loading.gif" alt="image.png"></p><p>解密代码部分</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4ioj6n4j30md06fq37.jpg" srcset="/img/loading.gif" alt="image.png"></p><p>解密代码约为0x1000字节左右,因为是有随机产生的指令，长度就不确定，但是有一个结束标记<br>特征码为：81F9E2FE00000F8C????FFFFC3</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g4l1fng2j30q70a4wff.jpg" srcset="/img/loading.gif" alt="image.png"></p><p>到这就可以修复文件了</p><p>原始OEP保存在shellcode后的0x1774处</p><p>sizoOfImage也能找到，就能恢复了</p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g5w3fapuj313c0iqabt.jpg" srcset="/img/loading.gif" alt="image.png"></p><p><img src="http://ww1.sinaimg.cn/large/006vdr71gy1g9g5y4kijhj31810n40v5.jpg" srcset="/img/loading.gif" alt="image.png"></p>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
+    <title>Inter 汇编基础</title>
     <link href="undefined2020/02/14/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E6%B1%87%E7%BC%96/"/>
     <url>2020/02/14/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E6%B1%87%E7%BC%96/</url>
     
@@ -44,31 +31,11 @@
     
     
     
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="undefined2020/01/09/ARM%20ARM64%20x86/"/>
-    <url>2020/01/09/ARM%20ARM64%20x86/</url>
-    
-    <content type="html"><![CDATA[<p>几种不同CPU架构的区别</p><p>inter  复杂指令集 CISC<br>ARM 精简指令集 RISC </p><table><thead><tr><th>类型</th><th>Inter</th><th>ARM</th></tr></thead><tbody><tr><td>效率</td><td>完成复杂指令效率高，有独立的高级指令</td><td>高级指令全靠多条指令拼凑</td></tr><tr><td>功耗</td><td>超高性能</td><td>低功耗</td></tr></tbody></table><p>docker run -it -p 443:443 -v ~/.msf4:/root/.msf4 -v /tmp/msf:/tmp/data remnux/metasploit</p><p>mates Break<br>172.17.0.2</p>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="undefined2019/12/23/%E8%B0%83%E8%AF%95androidLua%E7%9A%84so%E6%96%87%E4%BB%B6/"/>
-    <url>2019/12/23/%E8%B0%83%E8%AF%95androidLua%E7%9A%84so%E6%96%87%E4%BB%B6/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    
+    <tags>
+      
+      <tag>汇编</tag>
+      
+    </tags>
     
   </entry>
   
@@ -302,31 +269,6 @@
   
   
   <entry>
-    <title>H-WORM变种远控分析</title>
-    <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
-    <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
-    
-    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>4gdrwceq60b7dbl.sct</td><td>rat</td><td>69B7D326575C5616D82645960B3D081A</td><td>403845 bytes</td></tr></tbody></table><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。</p><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190916190802115.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>这个样本母体总共会释放3个脚本</p><h3 id="脚本1"><a href="#脚本1" class="headerlink" title="脚本1"></a>脚本1</h3><p>首先我们看看<code>4gdrwceq60b7dbl.sct</code>，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件<br>我们用<code>Sublimi Text</code>来打开它，记事本也是可以的。</p><p><img src="https://img-blog.csdnimg.cn/20190916155338357.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>利用组数来存关键字符串，通过字符串的拼接来合成完整路径<br>会尝试删除<code>%APPDATA%\\taskmgr.js</code>  这个文件<br><img src="https://img-blog.csdnimg.cn/20190916155609819.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190916160236624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>文件中有很长一段密文，这里我改名为了<code>EncodeList</code>，通过<code>System.IO.MemoryStream.WriteByte()</code>方法把数据读入数据流中。<br>最重要的是使用<code>ADODB.Stream</code>类方法把这个数据流保存到了被上面删除掉的<code>%APPDATA%\\taskmgr.js</code>文件中<br><img src="https://img-blog.csdnimg.cn/20190916155832544.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后使用<code>WScript.Shell.Run</code>方法运行<code>taskmgr.js</code>文件</p><p>我这里使Python给他拿出来，命名为<code>taskmgr.js</code><br><img src="https://img-blog.csdnimg.cn/20190916161513776.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本2"><a href="#脚本2" class="headerlink" title="脚本2"></a>脚本2</h3><p>下面是<code>taskmgr.js</code> ，这个脚本其实还是一个解密脚本，也是 使用<code>AdoDB.Stream</code>处理数据流，然后使用<code>monKeyKing</code>中动态生成的eval方法去执行数据，来达到免杀<br><img src="https://img-blog.csdnimg.cn/20190916162014581.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>通过一个<code>Microsoft.XmlDom</code>的创建一个<code>tmp</code>对象，然后把这个对象赋予<code>eval</code>方法<br>最后就可以用<code>this.p</code>去访问到<code>Microsoft.XmlDom.tmp</code>，来达到命令执行<br><img src="https://img-blog.csdnimg.cn/20190916162041325.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当然执行的命令也肯定是被加过密的，下面就是解密数据部分，这里就简单的把base64后的结果，然后把字符”A”替换成”!-%”<br><img src="https://img-blog.csdnimg.cn/20190916163628179.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>最后使用上面构造的<code>eval</code>去执行这段解密的代码<br><img src="https://img-blog.csdnimg.cn/2019091616391031.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本3-核心代码"><a href="#脚本3-核心代码" class="headerlink" title="脚本3 核心代码"></a>脚本3 核心代码</h3><p>这里开始分析脚本2中解密出来的代码</p><p>根据这host，port和代码量，可以判断出这个应该就是这个样本的实现核心的地方了。<br>这里其实这是一个远控加感染U盘传播</p><h4 id="U盘传播"><a href="#U盘传播" class="headerlink" title="U盘传播"></a>U盘传播</h4><p><img src="https://img-blog.csdnimg.cn/20190916165932567.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>加入开机启动注册表项，来达到持久化攻击，这基本已是木马的共性<br><img src="https://img-blog.csdnimg.cn/20190916170039587.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>在下面的try块中，有一个install函数会被循环调用，这个函数是用来检测感染移动存储设备的<br><img src="https://img-blog.csdnimg.cn/20190916170300961.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>install() 会去判断当前系统磁盘是否有U盘或其他移动存储介质，有的话就执行感染操作<br><img src="https://img-blog.csdnimg.cn/20190916170657111.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举移动盘文件<br><img src="https://img-blog.csdnimg.cn/20190916171010711.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>如果文件不是快捷方式，那就将权限改为<strong>隐藏</strong>和<strong>系统权限</strong>，然后给他们创建一个同名<code>.lnk</code>的快捷方式<br><img src="https://img-blog.csdnimg.cn/20190916171254264.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>快捷方式被修改为了特殊构造的恶意代码，构造过程如下<br><img src="https://img-blog.csdnimg.cn/20190916171656803.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这样每个文件都会被隐藏，然后生成一个被感染的快捷方式去诱惑其他人点击，只要一点击，就会被感染。</p><h4 id="远控模块"><a href="#远控模块" class="headerlink" title="远控模块"></a>远控模块</h4><p>这个远控一共有<code>26</code>个命令模块，分别是<br>|命令  |含义  |<br>|–|–|<br>|disconnect|   断开连接 |<br>|reboot|   重启脚本 |<br>|shutdown| 关闭脚本 |<br>|excecute| 执行命令  |<br>|install-sdk|  安装SDK |<br>|get-pass|搜集密码  |<br>|get-pass-offline|  获取浏览器密码|<br>|update|    更新|<br>|uninstall| 卸载|<br>|up-n-exec| 请求下载执行文件|<br>|bring-log| 上传日志|<br>|down-n-exec|  下载执行文件 |<br>|filemanager|   文件管理|<br>|rdp|  启动RDP |<br>|keylogger| 启动kleylogger|<br>|offline-keylogger| 启动离线版kerlogger|<br>|browse-logs|   上传日志|<br>|cmd-shell| 执行cmd命令|<br>|get-processes| 枚举进程|<br>|disable-uac|   关闭UAC|<br>|check-eligible|    检测权限|<br>|force-eligible| 暴力提权   |<br>|elevate|  普通提权 |<br>|if-elevate|   检测权限 |<br>|kill-process| 结束进程 |<br>|sleep| 挂起进程|</p><p>这个程序会释放一个脚本到%appdata%下去，命名为<code>aFCnKVCdfY.js</code><br><img src="https://img-blog.csdnimg.cn/20190916164502275.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本4"><a href="#脚本4" class="headerlink" title="脚本4"></a>脚本4</h3><p>aFCnKVCdfY.js这个和脚本三是一样的，除了域名变了，其他都没变化。</p><p><img src="https://img-blog.csdnimg.cn/20190916174051698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="样本溯源"><a href="#样本溯源" class="headerlink" title="样本溯源"></a>样本溯源</h2><p><strong>C&amp;C</strong><br>unknownsoft.duckdns.org:7744<br>globalization.duckdns.org:50071</p><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><p>删除自启动表项<br>HKEY_CURRENT_USER\software\microsoft\windows\currentversion\run\scriptName<br>HKEY_LOCAL_MACHINE\software\microsoft\windows\currentversion\run\scriptName</p><p>删除<br>%appdata%\aFCnKVCdfY.js<br>%temp%\aFCnKVCdfY.js<br>%APPDATA%\taskmgr.js </p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>谨防不明来路的邮件，网页 文件要谨慎，要对未知文件表示怀疑，切勿怀着试一试的态度打开</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>样本详细分析</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Rat H-worm</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Com组建检测虚拟沙箱</title>
     <link href="undefined2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/"/>
     <url>2019/09/04/Com%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%BB%A4%E5%99%A8%E6%9D%A5%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1/</url>
@@ -344,6 +286,31 @@
     <tags>
       
       <tag>检测沙箱</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>H-WORM变种远控分析</title>
+    <link href="undefined2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/"/>
+    <url>2019/09/04/H-WORM%E5%8F%98%E7%A7%8D%E8%BF%9C%E6%8E%A7%E5%88%86%E6%9E%90/</url>
+    
+    <content type="html"><![CDATA[<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><table><thead><tr><th>FileName</th><th>FileType</th><th>MD5</th><th>Size</th></tr></thead><tbody><tr><td>4gdrwceq60b7dbl.sct</td><td>rat</td><td>69B7D326575C5616D82645960B3D081A</td><td>403845 bytes</td></tr></tbody></table><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>该样本语言类型为 VBS和JS编写，在一定程序上能躲避安全软件的查杀，通过不同混淆更容易达到免杀的效果。</p><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://img-blog.csdnimg.cn/20190916190802115.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="详细分析"><a href="#详细分析" class="headerlink" title="详细分析"></a>详细分析</h2><p>这个样本母体总共会释放3个脚本</p><h3 id="脚本1"><a href="#脚本1" class="headerlink" title="脚本1"></a>脚本1</h3><p>首先我们看看<code>4gdrwceq60b7dbl.sct</code>，这个样本的母体，是一个sct格式的文件这是Visual FoxPro的表单配置文件<br>我们用<code>Sublimi Text</code>来打开它，记事本也是可以的。</p><p><img src="https://img-blog.csdnimg.cn/20190916155338357.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>利用组数来存关键字符串，通过字符串的拼接来合成完整路径<br>会尝试删除<code>%APPDATA%\\taskmgr.js</code>  这个文件<br><img src="https://img-blog.csdnimg.cn/20190916155609819.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190916160236624.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>文件中有很长一段密文，这里我改名为了<code>EncodeList</code>，通过<code>System.IO.MemoryStream.WriteByte()</code>方法把数据读入数据流中。<br>最重要的是使用<code>ADODB.Stream</code>类方法把这个数据流保存到了被上面删除掉的<code>%APPDATA%\\taskmgr.js</code>文件中<br><img src="https://img-blog.csdnimg.cn/20190916155832544.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>最后使用<code>WScript.Shell.Run</code>方法运行<code>taskmgr.js</code>文件</p><p>我这里使Python给他拿出来，命名为<code>taskmgr.js</code><br><img src="https://img-blog.csdnimg.cn/20190916161513776.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本2"><a href="#脚本2" class="headerlink" title="脚本2"></a>脚本2</h3><p>下面是<code>taskmgr.js</code> ，这个脚本其实还是一个解密脚本，也是 使用<code>AdoDB.Stream</code>处理数据流，然后使用<code>monKeyKing</code>中动态生成的eval方法去执行数据，来达到免杀<br><img src="https://img-blog.csdnimg.cn/20190916162014581.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>通过一个<code>Microsoft.XmlDom</code>的创建一个<code>tmp</code>对象，然后把这个对象赋予<code>eval</code>方法<br>最后就可以用<code>this.p</code>去访问到<code>Microsoft.XmlDom.tmp</code>，来达到命令执行<br><img src="https://img-blog.csdnimg.cn/20190916162041325.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>当然执行的命令也肯定是被加过密的，下面就是解密数据部分，这里就简单的把base64后的结果，然后把字符”A”替换成”!-%”<br><img src="https://img-blog.csdnimg.cn/20190916163628179.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>最后使用上面构造的<code>eval</code>去执行这段解密的代码<br><img src="https://img-blog.csdnimg.cn/2019091616391031.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本3-核心代码"><a href="#脚本3-核心代码" class="headerlink" title="脚本3 核心代码"></a>脚本3 核心代码</h3><p>这里开始分析脚本2中解密出来的代码</p><p>根据这host，port和代码量，可以判断出这个应该就是这个样本的实现核心的地方了。<br>这里其实这是一个远控加感染U盘传播</p><h4 id="U盘传播"><a href="#U盘传播" class="headerlink" title="U盘传播"></a>U盘传播</h4><p><img src="https://img-blog.csdnimg.cn/20190916165932567.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>加入开机启动注册表项，来达到持久化攻击，这基本已是木马的共性<br><img src="https://img-blog.csdnimg.cn/20190916170039587.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>在下面的try块中，有一个install函数会被循环调用，这个函数是用来检测感染移动存储设备的<br><img src="https://img-blog.csdnimg.cn/20190916170300961.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>install() 会去判断当前系统磁盘是否有U盘或其他移动存储介质，有的话就执行感染操作<br><img src="https://img-blog.csdnimg.cn/20190916170657111.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>枚举移动盘文件<br><img src="https://img-blog.csdnimg.cn/20190916171010711.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>如果文件不是快捷方式，那就将权限改为<strong>隐藏</strong>和<strong>系统权限</strong>，然后给他们创建一个同名<code>.lnk</code>的快捷方式<br><img src="https://img-blog.csdnimg.cn/20190916171254264.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>快捷方式被修改为了特殊构造的恶意代码，构造过程如下<br><img src="https://img-blog.csdnimg.cn/20190916171656803.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>这样每个文件都会被隐藏，然后生成一个被感染的快捷方式去诱惑其他人点击，只要一点击，就会被感染。</p><h4 id="远控模块"><a href="#远控模块" class="headerlink" title="远控模块"></a>远控模块</h4><p>这个远控一共有<code>26</code>个命令模块，分别是<br>|命令  |含义  |<br>|–|–|<br>|disconnect|   断开连接 |<br>|reboot|   重启脚本 |<br>|shutdown| 关闭脚本 |<br>|excecute| 执行命令  |<br>|install-sdk|  安装SDK |<br>|get-pass|搜集密码  |<br>|get-pass-offline|  获取浏览器密码|<br>|update|    更新|<br>|uninstall| 卸载|<br>|up-n-exec| 请求下载执行文件|<br>|bring-log| 上传日志|<br>|down-n-exec|  下载执行文件 |<br>|filemanager|   文件管理|<br>|rdp|  启动RDP |<br>|keylogger| 启动kleylogger|<br>|offline-keylogger| 启动离线版kerlogger|<br>|browse-logs|   上传日志|<br>|cmd-shell| 执行cmd命令|<br>|get-processes| 枚举进程|<br>|disable-uac|   关闭UAC|<br>|check-eligible|    检测权限|<br>|force-eligible| 暴力提权   |<br>|elevate|  普通提权 |<br>|if-elevate|   检测权限 |<br>|kill-process| 结束进程 |<br>|sleep| 挂起进程|</p><p>这个程序会释放一个脚本到%appdata%下去，命名为<code>aFCnKVCdfY.js</code><br><img src="https://img-blog.csdnimg.cn/20190916164502275.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h3 id="脚本4"><a href="#脚本4" class="headerlink" title="脚本4"></a>脚本4</h3><p>aFCnKVCdfY.js这个和脚本三是一样的，除了域名变了，其他都没变化。</p><p><img src="https://img-blog.csdnimg.cn/20190916174051698.png" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><h2 id="样本溯源"><a href="#样本溯源" class="headerlink" title="样本溯源"></a>样本溯源</h2><p><strong>C&amp;C</strong><br>unknownsoft.duckdns.org:7744<br>globalization.duckdns.org:50071</p><h2 id="查杀方案"><a href="#查杀方案" class="headerlink" title="查杀方案"></a>查杀方案</h2><p>删除自启动表项<br>HKEY_CURRENT_USER\software\microsoft\windows\currentversion\run\scriptName<br>HKEY_LOCAL_MACHINE\software\microsoft\windows\currentversion\run\scriptName</p><p>删除<br>%appdata%\aFCnKVCdfY.js<br>%temp%\aFCnKVCdfY.js<br>%APPDATA%\taskmgr.js </p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>谨防不明来路的邮件，网页 文件要谨慎，要对未知文件表示怀疑，切勿怀着试一试的态度打开</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>样本详细分析</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Rat H-worm</tag>
       
     </tags>
     
@@ -562,31 +529,6 @@
   
   
   <entry>
-    <title>调用dll和编写dll的几种格式</title>
-    <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
-    <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p><h3 id="全部写在dllmain函数内"><a href="#全部写在dllmain函数内" class="headerlink" title="全部写在dllmain函数内"></a>全部写在dllmain函数内</h3><pre><code class="c">extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}</code></pre><p><code>extern &quot;C&quot;</code> 表示使用C的编译方式编译，C++格式</p><p><code>_declspec(dllexport)</code>将一个函数申明为导出函数</p><p>就申明了一个导出函数</p><p>但是这中创建的dll的导出函数序号是连续的，我们不可控的。<br>也就是Base是1，然后符号表从1 开始。</p><h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>项目新建<br><img src="https://img-blog.csdnimg.cn/20190815120548672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br> 添加一个def文件<br>def中的代码</p><pre><code class="c">LIBRARY    &quot;def导出函数Demo&quot;EXPORTStest1 @1test2 @5test3 @8</code></pre><p>dllmain中的代码</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;void test3(){    MessageBox(0,&quot;test3&quot;,0,MB_OK);}void test2(){    MessageBox(0,&quot;test2&quot;,0,MB_OK);}void test1(){    MessageBox(0,&quot;test1&quot;,0,MB_OK);}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    case DLL_THREAD_ATTACH:    case DLL_THREAD_DETACH:    case DLL_PROCESS_DETACH:        break;    }    return TRUE;}</code></pre><p><strong>def里面定义的就是函数名和序号对应关系</strong></p><p><strong>在PE解析工具中，在AddressOfNameOrdinals 中对应的是减去Base的值，可以用这个值直接去AddressOfFunction 表中找到这个偏移，就能拿到这个函数在dll中的地址了</strong> </p><h1 id="加载dll的几种方式"><a href="#加载dll的几种方式" class="headerlink" title="加载dll的几种方式"></a>加载dll的几种方式</h1><h3 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h3><p>创建空项目</p><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.hcint main(){    typedef void (*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    func T3 = (func)(GetProcAddress(hMo,&quot;test3&quot;));    //func T3 = (func)(GetProcAddress(hMo,MAKEINTRESOURCE(8)));    T3();} </code></pre><h3 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h3><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.h&gt;int main(){    int(*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    (FARPROC*)func = GetProcAddress(hMo,&quot;test3&quot;);    //(FARPROC*)func = GetProcAddress(hMo, MAKEINTRESOURCE(8));    func();}</code></pre><p>以序号查找导出函数地址 使用关键字 <code>MAKEINTRESOURCE()</code>括号中值填序号表中对应值+Base<br>例如你要导入上面dll 序号为8的函数<br>这里假如基值为1</p><ul><li>第一步，找到序号表的VA，遍历序号表 </li><li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li><li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li></ul><h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p><p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p><p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>编程</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>dll</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>PE的一些结构笔记</title>
     <link href="undefined2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"/>
     <url>2019/08/20/PE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
@@ -604,6 +546,31 @@
     <tags>
       
       <tag>PE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调用dll和编写dll的几种格式</title>
+    <link href="undefined2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/"/>
+    <url>2019/08/20/%E8%B0%83%E7%94%A8dll%E5%92%8C%E7%BC%96%E5%86%99dll%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="dll的写法"><a href="#dll的写法" class="headerlink" title="dll的写法"></a>dll的写法</h2><p>一共两种</p><h3 id="全部写在dllmain函数内"><a href="#全部写在dllmain函数内" class="headerlink" title="全部写在dllmain函数内"></a>全部写在dllmain函数内</h3><pre><code class="c">extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}</code></pre><p><code>extern &quot;C&quot;</code> 表示使用C的编译方式编译，C++格式</p><p><code>_declspec(dllexport)</code>将一个函数申明为导出函数</p><p>就申明了一个导出函数</p><p>但是这中创建的dll的导出函数序号是连续的，我们不可控的。<br>也就是Base是1，然后符号表从1 开始。</p><h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>项目新建<br><img src="https://img-blog.csdnimg.cn/20190815120548672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br> 添加一个def文件<br>def中的代码</p><pre><code class="c">LIBRARY    &quot;def导出函数Demo&quot;EXPORTStest1 @1test2 @5test3 @8</code></pre><p>dllmain中的代码</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;void test3(){    MessageBox(0,&quot;test3&quot;,0,MB_OK);}void test2(){    MessageBox(0,&quot;test2&quot;,0,MB_OK);}void test1(){    MessageBox(0,&quot;test1&quot;,0,MB_OK);}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:    case DLL_THREAD_ATTACH:    case DLL_THREAD_DETACH:    case DLL_PROCESS_DETACH:        break;    }    return TRUE;}</code></pre><p><strong>def里面定义的就是函数名和序号对应关系</strong></p><p><strong>在PE解析工具中，在AddressOfNameOrdinals 中对应的是减去Base的值，可以用这个值直接去AddressOfFunction 表中找到这个偏移，就能拿到这个函数在dll中的地址了</strong> </p><h1 id="加载dll的几种方式"><a href="#加载dll的几种方式" class="headerlink" title="加载dll的几种方式"></a>加载dll的几种方式</h1><h3 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h3><p>创建空项目</p><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.hcint main(){    typedef void (*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    func T3 = (func)(GetProcAddress(hMo,&quot;test3&quot;));    //func T3 = (func)(GetProcAddress(hMo,MAKEINTRESOURCE(8)));    T3();} </code></pre><h3 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h3><p>main.c代码</p><pre><code class="c">#include &quot;stdio.h&quot;#include &lt;Windows.h&gt;int main(){    int(*func)();    HMODULE hMo = LoadLibrary(&quot;dll.dll&quot;);    (FARPROC*)func = GetProcAddress(hMo,&quot;test3&quot;);    //(FARPROC*)func = GetProcAddress(hMo, MAKEINTRESOURCE(8));    func();}</code></pre><p>以序号查找导出函数地址 使用关键字 <code>MAKEINTRESOURCE()</code>括号中值填序号表中对应值+Base<br>例如你要导入上面dll 序号为8的函数<br>这里假如基值为1</p><ul><li>第一步，找到序号表的VA，遍历序号表 </li><li>第二步，<strong>当序号表对应的值+1=8时</strong>，这里面的值7就是你要找到的函数符号了</li><li>第三步，拿这个符号表中的值（7），在地址表中对应偏移就是这个函数地址了（地址表VA+4*7，这个地址你要找以8为序号导出函数的地址）</li></ul><h3 id="调试DLL"><a href="#调试DLL" class="headerlink" title="调试DLL"></a>调试DLL</h3><p>可能有人疑惑，dll怎么调试，加载的时候又不能printf打印消息</p><p>其实是可以使用<code>DbgPrint</code>来向操作系统发送dbg消息的</p><p>然后使用<code>DebugView</code>来获取系统的调试信息，包括内核调试信息，都是能够获取到的</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>dll</tag>
       
     </tags>
     
@@ -637,31 +604,6 @@
   
   
   <entry>
-    <title>调试dll的两种方法</title>
-    <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
-    <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
-    
-    <content type="html"><![CDATA[<p>首先把dll调起来看看</p><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>自己写loadlibrary()和GetProcAddress()来加载dll。</p><p>编写有一个导出函数的测试 的 A.dll</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:        MessageBox(0,&quot;The DLL_PROCESS_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_ATTACH:        MessageBox(0,&quot;The DLL_THREAD_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_DETACH:        MessageBox(0,&quot;The DLL_THREAD_DETACH...&quot;,0,MB_OK);        break;    case DLL_PROCESS_DETACH:        MessageBox(0,&quot;The DLL_PROCESS_DETACH:...&quot;,0,MB_OK);        break;    }    return TRUE;}</code></pre><p>编译后到ida中看看他的导入表<br><img src="https://img-blog.csdnimg.cn/20190809131554388.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>双击看看结构<br><img src="https://img-blog.csdnimg.cn/20190809131752391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注意这里的个call的方法</p><p>我们这里编写一个load.exe来加载上面的A.dll</p><pre><code class="c">#include &quot;windows.h&quot;//定义dll中要用的函数typedef unsigned int  (*Sum)(int nArg1, char *nArgv2);int main(){    //加载dll    HMODULE Hmo = LoadLibraryA(&quot;A.dll&quot;);    //获取函数地址    Sum Abo = (Sum)GetProcAddress(Hmo,&quot;Sum&quot;);    //调用函数    Abo(1,NULL);    return 0;}</code></pre><p>我们可以使用OD或x64dbg来调试看看</p><p>调试前可以先把exe的地址随机化关了。<br>用010edit打开load.exe十六进制搜索40 81，改为 00 81，保存就OK了</p><p><img src="https://img-blog.csdnimg.cn/20190809133035515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>执行到main函数，看到了这个load dll的地方<br><img src="https://img-blog.csdnimg.cn/20190809133410193.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>loadLibrary()返回地址在eax中<br><img src="https://img-blog.csdnimg.cn/2019080913362427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取到函数地址后<br><img src="https://img-blog.csdnimg.cn/20190809133714552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>开始真正调用执行这个dll中的函数了，接着F7进去就是DLL中的代码了。</p><h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>直接拖进OD，这样只能调试dll的入口函数。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>逆向</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>调试dll</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>call的几种传参方式</title>
     <link href="undefined2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/"/>
     <url>2019/08/10/call%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
@@ -679,6 +621,31 @@
     <tags>
       
       <tag>传参方式</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>调试dll的两种方法</title>
+    <link href="undefined2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
+    <url>2019/08/10/%E8%B0%83%E8%AF%95dll%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<p>首先把dll调起来看看</p><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>自己写loadlibrary()和GetProcAddress()来加载dll。</p><p>编写有一个导出函数的测试 的 A.dll</p><pre><code class="c">// dllmain.cpp : 定义 DLL 应用程序的入口点。#include &quot;stdafx.h&quot;extern &quot;C&quot; _declspec(dllexport)DWORD Sum(int nArg1,char*nArgv2){    MessageBox(0,&quot;this Sum call&quot;,0,MB_OK);    return nArg1;}BOOL APIENTRY DllMain( HMODULE hModule,                       DWORD  ul_reason_for_call,                       LPVOID lpReserved                     ){    switch (ul_reason_for_call)    {    case DLL_PROCESS_ATTACH:        MessageBox(0,&quot;The DLL_PROCESS_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_ATTACH:        MessageBox(0,&quot;The DLL_THREAD_ATTACH...&quot;,0,MB_OK);        break;    case DLL_THREAD_DETACH:        MessageBox(0,&quot;The DLL_THREAD_DETACH...&quot;,0,MB_OK);        break;    case DLL_PROCESS_DETACH:        MessageBox(0,&quot;The DLL_PROCESS_DETACH:...&quot;,0,MB_OK);        break;    }    return TRUE;}</code></pre><p>编译后到ida中看看他的导入表<br><img src="https://img-blog.csdnimg.cn/20190809131554388.png" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>双击看看结构<br><img src="https://img-blog.csdnimg.cn/20190809131752391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>注意这里的个call的方法</p><p>我们这里编写一个load.exe来加载上面的A.dll</p><pre><code class="c">#include &quot;windows.h&quot;//定义dll中要用的函数typedef unsigned int  (*Sum)(int nArg1, char *nArgv2);int main(){    //加载dll    HMODULE Hmo = LoadLibraryA(&quot;A.dll&quot;);    //获取函数地址    Sum Abo = (Sum)GetProcAddress(Hmo,&quot;Sum&quot;);    //调用函数    Abo(1,NULL);    return 0;}</code></pre><p>我们可以使用OD或x64dbg来调试看看</p><p>调试前可以先把exe的地址随机化关了。<br>用010edit打开load.exe十六进制搜索40 81，改为 00 81，保存就OK了</p><p><img src="https://img-blog.csdnimg.cn/20190809133035515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>执行到main函数，看到了这个load dll的地方<br><img src="https://img-blog.csdnimg.cn/20190809133410193.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>loadLibrary()返回地址在eax中<br><img src="https://img-blog.csdnimg.cn/2019080913362427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"><br>获取到函数地址后<br><img src="https://img-blog.csdnimg.cn/20190809133714552.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2N5eUFyYXk=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="在这里插入图片描述"></p><p>开始真正调用执行这个dll中的函数了，接着F7进去就是DLL中的代码了。</p><h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>直接拖进OD，这样只能调试dll的入口函数。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>逆向</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>调试dll</tag>
       
     </tags>
     

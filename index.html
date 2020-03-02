@@ -199,50 +199,15 @@ PowerShell 使用某些 C# 语法
   <div class="row mb-4 mx-auto">
     
     
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/02/19/sality感染修复方案/">
-        <p class="h4 index-header"></p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">整体结构
-
-修复逻辑为：
-首先模拟执行被感染后的OEP，拿到解密代码处的地址
-
-一直往下，到达第一个ret就会跳往加密代码处
-
-解密代码部分
-
-解密代码约为0x1000字节左右,因为是有随机产生的指令，长度就不确定，但是有一个结束标记特征码为：81F9E2FE00000F8C????FFFFC3
-
-到这就可以修复文件了
-原始OEP保存在shellcode后的0x1774处
-sizoOfImage也能找到，就能恢复了
-
-
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-19&nbsp;&nbsp;
-        
-        
-        
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2020/02/14/深入浅出汇编/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20200302105728.png" srcset="/img/loading.gif" alt="Inter 汇编基础" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
       </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
     
     <div class="col-12 col-md-8 m-auto">
       <a href="/2020/02/14/深入浅出汇编/">
-        <p class="h4 index-header"></p>
+        <p class="h4 index-header">Inter 汇编基础</p>
         
         
           
@@ -266,78 +231,10 @@ x86 profix:26：在指令序列里是：prefix部分，作用是调整内存操�
         
         
         
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/09/ARM ARM64 x86/">
-        <p class="h4 index-header"></p>
-        
-        
+          <i class="iconfont icon-tag"></i>
           
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">几种不同CPU架构的区别
-inter  复杂指令集 CISCARM 精简指令集 RISC 
-
-
-
-类型
-Inter
-ARM
-
-
-
-效率
-完成复杂指令效率高，有独立的高级指令
-高级指令全靠多条指令拼凑
-
-
-功耗
-超高性能
-低功耗
-
-
-docker run -it -p 443:443 -v ~/.msf4:/root/.msf4 -v /tmp/msf:/tmp/data remnux/metasploit
-mates Break172.17.0.2
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-09&nbsp;&nbsp;
-        
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/12/23/调试androidLua的so文件/">
-        <p class="h4 index-header"></p>
-        
-        
+            <a href="/tags/%E6%B1%87%E7%BC%96">汇编</a>&nbsp;
           
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"></div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-12-23&nbsp;&nbsp;
-        
-        
         
       </div>
     </div>
@@ -590,6 +487,142 @@ WDM驱动无非是微软在NT式驱动之上进行了扩充，过滤驱动也不
             <a href="/tags/%E5%86%85%E6%A0%B8">内核</a>&nbsp;
           
             <a href="/tags/%E9%A9%B1%E5%8A%A8%E5%AD%A6%E4%B9%A0">驱动学习</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/11/09/梯子/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121303.png" srcset="/img/loading.gif" alt="PC及安卓翻墙" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/09/梯子/">
+        <p class="h4 index-header">PC及安卓翻墙</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前写过一篇，但是效果不太理想，现在再总结一下使用中的常见问题
+这是我随意打开的Youtube，连接速度达到了 1M/s  1080是没什么问题了
+PC端
+
+手机端
+各版本下载链接(这些在github上都是开源的，不放心可以自己去找源码编译)
+http://files.huaduo.icu/shadowsocksr/
+PC安装与使用</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-09&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>&nbsp;
+          
+            <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/11/07/监控线程/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121437.png" srcset="/img/loading.gif" alt="恶意线程清理" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/07/监控线程/">
+        <p class="h4 index-header">恶意线程清理</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这篇博客的背景是：如果很多进程都恶意程序通过远进程注入了线程，那么应该怎么清除呢？
+下面给出两种方法
+PLAN A来自 加号
+通过遍历线程后，根据获取到的线程信息，对线程地址和入口代码进行检查，这种方式适合对注入代码偏移位置固定或则入口代码固定，能准确查杀，推荐使用
+void Killing::KillMalRemoteThread()
+{
+    (FARPROC&amp;)ZwQueryInformationThread = GetProcAddress(m_hNtdll, &quot;ZwQueryInformationThread&quot;);
+
+    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+    THREADENTRY32 te32;
+
+    te32.dwSize = sizeof(THREADENTRY32);
+    Thread32First(hThreadSnap, &amp;te32);
+    HANDLE hThread;
+    do {
+       </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-07&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/11/03/现场木马清理建议/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217105901.png" srcset="/img/loading.gif" alt="Shellcode基础" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/11/03/现场木马清理建议/">
+        <p class="h4 index-header">Shellcode基础</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">注册表文件隐藏[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]CheckedValue = 0 //此时无法通过文件夹选项设置成功CheckedValue = 1 //Windows默认值把CheckedValue修改成Windows默认值1后，系统恢复正常。
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]这个对隐藏文件有用
+关闭杀软[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]
+网络相关[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]
+safe</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-03&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%9C%A8%E9%A9%AC">木马</a>&nbsp;
           
         
       </div>

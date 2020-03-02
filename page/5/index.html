@@ -137,180 +137,6 @@
     
     
     <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/05/12/HWTACACS和RADIUS的区别/">
-        <p class="h4 index-header">HWTACACS和RADIUS的区别</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">一 HWTACACS和RADIUS的区别
-1 传输层协议两者使用的传输层协议不同，HWTACACS使用的是TCP，而RADIUS采用的是UDP；
-2 认证、授权方式HWTACACS的认证、授权相互独立，如果把命令行设置为HWTACACS模式，则这个命令行的每一条命令都需要经过认证。而RADIUS的认证和授权是捆在一起的；
-3 加密方式HWTACACS对用户报文会进行整个加密，而RADIUS仅对用户密码进行加密。
-二 HWTACACS和RADIUS使用场合当用户需从本地网络与NAS建立连接从而取得访问其他网络的权利或取得使用某些网络资源时，一般都需对此类用户接入请求进行认证、授权和计费等。认证为合法用户将被分配网络资源，同时可对用户上线时间统计计时，并拒绝非法用户的请求。电信运营商和一些院校及企事业单位一般都采用HWTACACS或RADIUS服务器对接入用户进行有效控制，保证网络安全性和计时（方便计费）。
-</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-12&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/HCIP">HCIP</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/05/11/HCIP-security了解/">
-        <p class="h4 index-header">HCIP-security了解</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">HCIP-Security 知识架构HCP1 HCIP-Security CISN构建安全网络架构 * 网络安全设备管理
-
-     *   网络安全设备介绍
-
-     *   网络安全设备管理
-
-     *   网络安全设备日志分析
-
-     *   网络安全设备统一运维
-
- * 防火墙带宽管理
-
-     *   防火墙带宽管理概述
-
-     *   防火墙带宽管理实现原理
-
-     *   防火墙带宽管理配置部署
-
-     *   防火墙带宽管理故障排除
-
- * 防火墙负载均衡
-
-     *   服务器负载均衡概述
-
-     *   服务器负载均衡实现原理
-
-     *   服务器负载均衡配置部署
-
- * 防火墙高可靠性
-
-     *   BFD技术
-
-     *   IP-Link技术
-
-     *   Link-Group技术
-
-     *   Eth-Trunk技术
-
-     *   Bypass技术
-
-     *   双机热备技术
-
-     *   双机热备故障排除
-
- * 防火墙虚拟系统
-
-     *   虚拟系统概述
-
-     * </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-05-11&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0">课堂笔记</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/HCIP">HCIP</a>&nbsp;
-          
-            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C">计算机网络</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/04/29/angr学习文档/">
-        <p class="h4 index-header">angr学习文档</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">安装不会建议直接上docker 大是大了点，但是是相对很简单的事
-官方文档翻译angr Documentation我们首先要了解angr的构造，开始第一步肯定是导入二进制程序
-&gt;&gt;&gt; import angr
-&gt;&gt;&gt; proj = angr.Project(&#39;/bin/true&#39;)之后我们的操作都会基于这个proj对象，
-基础属性&gt;&gt;&gt; import monkeyhex //将以十六进制格式化数值输出结果
-&gt;&gt;&gt; proj.arch //程序的
-&lt;Arch AMD64 (LE)&gt;
-&gt;&gt;&gt; proj.entry //程序入口处
-0x401670
-&gt;&gt;&gt; proj.filename //程序二进制地址
-&#39;/bin/true&#39;The loader 方法从二进制文件转变为虚拟地址空间的表现形式的过程是十分复杂的。我们有一个名为CLE的模块来处理这个过程。CLE的结果，称为loader，可通过.loader属性来进行操控。
-
-&gt;&gt;&gt</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-29&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Angr">Angr</a>&nbsp;
-          
-            <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%87%AA%E5%8A%A8%E5%8C%96">程序自动化</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/04/28/课程笔记：安全运维平台设计/">
         <p class="h4 index-header">课程笔记：安全运维平台设计</p>
         
@@ -634,6 +460,146 @@ github项目
             <a href="/tags/%E8%8A%B1%E6%8C%87%E4%BB%A4">花指令</a>&nbsp;
           
             <a href="/tags/OD">OD</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/08/docker-学习记录/">
+        <p class="h4 index-header">docker 学习记录</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">起因本文背景操作系统：Ubuntu 16.04
+今天上课就不想听老师的，就想写下自己之前没搞懂的docker，基本都是看的网上教程和官方文档
+认识docker官方文档：https://docs.docker.com/get-started/
+优秀博客：https://zhuanlan.zhihu.com/p/22403015
+我这里主要根据官方文档记录下学习过程
+什么是docker上面那篇知乎文章写的很好，详细解释了什么是docker，以及和虚拟机的区别，我这里还是给自己增强下记忆。
+虚拟机是模拟抽象出了硬件，然后在虚拟出的硬件上运行新的内核系统，所以虚拟机机开机慢（包括开机自检，启动操作系统等等）
+docker 我们可以理解成一个特别的进程，通过linux fork出来的一个进程，(fork出来的父进程和子进程都是一样的)，然后运用各种隔离形成‘独立进程’(这个可以看些知乎那篇文章)，docker不用安装其他操作系统，也不需要模拟kernel ，用的是本机的kernel 。
+总结一下docker 就是隔离了除内核资源外其应用层资源的进程，docker镜像的kernel和运行docke</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Docker">Docker</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/docker">docker</a>&nbsp;
+          
+            <a href="/tags/hub">hub</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/04/看雪刷题系列：2017/">
+        <p class="h4 index-header">看雪刷题系列：2017</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">题目链接和write up
+运行调试和结果就一个简单框题， vc6写的，而且作者也说没什么防护我的结果是 1555
+反编译F12 搜索字符串，确实有成功提示，跳转到引用出，但发现相应函数不能F5大法，说不在函数体内，其实是因为IDA没有把这段代码认识是代码OTZ，姑且这样认为吧，我们可以手动点击函数体名，右击选择Creat function 就可以反编译了
+反编译位置之前函数设定有点问题 ，我是在.text:004011F4 .text:004012AA两个位置创建了函数，反编译出来很简单了
+int sub_4011F4()
+{
+  int v0; // ecx
+  double v1; // st7
+  double v2; // st6
+  double v3; // st6
+  CHAR num1; // [esp+0h] [ebp-1Ch]
+  char num2; // [esp+1h] [ebp-1Bh]
+  char num3; // [esp+2h] [ebp-1Ah]
+  char num4; // [esp+3h] [ebp-19h]
+  int v9; // [e</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CTF">CTF</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/04/02/z3py使用总结/">
+        <p class="h4 index-header">z3py使用总结</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">遇到一个需要计算的题，逆向不出来，就想想使用正向求解，z3了解一下
+什么是z3
+Z3 is a theorem prover from Microsoft Research. It &gt;is licensed under the MIT license.
+If you are not familiar with Z3, you can start &gt;here.
+Pre-built binaries for releases are available from &gt;here, and nightly builds from here.
+Z3 can be built using Visual Studio, a Makefile or &gt;using CMake. It provides bindings for several &gt;programming languages.
+See the release notes for notes on various stable &gt;releases of Z3.
+
+就是一个约束器，可以简单理解为解方程的东西。
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-04-02&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/z3">z3</a>&nbsp;
+          
+            <a href="/tags/Python">Python</a>&nbsp;
           
         
       </div>

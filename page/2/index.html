@@ -137,142 +137,6 @@
     
     
       <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/11/09/梯子/" target="_self">
-          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121303.png" srcset="/img/loading.gif" alt="PC及安卓翻墙" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/09/梯子/">
-        <p class="h4 index-header">PC及安卓翻墙</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">之前写过一篇，但是效果不太理想，现在再总结一下使用中的常见问题
-这是我随意打开的Youtube，连接速度达到了 1M/s  1080是没什么问题了
-PC端
-
-手机端
-各版本下载链接(这些在github上都是开源的，不放心可以自己去找源码编译)
-http://files.huaduo.icu/shadowsocksr/
-PC安装与使用</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-09&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>&nbsp;
-          
-            <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/11/07/监控线程/" target="_self">
-          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/lmg/20191216121437.png" srcset="/img/loading.gif" alt="恶意线程清理" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/07/监控线程/">
-        <p class="h4 index-header">恶意线程清理</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">这篇博客的背景是：如果很多进程都恶意程序通过远进程注入了线程，那么应该怎么清除呢？
-下面给出两种方法
-PLAN A来自 加号
-通过遍历线程后，根据获取到的线程信息，对线程地址和入口代码进行检查，这种方式适合对注入代码偏移位置固定或则入口代码固定，能准确查杀，推荐使用
-void Killing::KillMalRemoteThread()
-{
-    (FARPROC&amp;)ZwQueryInformationThread = GetProcAddress(m_hNtdll, &quot;ZwQueryInformationThread&quot;);
-
-    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-    THREADENTRY32 te32;
-
-    te32.dwSize = sizeof(THREADENTRY32);
-    Thread32First(hThreadSnap, &amp;te32);
-    HANDLE hThread;
-    do {
-       </div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-07&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/11/03/现场木马清理建议/" target="_self">
-          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217105901.png" srcset="/img/loading.gif" alt="Shellcode基础" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/11/03/现场木马清理建议/">
-        <p class="h4 index-header">Shellcode基础</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">注册表文件隐藏[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL]CheckedValue = 0 //此时无法通过文件夹选项设置成功CheckedValue = 1 //Windows默认值把CheckedValue修改成Windows默认值1后，系统恢复正常。
-[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden]这个对隐藏文件有用
-关闭杀软[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center\Feature]
-网络相关[SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List]
-safe</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-03&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%9C%A8%E9%A9%AC">木马</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/10/10/宏病毒下载器/" target="_self">
           <img src="https://dc.snscz.com/s2/img/original/2019/04/01/14/14004_4fc6282a45.jpg" srcset="/img/loading.gif" alt="利用宏-DownLoder" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -442,6 +306,66 @@ vbox_check =</div>
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/09/04/Com添加过滤器来检测沙箱/" target="_self">
+          <img src="https://w.wallhaven.cc/full/2k/wallhaven-2kmoxm.jpg" srcset="/img/loading.gif" alt="Com组建检测虚拟沙箱" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
+        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
+但经测试 any.run 和微步 都未被识别为沙箱
+这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
+#include &quot;stdafx.h&quot;
+#include &lt;conio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;dshow.h&gt;
+#include &lt;objbase.h&gt;
+
+#pragma comment(lib, &quot;Strmiids.lib&quot;)
+
+void useCom()
+{
+    /*
+    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
+    只有安装了音频设备，此处的沙箱才会被视为真实系统。
+    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
+    */
+    CoInitialize(0);
+    wchar_t * filerName = L&quot;random_nam</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2019/09/04/H-WORM变种远控分析/" target="_self">
           <img src="https://dc.snscz.com/s2/img/1200/2019/04/01/14/14004_4c746d4df0.jpg" srcset="/img/loading.gif" alt="H-WORM变种远控分析" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -493,66 +417,6 @@ rat
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/Rat%20H-worm">Rat H-worm</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2019/09/04/Com添加过滤器来检测沙箱/" target="_self">
-          <img src="https://w.wallhaven.cc/full/2k/wallhaven-2kmoxm.jpg" srcset="/img/loading.gif" alt="Com组建检测虚拟沙箱" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2019/09/04/Com添加过滤器来检测沙箱/">
-        <p class="h4 index-header">Com组建检测虚拟沙箱</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">因为沙箱的仿真度不全问题，可能造成仿真系统上的音频设备功能与真机的差异，通过这来实现检测是否在沙箱中运行。
-但经测试 any.run 和微步 都未被识别为沙箱
-这里只是介绍下可以使用COM对系统基础设备的操作，来检测虚拟沙箱。
-#include &quot;stdafx.h&quot;
-#include &lt;conio.h&gt;
-#include &lt;windows.h&gt;
-#include &lt;dshow.h&gt;
-#include &lt;objbase.h&gt;
-
-#pragma comment(lib, &quot;Strmiids.lib&quot;)
-
-void useCom()
-{
-    /*
-    这些只是一些随机检查，以确保恶意软件在真实系统上执行。
-    只有安装了音频设备，此处的沙箱才会被视为真实系统。
-    大多数仿真器都会失败，因为几乎不可能为现代操作系统中的每个COM接口实现适当的支持。
-    */
-    CoInitialize(0);
-    wchar_t * filerName = L&quot;random_nam</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-04&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%A3%80%E6%B5%8B%E6%B2%99%E7%AE%B1">检测沙箱</a>&nbsp;
           
         
       </div>
@@ -674,6 +538,177 @@ rat
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/malware%20Rat">malware Rat</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/输入法注入/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217102119.png" srcset="/img/loading.gif" alt="输入法注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/输入法注入/">
+        <p class="h4 index-header">输入法注入</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">特性因为输入法的本身特性，能注入任何一个程序，还可以开机启动，很是友好
+网上大都是一个版本方法，我记录下我自己过程
+思路1.编写一个正常的输入法2.将它安装到电脑上，并设置为默认输入法，这样就可以在程序打开的时候就调用它的处理函数
+因为输入是一个特殊的dll，本质就是一个dll，只是后最不同而已。
+一个最简ime文件都必须两个函数
+一个dllmain() 还有一个ImeInquire()这两个是必须的
+编写输入法主要文件创建一个dll项目,解释都在注释中（注意项目为多字节字符集）dllmain.cpp
+#include &quot;stdafx.h&quot;
+#include &quot;windows.h&quot;
+#include &quot;imm.h&quot;
+#include &quot;immdev.h&quot;
+#pragma comment(lib,&quot;imm32.lib&quot;)
+
+LPCSTR injectDllPaht = &quot;C://expDll.dll&quot;; //我们最终利用的Dll，写入自己的功能
+void injectD</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
+          
+            <a href="/tags/%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8">开机启动</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/远线程注入/" target="_self">
+          <img src="https://cdn.jsdelivr.net/gh/L0yy/tuchuang/Img/20191217102203.png" srcset="/img/loading.gif" alt="远线程注入" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/远线程注入/">
+        <p class="h4 index-header">远线程注入</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">什么是远线程注入在一个进程中，调用CreateThread或CreateRemoteThreadEx函数，在另一个进程内创建一个线程（因为不在同一个进程中，所以叫做远程线程）。创建的线程一般为Windows API函数LoadLibrary，来加载一个动态链接库(DLL)，从而达到在另一个进程中运行自己所希望运行的代码的目的。
+代码下面例子是根据查询一打开窗口中的计算器进程，然后注释都很详细 
+#include &quot;windows.h&quot;
+#include &quot;Tlhelp32.h&quot;
+int InjectDll(DWORD dwProcessId, PTCHAR szDllName);
+int EnablePrivilege(bool isStart);
+DWORD GetProcessId(PTCHAR pszProcessName);
+
+void main()
+{
+    DWORD ProcessId = GetProcessId(&quot;calc.exe&quot;);\\目标程序
+    InjectDll(ProcessId ,&quo</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%B3%A8%E5%85%A5">注入</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2019/08/26/SEH创建与查找/" target="_self">
+          <img src="https://w.wallhaven.cc/full/5d/wallhaven-5d2p17.jpg" srcset="/img/loading.gif" alt="SEH创建与查找" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/08/26/SEH创建与查找/">
+        <p class="h4 index-header">SEH创建与查找</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">创建一个SEH处理函数
+#include &quot;stdafx.h&quot;
+#define WIN32_LEAN_AND_MEAN
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &quot;stdlib.h&quot;
+
+DWORD scratch;
+
+EXCEPTION_DISPOSITION exceptHandler(struct _EXCEPTION_RECORD *ExceptionRecord,
+                        void * EstablisherFrame,
+                        struct _CONTEXT *ContextRecord,
+                        void * DispatcherContext)
+{
+
+    unsigned i;
+
+    MessageBox(0,_T(&quot;i am in except!!!&quot;),0,0);
+
+    ContextRecord-&</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%80%86%E5%90%91">逆向</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/SEH">SEH</a>&nbsp;
+          
+            <a href="/tags/Windbg">Windbg</a>&nbsp;
           
         
       </div>
